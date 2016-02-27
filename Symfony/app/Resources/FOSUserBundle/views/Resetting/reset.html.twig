@@ -1,0 +1,56 @@
+{% extends 'FOSUserBundle::base.html.twig' %}
+
+{% block title %}{{ parent() }} - Iniciar sesión{% endblock %}
+
+{% block content %}
+    {% trans_default_domain 'FOSUserBundle' %}
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m10 offset-m1 l6 offset-l3" style="height: 100%">
+                <div class="valign-wrapper">
+                    <div class="card col s12 hoverable">
+                        {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'fos_user_resetting_reset' } }) }}
+                            <div class="card-content gray-text">
+                                <span class="card-title">Recuperar contraseña</span>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        {{ form_widget(form.plainPassword.first) }}
+                                        <label for="fos_user_resetting_form_plainPassword_first">Nueva contraseña</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        {{ form_widget(form.plainPassword.second) }}
+                                        <label for="fos_user_resetting_form_plainPassword_second">Repite la contraseña</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card-action right-align">
+                                <div class="row">
+                                    <div class="col s12">
+                                        <button class="waves-effect waves-light btn purple darken-2" type="_submit" name="_submit"><i class="material-icons right hide-on-small-only">input</i>Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $( document ).ready(function(){
+            {% set error = form_errors(form.plainPassword.first) %}
+            $(".button-collapse").sideNav();
+            {% if error %}
+                Materialize.toast('{{ error|raw }}', 4000);
+            {% endif %}
+
+        })
+    </script>
+{% endblock %}

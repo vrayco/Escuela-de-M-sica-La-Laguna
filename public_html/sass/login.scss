@@ -1,0 +1,99 @@
+@charset "UTF-8";
+
+// Mixins
+// @import "../materialize-src/sass/components/prefixer";
+@import "../materialize-src/sass/components/mixins";
+@import "../materialize-src/sass/components/color";
+
+// Variables;
+@import "components/variables";
+@import "../materialize-src/sass/components/variables";
+
+
+// Reset
+@import "../materialize-src/sass/components/normalize";
+
+// components
+@import "../materialize-src/sass/components/global";
+@import "../materialize-src/sass/components/icons-material-design";
+@import "../materialize-src/sass/components/grid";
+@import "../materialize-src/sass/components/navbar";
+@import "../materialize-src/sass/components/roboto";
+@import "../materialize-src/sass/components/typography";
+@import "../materialize-src/sass/components/cards";
+@import "../materialize-src/sass/components/toast";
+@import "../materialize-src/sass/components/tabs";
+@import "../materialize-src/sass/components/tooltip";
+@import "../materialize-src/sass/components/buttons";
+@import "../materialize-src/sass/components/dropdown";
+@import "../materialize-src/sass/components/waves";
+@import "../materialize-src/sass/components/modal";
+@import "../materialize-src/sass/components/collapsible";
+@import "../materialize-src/sass/components/chips";
+@import "../materialize-src/sass/components/materialbox";
+@import "../materialize-src/sass/components/form";
+@import "../materialize-src/sass/components/table_of_contents";
+@import "../materialize-src/sass/components/sideNav";
+@import "../materialize-src/sass/components/preloader";
+@import "../materialize-src/sass/components/slider";
+@import "../materialize-src/sass/components/carousel";
+@import "../materialize-src/sass/components/date_picker/default.scss";
+@import "../materialize-src/sass/components/date_picker/default.date.scss";
+@import "../materialize-src/sass/components/date_picker/default.time.scss";
+
+
+
+html, body {
+  height: 100%;
+}
+
+.container {
+  height: 100%;
+}
+
+.row {
+  height: 100%;
+}
+
+.valign-wrapper {
+  height: 100%;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating) {
+  color: #bdbdbd;
+  margin-right: 0;
+  font-size: 12px;
+}
+
+textarea:focus {
+  border-bottom: 1px solid #03a9f4;
+  -webkit-box-shadow: 0 1px 0 0 #03a9f4;
+  -moz-box-shadow: 0 1px 0 0 #03a9f4;
+  box-shadow: 0 1px 0 0 #03a9f4;
+}
+
+@media only screen and (min-width : 601px) and (max-width : 1260px) {
+  .toast {
+    width: 100%;
+    border-radius: 0;} }
+
+@media only screen and (min-width : 1261px) {
+  .toast {
+    width: 100%;
+    border-radius: 0; } }
+
+@media only screen and (min-width : 601px) and (max-width : 1260px) {
+  #toast-container {
+    min-width: 100%;
+    bottom: 0%;
+    top: 90%;
+    right: 0%;
+    left: 0%;} }
+
+@media only screen and (min-width : 1261px) {
+  #toast-container {
+    min-width: 100%;
+    bottom: 0%;
+    top: 90%;
+    right: 0%;
+    left: 0%; } }

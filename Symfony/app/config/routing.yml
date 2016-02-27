@@ -1,0 +1,13 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+fos_user.security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user.change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+
+fos_user.resetting:
+    prefix: "resetting"
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"

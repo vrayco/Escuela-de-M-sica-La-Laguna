@@ -1,0 +1,86 @@
+# -- Symfony2 en cPanel -----------------------------------------
+Symfony/app/bootstrap.php.cache
+Symfony/app/bootstrap_cache.php.cache
+Symfony/app/config/parameters.ini
+Symfony/app/config/parameters.yml
+Symfony/app/cache/*
+Symfony/app/logs/*
+Symfony/vendor/*
+public_html/js/*
+public_html/uploads/*
+Symfony/error_log
+access-logs
+etc/
+logs/
+perl5
+error_log
+php.ini
+www
+cpbackup-exclude.conf
+ssl/
+
+# -- Composer -----------------------------------------
+composer.phar
+
+# -- PHPUnit ------------------------------------------
+app/phpunit.xml
+
+# -- Editores -----------------------------------------
+# vim
+.*.sw[a-z]
+*.un~
+Session.vim
+.netrwhist
+
+# eclipse
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+.externalToolBuilders/
+*.launch
+.buildpath
+
+# phpstorm
+.idea/
+
+# textmate
+*.tmproj
+*.tmproject
+tmtags
+
+# sublimetext
+/*.sublime-project
+*.sublime-workspace
+
+# -- Sistemas Operativos ------------------------------
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.*
+!.gitignore
+!.htaccess
+*~
+
+# Mac OS X
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
