@@ -1,76 +1,97 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <h3>Alumno</h3>
+    {#<h3>{{ alumno.nombre }} {{ alumno.apellidos }}</h3>#}
 
     <table  class="highlight bordered responsive-table">
         <tbody>
-            <tr>
-                <th>Expediente</th>
-                <td class="right-align">{{ alumno.expediente }}</td>
-            </tr>
-            <tr>
-                <th>Dni</th>
-                <td class="right-align">{% if alumno.dni %}{{ alumno.dni }}{% else %}---{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Nombre</th>
-                <td class="right-align">{{ alumno.nombre }} {{ alumno.apellidos }}</td>
-            </tr>
-            <tr>
-                <th>Año Ingreso</th>
-                <td class="right-align">{{ alumno.añoIngreso }}</td>
-            </tr>
-            <tr>
-                <th>Localidad</th>
-                <td>{{ alumno.localidad }}</td>
-            </tr>
-            <tr>
-                <th>Direccion</th>
-                <td>{{ alumno.direccion }}</td>
-            </tr>
-            <tr>
-                <th>Codigopostal</th>
-                <td>{{ alumno.codigoPostal }}</td>
-            </tr>
-            <tr>
-                <th>Telefonofijo</th>
-                <td>{{ alumno.telefonofijo }}</td>
-            </tr>
-            <tr>
-                <th>Telefonomovil</th>
-                <td>{{ alumno.telefonoMovil }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ alumno.email }}</td>
-            </tr>
-            <tr>
-                <th>Fechanacimiento</th>
-                <td>{% if alumno.fechaNacimiento %}{{ alumno.fechaNacimiento|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Observaciones</th>
-                <td>{{ alumno.observaciones }}</td>
-            </tr>
-            <tr>
-                <th>Createat</th>
-                <td>{% if alumno.createAt %}{{ alumno.createAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
+        <tr>
+            <th>Expediente</th>
+            <td class="right-align">{{ alumno.expediente }}</td>
+        </tr>
+        <tr>
+            <th>Dni</th>
+            <td class="right-align">{% if alumno.dni %}{{ alumno.dni }}{% else %}---{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Nombre</th>
+            <td class="right-align">{{ alumno.nombre }} {{ alumno.apellidos }}</td>
+        </tr>
+        <tr>
+            <th>Año Ingreso</th>
+            <td class="right-align">{% if alumno.anoIngreso %}{{ alumno.anoIngreso }}{% else %}---{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Localidad</th>
+            <td class="right-align">{{ alumno.localidad }}</td>
+        </tr>
+        <tr>
+            <th>Direccion</th>
+            <td class="right-align">{{ alumno.direccion }}</td>
+        </tr>
+        <tr>
+            <th>Codigopostal</th>
+            <td class="right-align">{{ alumno.codigoPostal }}</td>
+        </tr>
+        <tr>
+            <th>Telefonofijo</th>
+            <td class="right-align">{% if alumno.telefonoFijo %}{{ alumno.telefonoFijo }}{% else %}---{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Telefonomovil</th>
+            <td class="right-align">{% if alumno.telefonoMovil%}{{ alumno.telefonoMovil}}{% else %}---{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td class="right-align">{% if alumno.email %}{{ alumno.email }}{% else %}---{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Fechanacimiento</th>
+            <td class="right-align">{% if alumno.fechaNacimiento %}{{ alumno.fechaNacimiento|date('Y-m-d H:i:s') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Observaciones</th>
+            <td class="right-align">{{ alumno.observaciones }}</td>
+        </tr>
+        <tr>
+            <th>Añadido al sistema el</th>
+            <td class="right-align">{% if alumno.createAt %}{{ alumno.createAt|date('d/m/Y H:i:s') }}{% endif %}</td>
+        </tr>
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('alumno_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('alumno_edit', { 'id': alumno.id }) }}">Edit</a>
-        </li>
-        <li>
+    <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large waves-effect waves-light purple">
+            <i class="large material-icons">menu</i>
+        </a>
+        <ul>
+            <li><a href="{{ path('alumno_index') }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">view_list</i></a></li>
+            <li><a href="{{ path('alumno_edit', { 'id': alumno.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a></li>
+            <li><a href="#modal1" class="btn-floating btn waves-effect waves-light red modal-trigger"><i class="material-icons">delete</i></a></li>
+        </ul>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h5>¿Estás seguro de eliminar a {{ alumno.nombre }} {{ alumno.apellidos }}?</h5>
+            <p>La acción es irreversible. Se eliminará todo la información asociada al expediente {{ alumno.expediente }}.</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn grey">No, cancelar</a>
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+            <button class="modal-action modal-close waves-effect waves-green btn red" type="submit" name="action">Eliminar
+                <i class="material-icons right">delete</i>
+            </button>
             {{ form_end(delete_form) }}
-        </li>
-    </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+            $('.modal-trigger').leanModal();
+        });
+    </script>
 {% endblock %}

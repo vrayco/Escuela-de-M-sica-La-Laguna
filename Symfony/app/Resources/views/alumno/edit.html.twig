@@ -1,21 +1,94 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme edit_form 'form/fields.html.twig' %}
+
 {% block content %}
-    <h3>Alumno edit</h3>
-
     {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+    <div class="input-field col s12 m5">
+        {{ form_label(edit_form.nombre) }}
+        {{ form_widget(edit_form.nombre) }}
+    </div>
+    <div class="input-field col s12 m7">
+        {{ form_label(edit_form.apellidos) }}
+        {{ form_widget(edit_form.apellidos) }}
+    </div>
+    <div class="input-field col s12 m2">
+        {{ form_label(edit_form.fechaNacimiento) }}
+        {{ form_widget(edit_form.fechaNacimiento, {'attr': {'class': 'datepicker'}}) }}
+    </div>
+    <div class="input-field col s12 m2">
+        {{ form_label(edit_form.dni) }}
+        {{ form_widget(edit_form.dni) }}
+    </div>
+    <div class="input-field col s12 m6">
+        {{ form_label(edit_form.direccion) }}
+        {{ form_widget(edit_form.direccion) }}
+    </div>
+    <div class="input-field col s12 m2">
+        {{ form_label(edit_form.anoIngreso) }}
+        {{ form_widget(edit_form.anoIngreso) }}
+    </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('alumno_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    <div class="input-field col s12 m3">
+        {{ form_label(edit_form.codigoPostal) }}
+        {{ form_widget(edit_form.codigoPostal) }}
+    </div>
+    <div class="input-field col s12 m9">
+        {{ form_label(edit_form.localidad) }}
+        {{ form_widget(edit_form.localidad) }}
+    </div>
+    <div class="input-field col s12 m3">
+        {{ form_label(edit_form.telefonoFijo) }}
+        {{ form_widget(edit_form.telefonoFijo) }}
+    </div>
+    <div class="input-field col s12 m3">
+        {{ form_label(edit_form.telefonoMovil) }}
+        {{ form_widget(edit_form.telefonoMovil) }}
+    </div>
+    <div class="input-field col s12 m6">
+        {{ form_label(edit_form.email) }}
+        {{ form_widget(edit_form.email) }}
+    </div>
+    <div class="input-field col s12 m12">
+        {{ form_label(edit_form.observaciones) }}
+        {{ form_widget(edit_form.observaciones) }}
+    </div>
+    {{ form_rest(edit_form) }}
+    <div class="col s12 center-align">
+        <div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
+            <button class="btn-floating btn-large waves-effect waves-light" type="submit" name="action">
+                <i class="large material-icons">done</i>
+            </button>
+        </div>
+    </div>
+    {{ form_end(edit_form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+            $('.datepicker').pickadate({
+                selectYears: 100,
+                monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                showMonthsShort: undefined,
+                showWeekdaysFull: undefined,
+                // Buttons
+                today: 'Hoy',
+                clear: 'Limpiar',
+                close: 'Cerrar',
+                // Accessibility labels
+                labelMonthNext: 'Siguiente mes',
+                labelMonthPrev: 'Mes anterior',
+                labelMonthSelect: 'Escoge un mes',
+                labelYearSelect: 'Escoge un año',
+
+                //The format to show on the `input` element
+                format: 'dd/mm/yyyy',
+                closeOnSelect: true,
+            });
+        });
+    </script>
 {% endblock %}

@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,21 +16,24 @@ class AlumnoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('expediente')
+            ->add('dni')
             ->add('nombre')
             ->add('apellidos')
-            ->add('dni')
-            ->add('añoIngreso')
-            ->add('localidad')
+            ->add('fechaNacimiento', DateType::class, array(
+                'widget'    => 'single_text',
+                'format'    => 'dd/MM/yyyy'
+            ))
             ->add('direccion')
             ->add('codigoPostal')
-            ->add('telefonofijo')
+            ->add('localidad')
+            ->add('telefonoFijo')
             ->add('telefonoMovil')
             ->add('email')
-            ->add('fechaNacimiento', 'datetime')
-            ->add('observaciones')
-            ->add('createAt', 'datetime')
-            ->add('tutor')
+            ->add('anoIngreso',null,array('label' => 'Año de ingreso'))
+            ->add('observaciones', 'textarea', array(
+                'required'=>false,
+                'attr'  => array('class' => 'materialize-textarea')
+            ))
         ;
     }
     

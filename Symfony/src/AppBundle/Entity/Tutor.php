@@ -48,6 +48,12 @@ class Tutor
      */
     private $alumno;
 
+
+    public function __toString()
+    {
+        return $this->nombre. " ". $this->apellidos;
+    }
+
     /**
      * Get id
      *

@@ -35,7 +35,7 @@ class LoadAlumnosData extends AbstractFixture implements OrderedFixtureInterface
             $entity->setNombre("Alumno".$i);
             $entity->setApellidos("Apellido1 Apellido2");
             $entity->setDni(rand(40000000,79999999));
-            //$entity->setAñoIngreso();
+            //$entity->setAnoIngreso();
             $entity->setLocalidad("Localidad");
             $entity->setDireccion("Dirección");
             $entity->setCodigoPostal(38250);

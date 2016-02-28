@@ -52,9 +52,9 @@ class Alumno
     /**
      * @var string
      *
-     * @ORM\Column(name="añoIngreso", type="string", length=32, nullable=true)
+     * @ORM\Column(name="anoIngreso", type="string", length=32, nullable=true)
      */
-    private $añoIngreso;
+    private $anoIngreso;
 
     /**
      * @var string
@@ -80,9 +80,9 @@ class Alumno
     /**
      * @var string
      *
-     * @ORM\Column(name="telefonofijo", type="string", length=32, nullable=true)
+     * @ORM\Column(name="telefonoFijo", type="string", length=32, nullable=true)
      */
-    private $telefonofijo;
+    private $telefonoFijo;
 
     /**
      * @var string
@@ -237,26 +237,26 @@ class Alumno
     }
 
     /**
-     * Set añoIngreso
+     * Set anoIngreso
      *
-     * @param string $añoIngreso
+     * @param string $anoIngreso
      * @return Alumno
      */
-    public function setAñoIngreso($añoIngreso)
+    public function setAnoIngreso($anoIngreso)
     {
-        $this->añoIngreso = $añoIngreso;
+        $this->anoIngreso = $anoIngreso;
 
         return $this;
     }
 
     /**
-     * Get añoIngreso
+     * Get anoIngreso
      *
      * @return string 
      */
-    public function getAñoIngreso()
+    public function getAnoIngreso()
     {
-        return $this->añoIngreso;
+        return $this->anoIngreso;
     }
 
     /**
@@ -329,26 +329,26 @@ class Alumno
     }
 
     /**
-     * Set telefonofijo
+     * Set telefonoFijo
      *
-     * @param string $telefonofijo
+     * @param string $telefonoFijo
      * @return Alumno
      */
-    public function setTelefonofijo($telefonofijo)
+    public function setTelefonoFijo($telefonoFijo)
     {
-        $this->telefonofijo = $telefonofijo;
+        $this->telefonoFijo = $telefonoFijo;
 
         return $this;
     }
 
     /**
-     * Get telefonofijo
+     * Get telefonoFijo
      *
      * @return string 
      */
-    public function getTelefonofijo()
+    public function getTelefonoFijo()
     {
-        return $this->telefonofijo;
+        return $this->telefonoFijo;
     }
 
     /**
