@@ -7,7 +7,7 @@
         <tbody>
         <tr>
             <th>Expediente</th>
-            <td class="right-align">{{ alumno.expediente }}</td>
+            <td class="right-align"><span class="chip">{{ alumno.expediente }}</span></td>
         </tr>
         <tr>
             <th>Dni</th>
@@ -30,24 +30,24 @@
             <td class="right-align">{{ alumno.direccion }}</td>
         </tr>
         <tr>
-            <th>Codigopostal</th>
+            <th>Codigo Postal</th>
             <td class="right-align">{{ alumno.codigoPostal }}</td>
         </tr>
         <tr>
-            <th>Telefonofijo</th>
+            <th>Telefono Fijo</th>
             <td class="right-align">{% if alumno.telefonoFijo %}{{ alumno.telefonoFijo }}{% else %}---{% endif %}</td>
         </tr>
         <tr>
-            <th>Telefonomovil</th>
+            <th>Telefono Movil</th>
             <td class="right-align">{% if alumno.telefonoMovil%}{{ alumno.telefonoMovil}}{% else %}---{% endif %}</td>
         </tr>
         <tr>
             <th>Email</th>
-            <td class="right-align">{% if alumno.email %}{{ alumno.email }}{% else %}---{% endif %}</td>
+            <td class="right-align">{% if alumno.email %}<a href="mailto:{{ alumno.email }}">{{ alumno.email }}</a>{% else %}---{% endif %}</td>
         </tr>
         <tr>
-            <th>Fechanacimiento</th>
-            <td class="right-align">{% if alumno.fechaNacimiento %}{{ alumno.fechaNacimiento|date('Y-m-d H:i:s') }}{% endif %}</td>
+            <th>Fecha Nacimiento</th>
+            <td class="right-align">{% if alumno.fechaNacimiento %}{{ alumno.fechaNacimiento|date('d/m/Y') }}{% endif %}</td>
         </tr>
         <tr>
             <th>Observaciones</th>

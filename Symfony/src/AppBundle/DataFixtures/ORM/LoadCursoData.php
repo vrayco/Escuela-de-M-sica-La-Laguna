@@ -28,10 +28,17 @@ class LoadCursoData extends AbstractFixture implements OrderedFixtureInterface, 
     {
         $entity = new CursoAcademico();
         $entity->setNombre("2015-2016");
-        $entity->setFechaInicio(new \DateTime('2014-09-01'));
-        $entity->setFechaFin(new \DateTime('2014-06-30'));
+        $entity->setFechaInicio(new \DateTime('2015-09-01'));
+        $entity->setFechaFin(new \DateTime('2016-06-30'));
         $manager->persist($entity);
         $this->addReference('CURSO-ACADEMICO-1', $entity);
+
+        $entity = new CursoAcademico();
+        $entity->setNombre("2016-2017");
+        $entity->setFechaInicio(new \DateTime('2016-09-01'));
+        $entity->setFechaFin(new \DateTime('2017-06-30'));
+        $manager->persist($entity);
+        $this->addReference('CURSO-ACADEMICO-2', $entity);
 
         $disciplinas = $manager->getRepository('AppBundle:Disciplina')->findAll();
 

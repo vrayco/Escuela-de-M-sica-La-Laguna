@@ -1,0 +1,8 @@
+<li><a class="dropdown-curso" data-activates="dropdown1">{{ cursoAcademicoActual.nombre }}<i class="material-icons right">arrow_drop_down</i></a></li>
+
+<ul id="dropdown1" class="dropdown-content">
+    {% for cursoAcademico in cursosAcademicos %}
+        <li><a class="selector-curso-academico-item" data-url-set="{{ path('ui_curso_academico_set') }}?id-curso-academico={{ cursoAcademico.id }}" data-url-refresh="{{ path('homepage') }}">{{ cursoAcademico.nombre }}</a></li>
+    {% endfor %}
+</ul>
+

@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CursoAcademico
 {
+
+    const CURSO_ACADEMICO_SESSION_VAR = "CURSO_ACADEMICO_ACTUAL";
+
     /**
      * @var int
      *

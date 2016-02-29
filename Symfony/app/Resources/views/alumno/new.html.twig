@@ -67,7 +67,10 @@
 {% block javascripts %}
     <script>
         $( document ).ready(function() {
+            {% set fecha_max = '31-12-'~('now - 4year'|date('Y')) %}
             $('.datepicker').pickadate({
+                container: 'body',
+                max: "{{ fecha_max }}",
                 selectYears: 100,
                 monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                 monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
@@ -76,9 +79,9 @@
                 showMonthsShort: undefined,
                 showWeekdaysFull: undefined,
                 // Buttons
-                today: 'Hoy',
-                clear: 'Limpiar',
-                close: 'Cerrar',
+                today: false,
+                clear: false,
+                close: 'Ok',
                 // Accessibility labels
                 labelMonthNext: 'Siguiente mes',
                 labelMonthPrev: 'Mes anterior',

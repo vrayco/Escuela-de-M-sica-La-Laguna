@@ -22,14 +22,27 @@ class AlumnoController extends Controller
      * @Route("/", name="alumno_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $alumnos = $em->getRepository('AppBundle:Alumno')->findAll();
+        $filter['expediente'] = $request->query->get('expediente');
+        $filter['dni'] = $request->query->get('dni');
+        $filter['nombre'] = $request->query->get('nombre');
+        $filter['apellidos'] = $request->query->get('apellidos');
+        $filter['fecha_nacimiento'] = $this->get('utils.fechas')->getDateTimeToStr($request->query->get('fecha_nacimiento'));
+
+        $alumnos = $em->getRepository('AppBundle:Alumno')->getAlumnos($filter);
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $alumnos, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            50/*limit per page*/
+        );
 
         return $this->render('alumno/index.html.twig', array(
-            'alumnos' => $alumnos,
+            'alumnos' => $pagination,
         ));
     }
 
@@ -92,7 +105,7 @@ class AlumnoController extends Controller
             $em->persist($alumno);
             $em->flush();
 
-            return $this->redirectToRoute('alumno_edit', array('id' => $alumno->getId()));
+            return $this->redirectToRoute('alumno_show', array('id' => $alumno->getId()));
         }
 
         return $this->render('alumno/edit.html.twig', array(

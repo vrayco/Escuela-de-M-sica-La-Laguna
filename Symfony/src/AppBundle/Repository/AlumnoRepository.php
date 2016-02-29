@@ -12,4 +12,44 @@ use Doctrine\ORM\EntityRepository;
  */
 class AlumnoRepository extends EntityRepository
 {
+    public function getAlumnos($filter)
+    {
+        $expediente = $filter['expediente'];
+        $dni = $filter['dni'];
+        $nombre = $filter['nombre'];
+        $apellidos = $filter['apellidos'];
+        $fechaNacimiento = $filter['fecha_nacimiento'];
+        
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder();
+        $query = $qb->select('a')
+            ->from('AppBundle:Alumno', 'a');
+        if($expediente)
+            $query->andWhere(
+                $qb->expr()->like('a.expediente', ':expediente')
+            )
+                ->setParameter('expediente','%'.$expediente.'%');
+        if($dni)
+            $query->andWhere(
+                $qb->expr()->like('a.dni', ':dni')
+            )
+                ->setParameter('dni','%'.$dni.'%');
+        if($nombre)
+            $query->andWhere(
+                $qb->expr()->like('a.nombre', ':nombre')
+            )
+                ->setParameter('nombre','%'.$nombre.'%');
+        if($apellidos)
+            $query->andWhere(
+                $qb->expr()->like('a.apellidos', ':apellidos')
+            )
+                ->setParameter('apellidos','%'.$apellidos.'%');
+        if($fechaNacimiento)
+            $query->andWhere('a.fechaNacimiento = :fechaNacimiento')
+                ->setParameter('fechaNacimiento', $fechaNacimiento);
+
+        $query->orderBy('a.apellidos','ASC');
+        
+        return $query->getQuery()->getResult();
+    }
 }
