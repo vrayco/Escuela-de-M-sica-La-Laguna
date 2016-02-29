@@ -43,6 +43,7 @@ class AlumnoController extends Controller
 
         return $this->render('alumno/index.html.twig', array(
             'alumnos' => $pagination,
+            'filter'  => $filter,
         ));
     }
 
