@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} - Cursos Academicos{% endblock %}
 
 {% block content %}
-    <table class="highlight">
+    <table class="highlight bordered">
         <thead>
             <tr>
                 <th>Nombre</th>
@@ -22,7 +22,7 @@
                 <td>{% if cursoAcademico.fechaFin %}{{ cursoAcademico.fechaFin|date('d/m/Y') }}{% endif %}</td>
                 <td>{% if cursoAcademico.enCurso %}<span class="chip purple lighten-4 white-text"><i class="material-icons">grade</i>EN CURSO</span>{% endif %}</td>
                 <td>{{ cursoAcademico.prefijoExpediente }}</td>
-                <td class="hide-on-small-only">
+                <td class="hide-on-small-only  right-align">
                     <a href="{{ path('cursoacademico_show', { 'id': cursoAcademico.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
                     <a href="{{ path('cursoacademico_edit', { 'id': cursoAcademico.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>
                 </td>

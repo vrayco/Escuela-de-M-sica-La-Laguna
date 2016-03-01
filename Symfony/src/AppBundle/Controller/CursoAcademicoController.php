@@ -174,6 +174,11 @@ class CursoAcademicoController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($cursoAcademico);
             $em->flush();
+
+            $this->addFlash(
+                'success',
+                'Se ha eliminado el curso académico'
+            );
         }
 
         return $this->redirectToRoute('cursoacademico_index');

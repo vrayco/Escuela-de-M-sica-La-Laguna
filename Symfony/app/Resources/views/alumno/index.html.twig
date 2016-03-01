@@ -21,7 +21,7 @@
                 <td class="hide-on-small-only">{% if alumno.dni|length > 0 %}{{ alumno.dni }}{% else %}---{% endif %}</td>
                 <td class="">{{ alumno.apellidos }}, {{ alumno.nombre }}</td>
                 <td class="hide-on-small-only">{% if alumno.fechaNacimiento %}{{ alumno.fechaNacimiento|date('d/m/Y') }}{% endif %}</td>
-                <td class="hide-on-small-only">
+                <td class="hide-on-small-only right-align">
                     <a href="{{ path('alumno_show', { 'id': alumno.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
                     <a href="{{ path('alumno_edit', { 'id': alumno.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>
                 </td>

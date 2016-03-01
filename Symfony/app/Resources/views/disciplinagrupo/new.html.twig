@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Cursos Academicos{% endblock %}
+
+{% form_theme form 'form/fields.html.twig' %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <div class="row">
+        <div class="input-field col s12">
+            {{ form_widget(form.nombre) }}
+            {{ form_label(form.nombre) }}
+        </div>
+
+    </div>
+    {{ form_rest(form) }}
+    <div class="col s12 center-align">
+        <div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
+            <button class="btn-floating btn-large waves-effect waves-light" type="submit" name="action">
+                <i class="large material-icons">done</i>
+            </button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $( document ).ready(function() {
+
+            $( "input" ).change(function() {
+                $(this).removeClass('invalid');
+            });
+
+        });
+    </script>
+
+{% endblock %}

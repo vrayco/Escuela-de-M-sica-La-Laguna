@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * DisciplinaGrupo
  *
  * @ORM\Table(name="disciplina_grupo")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DisciplinaGrupoRepository")
+ * @UniqueEntity({"nombre"})
  */
 class DisciplinaGrupo
 {
@@ -25,6 +28,7 @@ class DisciplinaGrupo
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="")
      */
     private $nombre;
 

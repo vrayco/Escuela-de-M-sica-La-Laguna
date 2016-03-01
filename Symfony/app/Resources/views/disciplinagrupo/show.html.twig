@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Grupos disciplinas{% endblock %}
+
+{% block content %}
+    <table class="highlight bordered">
+        <tbody>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ disciplinaGrupo.nombre }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large waves-effect waves-light purple">
+            <i class="large material-icons">menu</i>
+        </a>
+        <ul>
+            <li><a href="{{ path('disciplinagrupo_index') }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">view_list</i></a></li>
+            <li><a href="{{ path('disciplinagrupo_edit', { 'id': disciplinaGrupo.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a></li>
+            <li><a href="#modal1" class="btn-floating btn waves-effect waves-light red modal-trigger"><i class="material-icons">delete</i></a></li>
+        </ul>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h5>¿Estás seguro de eliminar el grupo disciplina: <span class="chip">{{ disciplinaGrupo.nombre }}</span>?</h5>
+            <p>La acción es irreversible. Se eliminará todo la información relacionada con el grupo disciplina (disciplinas, cursos, matriculas, preinscripciones, ...)</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn grey">No, cancelar</a>
+            {{ form_start(delete_form) }}
+            <button class="modal-action modal-close waves-effect waves-green btn red" type="submit" name="action">Eliminar
+                <i class="material-icons right">delete</i>
+            </button>
+            {{ form_end(delete_form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+            $('.modal-trigger').leanModal();
+        });
+    </script>
+{% endblock %}
+
