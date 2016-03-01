@@ -14,12 +14,9 @@
 
 <body>
 
-{#<ul id="dropdown1" class="dropdown-content">#}
-{#<li><a href="#!">one</a></li>#}
-{#<li><a href="#!">two</a></li>#}
-{#<li class="divider"></li>#}
-{#<li><a href="#!">three</a></li>#}
-{#</ul>#}
+<ul id="dropdown-configuracion" class="dropdown-content">
+    <li><a href="{{ path('cursoacademico_index') }}">Cursos Académicos</a></li>
+</ul>
 
 <ul id="dropdown-perfil" class="dropdown-content">
     <li><a href="{{ path('fos_user_change_password') }}">Cambiar contraseña</a></li>
@@ -28,6 +25,7 @@
 </ul>
 
 {% set route_alumnos = ['alumno_index','alumno_new','alumno_show','alumno_edit'] %}
+{% set route_configuracion = ['cursoacademico_index','cursoacademico_new','cursoacademico_show','cursoacademico_edit'] %}
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper purple darken-2">
@@ -37,10 +35,9 @@
                 <li><a href="#">Preinscripcion</a></li>
                 <li><a href="#">Matriculas</a></li>
                 <li><a href="#">Cursos</a></li>
-                {#<li><a class="dropdown-curso" href="#!" data-activates="dropdown1">2015/2016<i class="material-icons right">arrow_drop_down</i></a></li>#}
                 {{ render(controller('AppBundle:UI:getSelectorCursoAcademico')) }}
                 <li class="{% if app.request.get('_route') in route_alumnos %}active{% endif %}"><a href="{{ path('alumno_index') }}">Alumnos</a></li>
-                <li><a href="#"><i class="material-icons">settings</i></a></li>
+                <li class="{% if app.request.get('_route') in route_configuracion %}active{% endif %}"><a class="dropdown-configuracion" href="#!" data-activates="dropdown-configuracion"><i class="material-icons">settings</i></a></li>
                 <li><a class="dropdown-perfil" href="#!" data-activates="dropdown-perfil"><i class="material-icons">perm_identity</i></a></li>
             </ul>
             <ul class="side-nav" id="mobile-demo">
@@ -86,7 +83,9 @@
         );
 
         $(".dropdown-curso").dropdown({});
-
+        $(".dropdown-configuracion").dropdown({
+            constrain_width: false,
+        });
         $(".dropdown-perfil").dropdown({
             constrain_width: false,
         });

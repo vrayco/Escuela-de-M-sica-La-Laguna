@@ -13,6 +13,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    validator.cursoacademico.periodo:
+        class: AppBundle\Validator\Constraints\CursoAcademicoPeriodoValidator
+        arguments: []
+        tags:
+            - { name: validator.constraint_validator, alias: cursoacademico.periodo.validator }
+
     utils.fechas:
         class: AppBundle\Utils\FechasService
         arguments: []

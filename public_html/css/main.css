@@ -12974,6 +12974,7 @@ html, body {
 
 /* line 79, ../sass/main.scss */
 #dropdown_curso_academico,
+#dropdown-configuracion,
 #dropdown-perfil {
   top: 64px !important;
 }

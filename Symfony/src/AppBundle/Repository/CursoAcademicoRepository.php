@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\CursoAcademico;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -21,5 +22,20 @@ class CursoAcademicoRepository extends EntityRepository
             ->where('c.enCurso = TRUE')
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function clearEnCurso(CursoAcademico $cursoAcademico)
+    {
+        $em = $this->getEntityManager();
+        $cursosAcademicos = $em->getRepository('AppBundle:CursoAcademico')->findAll();
+
+        foreach ($cursosAcademicos as $c) {
+            if ($c != $cursoAcademico) {
+                $c->setEnCurso(false);
+                $em->persist($c);
+            }
+        }
+
+        $em->flush();
     }
 }

@@ -3,12 +3,18 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AppBundleAssert;
 
 /**
  * CursoAcademico
  *
  * @ORM\Table(name="curso_academico")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CursoAcademicoRepository")
+ * @UniqueEntity({"nombre"})
+ * @UniqueEntity({"prefijoExpediente"})
+ * @AppBundleAssert\CursoAcademicoPeriodo
  */
 class CursoAcademico
 {
@@ -28,25 +34,35 @@ class CursoAcademico
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="")
      */
     private $nombre;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechaInicio", type="datetime")
+     * @ORM\Column(name="fechaInicio", type="date")
+     * @Assert\NotBlank(message="")
      */
     private $fechaInicio;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechaFin", type="datetime")
+     * @ORM\Column(name="fechaFin", type="date")
+     * @Assert\NotBlank(message="")
      */
     private $fechaFin;
 
     /**
      * @ORM\Column(name="prefijo_expediente", type="string", length=2, unique=true)
+     * @Assert\NotBlank(message="")
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 2,
+     *      minMessage = "El prefijo debe tener al menos un caracter",
+     *      maxMessage = "El prefijo no debe tener más de dos caracteres"
+     * )
      */
     private $prefijoExpediente;
 
