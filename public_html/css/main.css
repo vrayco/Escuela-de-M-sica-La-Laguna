@@ -12928,3 +12928,52 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
     margin-bottom: 5em;
   }
 }
+/* line 44, ../sass/main.scss */
+html, body {
+  color: #666666;
+}
+
+@media only screen and (min-width: 601px) and (max-width: 1260px) {
+  /* line 49, ../sass/main.scss */
+  .toast {
+    width: 100%;
+    border-radius: 0;
+  }
+}
+@media only screen and (min-width: 1261px) {
+  /* line 54, ../sass/main.scss */
+  .toast {
+    width: 100%;
+    border-radius: 0;
+  }
+}
+@media only screen and (min-width: 601px) and (max-width: 1260px) {
+  /* line 59, ../sass/main.scss */
+  #toast-container {
+    min-width: 100%;
+    bottom: 0%;
+    top: 90%;
+    right: 0%;
+    left: 0%;
+  }
+}
+@media only screen and (min-width: 1261px) {
+  /* line 67, ../sass/main.scss */
+  #toast-container {
+    min-width: 100%;
+    bottom: 0%;
+    top: 90%;
+    right: 0%;
+    left: 0%;
+  }
+}
+/* line 75, ../sass/main.scss */
+.input-field label {
+  width: 100%;
+}
+
+/* line 79, ../sass/main.scss */
+#dropdown_curso_academico,
+#dropdown-perfil {
+  top: 64px !important;
+}
