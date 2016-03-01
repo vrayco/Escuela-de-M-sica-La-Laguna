@@ -5,6 +5,8 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AlumnoType extends AbstractType
@@ -34,6 +36,15 @@ class AlumnoType extends AbstractType
                 'required'=>false,
                 'attr'  => array('class' => 'materialize-textarea')
             ))
+            ->add('tutor', new TutorType(), array(
+                'required'  => false
+            ))
+            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+                // Relaciono el tutor con el alumno
+                $alumno = $event->getForm()->getData();
+                if($alumno->getTutor())
+                    $alumno->getTutor()->setAlumno($alumno);
+            })
         ;
     }
     

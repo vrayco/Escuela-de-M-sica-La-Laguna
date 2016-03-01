@@ -31,7 +31,7 @@ class LoadAlumnosData extends AbstractFixture implements OrderedFixtureInterface
         for($i=0; $i<self::NUM_ENTITIES; $i++)
         {
             $entity = new Alumno();
-            $entity->setExpediente("A".rand(0,99999));
+            $this->container->get('utils.expediente')->setExpediente($entity);
             $entity->setNombre("Alumno".$i);
             $entity->setApellidos("Apellido1 Apellido2");
             $entity->setDni(rand(40000000,79999999));
@@ -54,9 +54,10 @@ class LoadAlumnosData extends AbstractFixture implements OrderedFixtureInterface
             }
 
             $manager->persist($entity);
+            $manager->flush();
         }
 
-        $manager->flush();
+
     }
 
     /**
@@ -66,6 +67,6 @@ class LoadAlumnosData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 1;
+        return 3;
     }
 }

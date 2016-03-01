@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Alumno
  *
  * @ORM\Table(name="alumno")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AlumnoRepository")
+ * @UniqueEntity({"dni"})
  */
 class Alumno
 {
@@ -22,16 +25,21 @@ class Alumno
     private $id;
 
     /**
+     * @ORM\Column(name="expediente_letra", type="string", length=2)
+     */
+    private $expedienteLetra;
+    /**
      * @var string
      *
-     * @ORM\Column(name="expediente", type="string", length=16, unique=true)
+     * @ORM\Column(name="expediente_numero", type="integer")
      */
-    private $expediente;
+    private $expedienteNumero;
 
     /**
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255)
+     * @Assert\NotBlank(message="")
      */
     private $nombre;
 
@@ -39,6 +47,7 @@ class Alumno
      * @var string
      *
      * @ORM\Column(name="apellidos", type="string", length=255)
+     * @Assert\NotBlank(message="")
      */
     private $apellidos;
 
@@ -60,6 +69,7 @@ class Alumno
      * @var string
      *
      * @ORM\Column(name="localidad", type="string", length=255)
+     * @Assert\NotBlank(message="")
      */
     private $localidad;
 
@@ -67,6 +77,7 @@ class Alumno
      * @var string
      *
      * @ORM\Column(name="direccion", type="string", length=255)
+     * @Assert\NotBlank(message="")
      */
     private $direccion;
 
@@ -74,6 +85,7 @@ class Alumno
      * @var string
      *
      * @ORM\Column(name="codigoPostal", type="string", length=16)
+     * @Assert\NotBlank(message="")
      */
     private $codigoPostal;
 
@@ -95,6 +107,7 @@ class Alumno
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @Assert\Email()
      */
     private $email;
 
@@ -102,6 +115,7 @@ class Alumno
      * @var \DateTime
      *
      * @ORM\Column(name="fechaNacimiento", type="date")
+     * @Assert\NotBlank(message="")
      */
     private $fechaNacimiento;
 
@@ -145,26 +159,13 @@ class Alumno
     }
 
     /**
-     * Set expediente
-     *
-     * @param string $expediente
-     * @return Alumno
-     */
-    public function setExpediente($expediente)
-    {
-        $this->expediente = $expediente;
-
-        return $this;
-    }
-
-    /**
      * Get expediente
      *
      * @return string 
      */
     public function getExpediente()
     {
-        return $this->expediente;
+        return $this->expedienteLetra . '-' .sprintf('%04d', $this->expedienteNumero);
     }
 
     /**
@@ -520,5 +521,51 @@ class Alumno
     public function getMatriculas()
     {
         return $this->matriculas;
+    }
+
+    /**
+     * Set expedienteLetra
+     *
+     * @param string $expedienteLetra
+     * @return Alumno
+     */
+    public function setExpedienteLetra($expedienteLetra)
+    {
+        $this->expedienteLetra = $expedienteLetra;
+
+        return $this;
+    }
+
+    /**
+     * Get expedienteLetra
+     *
+     * @return string 
+     */
+    public function getExpedienteLetra()
+    {
+        return $this->expedienteLetra;
+    }
+
+    /**
+     * Set expedienteNumero
+     *
+     * @param integer $expedienteNumero
+     * @return Alumno
+     */
+    public function setExpedienteNumero($expedienteNumero)
+    {
+        $this->expedienteNumero = $expedienteNumero;
+
+        return $this;
+    }
+
+    /**
+     * Get expedienteNumero
+     *
+     * @return integer 
+     */
+    public function getExpedienteNumero()
+    {
+        return $this->expedienteNumero;
     }
 }

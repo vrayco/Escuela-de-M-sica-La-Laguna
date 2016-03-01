@@ -46,9 +46,25 @@ class CursoAcademico
     private $fechaFin;
 
     /**
+     * @ORM\Column(name="prefijo_expediente", type="string", length=2, unique=true)
+     */
+    private $prefijoExpediente;
+
+    /**
+     * @ORM\Column(name="en_curso", type="boolean")
+     */
+    private $enCurso;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Curso", mappedBy="cursoAcademico", cascade={"persist","remove"})
      */
     private $cursos;
+
+    public function __construct()
+    {
+        $this->cursos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->enCurso = false;
+    }
 
     /**
      * Get id
@@ -128,13 +144,6 @@ class CursoAcademico
     {
         return $this->fechaFin;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->cursos = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add cursos
@@ -167,5 +176,51 @@ class CursoAcademico
     public function getCursos()
     {
         return $this->cursos;
+    }
+
+    /**
+     * Set prefijoExpediente
+     *
+     * @param string $prefijoExpediente
+     * @return CursoAcademico
+     */
+    public function setPrefijoExpediente($prefijoExpediente)
+    {
+        $this->prefijoExpediente = $prefijoExpediente;
+
+        return $this;
+    }
+
+    /**
+     * Get prefijoExpediente
+     *
+     * @return string 
+     */
+    public function getPrefijoExpediente()
+    {
+        return $this->prefijoExpediente;
+    }
+
+    /**
+     * Set enCurso
+     *
+     * @param boolean $enCurso
+     * @return CursoAcademico
+     */
+    public function setEnCurso($enCurso)
+    {
+        $this->enCurso = $enCurso;
+
+        return $this;
+    }
+
+    /**
+     * Get enCurso
+     *
+     * @return boolean 
+     */
+    public function getEnCurso()
+    {
+        return $this->enCurso;
     }
 }

@@ -12,4 +12,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class CursoAcademicoRepository extends EntityRepository
 {
+    public function getCursoEnCurso()
+    {
+        return $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('c')
+            ->from('AppBundle:CursoAcademico', 'c')
+            ->where('c.enCurso = TRUE')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

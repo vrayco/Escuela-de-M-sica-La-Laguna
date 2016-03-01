@@ -21,7 +21,7 @@
 {#<li><a href="#!">three</a></li>#}
 {#</ul>#}
 
-<ul id="dropdown2" class="dropdown-content">
+<ul id="dropdown-perfil" class="dropdown-content">
     <li><a href="{{ path('fos_user_change_password') }}">Cambiar contraseña</a></li>
     <li class="divider"></li>
     <li><a href="{{ path('fos_user_security_logout') }}">Cerrar sesión</a></li>
@@ -41,7 +41,7 @@
                 {{ render(controller('AppBundle:UI:getSelectorCursoAcademico')) }}
                 <li class="{% if app.request.get('_route') in route_alumnos %}active{% endif %}"><a href="{{ path('alumno_index') }}">Alumnos</a></li>
                 <li><a href="#"><i class="material-icons">settings</i></a></li>
-                <li><a class="dropdown-perfil" href="#!" data-activates="dropdown2"><i class="material-icons">perm_identity</i></a></li>
+                <li><a class="dropdown-perfil" href="#!" data-activates="dropdown-perfil"><i class="material-icons">perm_identity</i></a></li>
             </ul>
             <ul class="side-nav" id="mobile-demo">
                 <li class="{% if app.request.get('_route') in route_alumnos %}active{% endif %}"><a href="{{ path('alumno_index') }}">Alumnos</a></li>
@@ -85,15 +85,16 @@
                 }
         );
 
-        $(".dropdown-curso").dropdown();
+        $(".dropdown-curso").dropdown({});
+
         $(".dropdown-perfil").dropdown({
             constrain_width: false,
         });
 
         {% for label, flashes in app.session.flashbag.all %}
-        {% for flash in flashes %}
-        Materialize.toast("{{ flash }}",4000, "{{ label }}");
-        {% endfor %}
+            {% for flash in flashes %}
+                Materialize.toast("{{ flash }}",4000, "{{ label }}");
+            {% endfor %}
         {% endfor %}
 
     })

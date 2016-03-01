@@ -30,6 +30,8 @@ class LoadCursoData extends AbstractFixture implements OrderedFixtureInterface, 
         $entity->setNombre("2015-2016");
         $entity->setFechaInicio(new \DateTime('2015-09-01'));
         $entity->setFechaFin(new \DateTime('2016-06-30'));
+        $entity->setPrefijoExpediente('A');
+        $entity->setEnCurso(true);
         $manager->persist($entity);
         $this->addReference('CURSO-ACADEMICO-1', $entity);
 
@@ -37,6 +39,7 @@ class LoadCursoData extends AbstractFixture implements OrderedFixtureInterface, 
         $entity->setNombre("2016-2017");
         $entity->setFechaInicio(new \DateTime('2016-09-01'));
         $entity->setFechaFin(new \DateTime('2017-06-30'));
+        $entity->setPrefijoExpediente('B');
         $manager->persist($entity);
         $this->addReference('CURSO-ACADEMICO-2', $entity);
 
@@ -60,6 +63,6 @@ class LoadCursoData extends AbstractFixture implements OrderedFixtureInterface, 
      */
     public function getOrder()
     {
-        return 3;
+        return 2;
     }
 }

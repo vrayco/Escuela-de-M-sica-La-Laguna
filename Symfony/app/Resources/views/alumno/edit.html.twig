@@ -3,56 +3,84 @@
 {% form_theme edit_form 'form/fields.html.twig' %}
 
 {% block content %}
-    {{ form_start(edit_form) }}
-    <div class="input-field col s12 m5">
-        {{ form_label(edit_form.nombre) }}
-        {{ form_widget(edit_form.nombre) }}
-    </div>
-    <div class="input-field col s12 m7">
-        {{ form_label(edit_form.apellidos) }}
-        {{ form_widget(edit_form.apellidos) }}
-    </div>
-    <div class="input-field col s12 m2">
-        {{ form_label(edit_form.fechaNacimiento) }}
-        {{ form_widget(edit_form.fechaNacimiento, {'attr': {'class': 'datepicker'}}) }}
-    </div>
-    <div class="input-field col s12 m2">
-        {{ form_label(edit_form.dni) }}
-        {{ form_widget(edit_form.dni) }}
-    </div>
-    <div class="input-field col s12 m6">
-        {{ form_label(edit_form.direccion) }}
-        {{ form_widget(edit_form.direccion) }}
-    </div>
-    <div class="input-field col s12 m2">
-        {{ form_label(edit_form.anoIngreso) }}
-        {{ form_widget(edit_form.anoIngreso) }}
+    {{ form_start(edit_form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <h5>Datos del alumno</h5>
+    <div class="row">
+        <div class="input-field col s12 m5">
+            {{ form_widget(edit_form.nombre) }}
+            {{ form_label(edit_form.nombre)  }}
+        </div>
+        <div class="input-field col s12 m7">
+            {{ form_widget(edit_form.apellidos) }}
+            {{ form_label(edit_form.apellidos) }}
+        </div>
     </div>
 
-    <div class="input-field col s12 m3">
-        {{ form_label(edit_form.codigoPostal) }}
-        {{ form_widget(edit_form.codigoPostal) }}
+    <div class="row">
+        <div class="input-field col s12 m2">
+            {{ form_widget(edit_form.fechaNacimiento) }}
+            {{ form_label(edit_form.fechaNacimiento) }}
+        </div>
+        <div class="input-field col s12 m2">
+            {{ form_widget(edit_form.dni) }}
+            {{ form_label(edit_form.dni) }}
+        </div>
+        <div class="input-field col s12 m6">
+            {{ form_widget(edit_form.direccion) }}
+            {{ form_label(edit_form.direccion) }}
+        </div>
+        <div class="input-field col s12 m2">
+            {{ form_widget(edit_form.anoIngreso) }}
+            {{ form_label(edit_form.anoIngreso) }}
+        </div>
     </div>
-    <div class="input-field col s12 m9">
-        {{ form_label(edit_form.localidad) }}
-        {{ form_widget(edit_form.localidad) }}
+    <div class="row">
+        <div class="input-field col s12 m3">
+            {{ form_widget(edit_form.codigoPostal) }}
+            {{ form_label(edit_form.codigoPostal) }}
+        </div>
+        <div class="input-field col s12 m9">
+            {{ form_widget(edit_form.localidad) }}
+            {{ form_label(edit_form.localidad) }}
+        </div>
     </div>
-    <div class="input-field col s12 m3">
-        {{ form_label(edit_form.telefonoFijo) }}
-        {{ form_widget(edit_form.telefonoFijo) }}
+    <div class="row">
+        <div class="input-field col s12 m3">
+            {{ form_label(edit_form.telefonoFijo) }}
+            {{ form_widget(edit_form.telefonoFijo) }}
+        </div>
+        <div class="input-field col s12 m3">
+            {{ form_label(edit_form.telefonoMovil) }}
+            {{ form_widget(edit_form.telefonoMovil) }}
+        </div>
+        <div class="input-field col s12 m6">
+            {{ form_widget(edit_form.email) }}
+            {{ form_label(edit_form.email) }}
+        </div>
     </div>
-    <div class="input-field col s12 m3">
-        {{ form_label(edit_form.telefonoMovil) }}
-        {{ form_widget(edit_form.telefonoMovil) }}
+    <div class="row">
+        <div class="input-field col s12 m12">
+            {{ form_label(edit_form.observaciones) }}
+            {{ form_widget(edit_form.observaciones) }}
+        </div>
     </div>
-    <div class="input-field col s12 m6">
-        {{ form_label(edit_form.email) }}
-        {{ form_widget(edit_form.email) }}
+
+    <h5>Datos del padre/madre/tutor</h5>
+    <div class="row">
+        <div class="input-field col s12 m12">
+            {{ form_label(edit_form.tutor.dni) }}
+            {{ form_widget(edit_form.tutor.dni) }}
+        </div>
+        <div class="input-field col s12 m12">
+            {{ form_label(edit_form.tutor.nombre) }}
+            {{ form_widget(edit_form.tutor.nombre) }}
+        </div>
+        <div class="input-field col s12 m12">
+            {{ form_label(edit_form.tutor.apellidos) }}
+            {{ form_widget(edit_form.tutor.apellidos) }}
+        </div>
     </div>
-    <div class="input-field col s12 m12">
-        {{ form_label(edit_form.observaciones) }}
-        {{ form_widget(edit_form.observaciones) }}
-    </div>
+
     {{ form_rest(edit_form) }}
     <div class="col s12 center-align">
         <div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
@@ -89,6 +117,10 @@
                 format: 'dd/mm/yyyy',
                 closeOnSelect: true,
             });
+        });
+
+        $( "input" ).change(function() {
+            $(this).removeClass('invalid');
         });
     </script>
 {% endblock %}

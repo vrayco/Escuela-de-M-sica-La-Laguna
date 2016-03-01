@@ -16,3 +16,7 @@ services:
     utils.fechas:
         class: AppBundle\Utils\FechasService
         arguments: []
+
+    utils.expediente:
+        class: AppBundle\Utils\ExpedienteService
+        arguments: [@doctrine.orm.default_entity_manager]

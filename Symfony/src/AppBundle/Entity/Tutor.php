@@ -44,7 +44,7 @@ class Tutor
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Alumno", inversedBy="tutor")
-     * @ORM\JoinColumn(name="alumno_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="alumno_id", referencedColumnName="id", nullable=false)
      */
     private $alumno;
 

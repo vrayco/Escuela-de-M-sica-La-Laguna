@@ -60,9 +60,17 @@ class AlumnoController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $alumno = $this->get('utils.expediente')->setExpediente($alumno);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($alumno);
             $em->flush();
+
+            $this->addFlash(
+                'success',
+                'El alumno se ha creado correctamente'
+            );
 
             return $this->redirectToRoute('alumno_show', array('id' => $alumno->getId()));
         }
@@ -106,6 +114,11 @@ class AlumnoController extends Controller
             $em->persist($alumno);
             $em->flush();
 
+            $this->addFlash(
+                'success',
+                'El alumno se ha actualizado correctamente'
+            );
+
             return $this->redirectToRoute('alumno_show', array('id' => $alumno->getId()));
         }
 
@@ -131,6 +144,11 @@ class AlumnoController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($alumno);
             $em->flush();
+
+            $this->addFlash(
+                'success',
+                'El alumno se ha eliminado'
+            );
         }
 
         return $this->redirectToRoute('alumno_index');

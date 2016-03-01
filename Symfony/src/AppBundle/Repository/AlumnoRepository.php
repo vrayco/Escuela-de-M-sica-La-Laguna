@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\CursoAcademico;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -51,5 +52,22 @@ class AlumnoRepository extends EntityRepository
         $query->orderBy('a.apellidos','ASC');
         
         return $query->getQuery()->getResult();
+    }
+
+    public function getNumeroUltimoExpediente(CursoAcademico $cursoAcademico)
+    {
+        $result = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('MAX(a.expedienteNumero) as numeroMaximo')
+            ->from('AppBundle:Alumno', 'a')
+            ->where('a.expedienteLetra = :prefijoExpediente')
+            ->setParameter('prefijoExpediente', $cursoAcademico->getPrefijoExpediente())
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if($result['numeroMaximo'] == null)
+            return 0;
+        else
+            return $result['numeroMaximo'];
     }
 }

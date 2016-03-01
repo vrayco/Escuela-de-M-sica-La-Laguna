@@ -18,9 +18,39 @@
                 {% set label = name|humanize %}
             {%- endif -%}
         {%- endif -%}
+
         {% if value|length > 0 %}
             {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' active')|trim}) %}
         {% endif %}
+
+        {% if form.vars.errors|length > 0 %}
+            {% set label_attr = label_attr|merge({'data-error': form.vars.errors[0].message}) %}
+        {% endif %}
+
+        {#{% if attribute(label_attr,"data-error") is defined and attribute(label_attr,"data-error")|length > 0 %}#}
+            {#{% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' active')|trim}) %}#}
+        {#{% endif %}#}
+
         <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}</label>
     {%- endif -%}
 {%- endblock form_label -%}
+
+{%- block widget_attributes -%}
+
+    {% if form.vars.errors|length > 0 %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' invalid')|trim}) %}
+    {% endif %}
+    id="{{ id }}" name="{{ full_name }}"
+    {%- if disabled %} disabled="disabled"{% endif -%}
+    {%- if required %} required="required"{% endif -%}
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {%- if attrname in ['placeholder', 'title'] -%}
+            {{- attrname }}="{{ translation_domain is same as(false) ? attrvalue : attrvalue|trans({}, translation_domain) }}"
+        {%- elseif attrvalue is same as(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not same as(false) -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock widget_attributes -%}
