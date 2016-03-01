@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Cursos Academicos{% endblock %}
+
+{% block content %}
+    <table class="highlight">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha inicio</th>
+                <th>Fecha fin</th>
+                <th>Estado</th>
+                <th>Prefijo expedientes</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cursoAcademico in cursoAcademicos %}
+            <tr onclick="document.location = '{{ path('cursoacademico_show', { 'id': cursoAcademico.id }) }}';">
+                <td><span class="chip">{{ cursoAcademico.nombre }}</td>
+                <td>{% if cursoAcademico.fechaInicio %}{{ cursoAcademico.fechaInicio|date('d/m/Y') }}{% endif %}</td>
+                <td>{% if cursoAcademico.fechaFin %}{{ cursoAcademico.fechaFin|date('d/m/Y') }}{% endif %}</td>
+                <td>{% if cursoAcademico.enCurso %}<span class="chip purple lighten-4 white-text"><i class="material-icons">grade</i>EN CURSO</span>{% endif %}</td>
+                <td>{{ cursoAcademico.prefijoExpediente }}</td>
+                <td class="hide-on-small-only">
+                    <a href="{{ path('cursoacademico_show', { 'id': cursoAcademico.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
+                    <a href="{{ path('cursoacademico_edit', { 'id': cursoAcademico.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large waves-effect waves-light purple">
+            <i class="large material-icons">menu</i>
+        </a>
+        <ul>
+            <li><a href="{{ path('cursoacademico_new') }}" class="btn-floating waves-effect waves-light green"><i class="material-icons">add</i></a></li>
+        </ul>
+    </div>
+
+{% endblock %}

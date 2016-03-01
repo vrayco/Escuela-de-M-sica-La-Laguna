@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Cursos Academicos{% endblock %}
+
+{% form_theme form 'form/fields.html.twig' %}
+{% block content %}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <div class="row">
+        <div class="input-field col s8">
+            {{ form_widget(form.nombre, {'attr' : { 'placeholder' : '2016-2017'}}) }}
+            {{ form_label(form.nombre) }}
+        </div>
+        <div class="input-field col s4">
+            {{ form_widget(form.prefijoExpediente) }}
+            {{ form_label(form.prefijoExpediente)  }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s4">
+            {{ form_widget(form.fechaInicio, { 'attr' : { 'class' : 'datepicker' } }) }}
+            {{ form_label(form.fechaInicio) }}
+        </div>
+        <div class="input-field col s4">
+            {{ form_widget(form.fechaFin, { 'attr' : { 'class' : 'datepicker' } }) }}
+            {{ form_label(form.fechaFin) }}
+        </div>
+        <div class="col s4">
+            {{ form_widget(form.enCurso) }}
+            {{ form_label(form.enCurso) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}
+    <div class="col s12 center-align">
+        <div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
+            <button class="btn-floating btn-large waves-effect waves-light" type="submit" name="action">
+                <i class="large material-icons">done</i>
+            </button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+            $('.datepicker').pickadate({
+                container: 'body',
+                selectYears: 10,
+                monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                showMonthsShort: undefined,
+                showWeekdaysFull: undefined,
+                // Buttons
+                today: 'HOY',
+                clear: 'LIMPIAR',
+                close: 'Ok',
+                // Accessibility labels
+                labelMonthNext: 'Siguiente mes',
+                labelMonthPrev: 'Mes anterior',
+                labelMonthSelect: 'Escoge un mes',
+                labelYearSelect: 'Escoge un año',
+
+                //The format to show on the `input` element
+                format: 'dd/mm/yyyy',
+                closeOnSelect: true,
+            });
+        });
+
+        $( "input" ).change(function() {
+            $(this).removeClass('invalid');
+        });
+
+    </script>
+{% endblock %}
