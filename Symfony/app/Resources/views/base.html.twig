@@ -17,6 +17,7 @@
 <ul id="dropdown-configuracion" class="dropdown-content">
     <li><a href="{{ path('cursoacademico_index') }}">Cursos Académicos</a></li>
     <li><a href="{{ path('disciplinagrupo_index') }}">Grupos disciplinas</a></li>
+    <li><a href="{{ path('disciplina_index') }}">Disciplinas</a></li>
 </ul>
 
 <ul id="dropdown-perfil" class="dropdown-content">
@@ -26,16 +27,17 @@
 </ul>
 
 {% set route_alumnos = ['alumno_index','alumno_new','alumno_show','alumno_edit'] %}
-{% set route_configuracion = ['cursoacademico_index','cursoacademico_new','cursoacademico_show','cursoacademico_edit'] %}
+{% set route_configuracion = ['cursoacademico_index','cursoacademico_new','cursoacademico_show','cursoacademico_edit','disciplinagrupo_index','disciplinagrupo_new','disciplinagrupo_show','disciplinagrupo_edit','disciplina_index','disciplina_new','disciplina_show','disciplina_edit'] %}
+{% set route_cursos = ['curso_index','curso_new','curso_show','curso_edit'] %}
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper purple darken-2">
             <a href="{{ path('homepage') }}" class="brand-logo">Escuela de Música</a>
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
-                <li><a href="#">Preinscripcion</a></li>
+                <li><a href="{{ path('preinscripcion_index') }}">Preinscripcion</a></li>
                 <li><a href="#">Matriculas</a></li>
-                <li><a href="#">Cursos</a></li>
+                <li class="{% if app.request.get('_route') in route_cursos %}active{% endif %}"><a href="{{ path('curso_index') }}">Cursos</a></li>
                 {{ render(controller('AppBundle:UI:getSelectorCursoAcademico')) }}
                 <li class="{% if app.request.get('_route') in route_alumnos %}active{% endif %}"><a href="{{ path('alumno_index') }}">Alumnos</a></li>
                 <li class="{% if app.request.get('_route') in route_configuracion %}active{% endif %}"><a class="dropdown-configuracion" href="#!" data-activates="dropdown-configuracion"><i class="material-icons">settings</i></a></li>
@@ -43,9 +45,9 @@
             </ul>
             <ul class="side-nav" id="mobile-demo">
                 <li class="{% if app.request.get('_route') in route_alumnos %}active{% endif %}"><a href="{{ path('alumno_index') }}">Alumnos</a></li>
-                <li><a href="#">Cursos</a></li>
+                <li><a href="{{ path('curso_index') }}">Cursos</a></li>
                 <li><a href="#">Matriculas</a></li>
-                <li><a href="#">Preinscripcion</a></li>
+                <li><a href="{{ path('preinscripcion_index') }}">Preinscripcion</a></li>
                 <li><a href="#">Configuración</a></li>
                 <li><a href="{{ path('fos_user_change_password') }}">Cambiar contraseña</a></li>
                 <li><a href="{{ path('fos_user_security_logout') }}">Cerrar sesión</a></li>

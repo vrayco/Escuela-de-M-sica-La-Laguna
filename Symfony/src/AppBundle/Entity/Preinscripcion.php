@@ -3,13 +3,38 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AppBundleAssert;
 
 /**
  * Preinscripcion
  *
  * @ORM\Table(name="preinscripcion")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PreinscripcionRepository")
+ * @UniqueEntity({"nombre","apellidos","fechaNacimiento","prefijo"},
+ *    errorPath="nombre",
+ *    message="Existe una preinscripcion con estos datos."
+ * )
+ *
+ * @UniqueEntity({"nombre","apellidos","fechaNacimiento","prefijo"},
+ *    errorPath="apellidos",
+ *    message="Existe una preinscripcion con estos datos."
+ * )
+ *
+ * @UniqueEntity({"nombre","apellidos","fechaNacimiento","prefijo"},
+ *    errorPath="fechaNacimiento",
+ *    message="Existe una preinscripcion con estos datos."
+ * )
+ *
+ * @UniqueEntity({"dni","prefijo"},
+ *    errorPath="dni",
+ *    message="Existe una preinscripcion con estos datos."
+ * )
+ *
+ * @AppBundleAssert\Preinscripcion()
  */
+
 class Preinscripcion
 {
     /**
@@ -22,6 +47,11 @@ class Preinscripcion
     private $id;
 
     /**
+     * @ORM\Column(name="prefijo", type="string", length=2)
+     */
+    private $prefijo;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="dni", type="string", length=32, nullable=true)
@@ -32,6 +62,7 @@ class Preinscripcion
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255)
+     * @Assert\NotBlank(message="")
      */
     private $nombre;
 
@@ -39,13 +70,15 @@ class Preinscripcion
      * @var string
      *
      * @ORM\Column(name="apellidos", type="string", length=255)
+     * @Assert\NotBlank(message="")
      */
     private $apellidos;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="fechaNacimiento", type="datetime")
+     * @ORM\Column(name="fechaNacimiento", type="date")
+     * @Assert\NotBlank(message="")
      */
     private $fechaNacimiento;
 
@@ -53,6 +86,7 @@ class Preinscripcion
      * @var string
      *
      * @ORM\Column(name="telefonoMovil", type="string", length=32, nullable=true)
+     * @Assert\NotBlank(message="")
      */
     private $telefonoMovil;
 
@@ -72,9 +106,14 @@ class Preinscripcion
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\PreinscripcionEnCurso", mappedBy="preinscripcion", cascade={"persist","remove"})
+     * @Assert\Valid
      */
     private $preinscripcionEnCursos;
 
+    public function getIdentificador()
+    {
+        return $this->prefijo.$this->id;
+    }
 
     /**
      * Get id
@@ -153,29 +192,6 @@ class Preinscripcion
     public function getApellidos()
     {
         return $this->apellidos;
-    }
-
-    /**
-     * Set fechaNacimiento
-     *
-     * @param \DateTime $fechaNacimiento
-     * @return Preinscripcion
-     */
-    public function setFechaNacimiento($fechaNacimiento)
-    {
-        $this->fechaNacimiento = $fechaNacimiento;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaNacimiento
-     *
-     * @return \DateTime 
-     */
-    public function getFechaNacimiento()
-    {
-        return $this->fechaNacimiento;
     }
 
     /**
@@ -285,5 +301,51 @@ class Preinscripcion
     public function getPreinscripcionEnCursos()
     {
         return $this->preinscripcionEnCursos;
+    }
+
+    /**
+     * Set fechaNacimiento
+     *
+     * @param \DateTime $fechaNacimiento
+     * @return Preinscripcion
+     */
+    public function setFechaNacimiento($fechaNacimiento)
+    {
+        $this->fechaNacimiento = $fechaNacimiento;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaNacimiento
+     *
+     * @return \DateTime 
+     */
+    public function getFechaNacimiento()
+    {
+        return $this->fechaNacimiento;
+    }
+
+    /**
+     * Set prefijo
+     *
+     * @param string $prefijo
+     * @return Preinscripcion
+     */
+    public function setPrefijo($prefijo)
+    {
+        $this->prefijo = $prefijo;
+
+        return $this;
+    }
+
+    /**
+     * Get prefijo
+     *
+     * @return string 
+     */
+    public function getPrefijo()
+    {
+        return $this->prefijo;
     }
 }

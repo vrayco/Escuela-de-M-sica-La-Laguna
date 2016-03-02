@@ -30,41 +30,50 @@ class LoadDisciplinaData extends AbstractFixture implements OrderedFixtureInterf
         // DISCIPLINA GRUPOS
         $entity = new DisciplinaGrupo();
         $entity->setNombre("Música y Movimiento");
+        $entity->setIncompatibleConOtro(true);
+        $entity->setMaximoInscripciones(1);
         $manager->persist($entity);
         $this->addReference('DISCIPLINA-GRUPO-MUSICA-Y-MOVIMIENTO', $entity);
 
         $entity = new DisciplinaGrupo();
         $entity->setNombre("Práctica Instrumental");
+        $entity->setMaximoInscripciones(3);
         $manager->persist($entity);
         $this->addReference('DISCIPLINA-GRUPO-PRACTICA-INSTRUMENTAL', $entity);
 
         $entity = new DisciplinaGrupo();
         $entity->setNombre("Práctica Instrumental Moderno");
+        $entity->setMaximoInscripciones(3);
         $manager->persist($entity);
         $this->addReference('DISCIPLINA-GRUPO-PRACTICA-INSTRUMENTAL-MODERNO', $entity);
 
         $entity = new DisciplinaGrupo();
         $entity->setNombre("Banda Juvenil");
+        $entity->setMaximoInscripciones(3);
         $manager->persist($entity);
         $this->addReference('DISCIPLINA-GRUPO-BANDA-JUVENIL', $entity);
 
         $entity = new DisciplinaGrupo();
         $entity->setNombre("Coro Juvenil");
+        $entity->setMaximoInscripciones(1);
         $manager->persist($entity);
         $this->addReference('DISCIPLINA-GRUPO-CORO-JUVENIL', $entity);
 
         $entity = new DisciplinaGrupo();
         $entity->setNombre("Coro Adulto");
+        $entity->setMaximoInscripciones(1);
         $manager->persist($entity);
         $this->addReference('DISCIPLINA-GRUPO-CORO-ADULTO', $entity);
 
         $entity = new DisciplinaGrupo();
         $entity->setNombre("Orquesta Juvenil");
+        $entity->setMaximoInscripciones(3);
         $manager->persist($entity);
         $this->addReference('DISCIPLINA-GRUPO-ORQUESTA-JUVENIL', $entity);
 
         $entity = new DisciplinaGrupo();
         $entity->setNombre("Taller Folklore");
+        $entity->setMaximoInscripciones(3);
         $manager->persist($entity);
         $this->addReference('DISCIPLINA-GRUPO-TALLER-FOLKLORE', $entity);
 
@@ -73,28 +82,28 @@ class LoadDisciplinaData extends AbstractFixture implements OrderedFixtureInterf
         $entity->setNombre("Música y Movimiento 1º - 1º Curso");
         $entity->setDisciplinaGrupo($this->getReference('DISCIPLINA-GRUPO-MUSICA-Y-MOVIMIENTO'));
         $entity->setEdadMinima(4);
-        $entity->setEdadMaxima(5);
+        $entity->setEdadMaxima(4);
         $manager->persist($entity);
 
         $entity = new Disciplina();
         $entity->setNombre("Música y Movimiento 1º - 2º Curso");
         $entity->setDisciplinaGrupo($this->getReference('DISCIPLINA-GRUPO-MUSICA-Y-MOVIMIENTO'));
         $entity->setEdadMinima(5);
-        $entity->setEdadMaxima(6);
+        $entity->setEdadMaxima(5);
         $manager->persist($entity);
 
         $entity = new Disciplina();
         $entity->setNombre("Música y Movimiento 2º - 1º Curso");
         $entity->setDisciplinaGrupo($this->getReference('DISCIPLINA-GRUPO-MUSICA-Y-MOVIMIENTO'));
         $entity->setEdadMinima(6);
-        $entity->setEdadMaxima(7);
+        $entity->setEdadMaxima(6);
         $manager->persist($entity);
 
         $entity = new Disciplina();
         $entity->setNombre("Música y Movimiento 2º - 2º Curso");
         $entity->setDisciplinaGrupo($this->getReference('DISCIPLINA-GRUPO-MUSICA-Y-MOVIMIENTO'));
         $entity->setEdadMinima(7);
-        $entity->setEdadMaxima(8);
+        $entity->setEdadMaxima(7);
         $manager->persist($entity);
 
         $entity = new Disciplina();

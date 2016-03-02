@@ -1,21 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Grupos disciplinas{% endblock %}
+{% block title %}{{ parent() }} - Cursos{% endblock %}
 
 {% block content %}
+
     <table class="highlight bordered">
         <tbody>
             <tr>
-                <th>Nombre</th>
-                <td class="right-align">{{ disciplinaGrupo.nombre }}</td>
+                <th>Disciplina</th>
+                <td class="right-align">
+                    <small>{{ curso.disciplina.disciplinaGrupo }}</small><br>
+                    {{ curso.disciplina }}
+                </td>
             </tr>
             <tr>
-                <th>Incompatible con otro grupo de disciplinas</th>
-                <td class="right-align">{% if disciplinaGrupo.incompatibleConOtro %}<span class="chip orange lighten-4">INCOMPATIBLE</span></td>{% else %}<span class="chip green lighten-4">COMPATIBLE</span></td>{% endif %}
+                <th>Número plazas</th>
+                <td class="right-align">{% if curso.numeroPlazas %}{{ curso.numeroPlazas }}{% else %}---{% endif %}</td>
             </tr>
             <tr>
-                <th>Máximo de inscripciones permitidas</th>
-                <td class="right-align">{{ disciplinaGrupo.maximoInscripciones }}</td>
+                <th>Número plazas prioritarias</th>
+                <td class="right-align">{% if curso.numeroPlazasPrioritarias %}{{ curso.numeroPlazasPrioritarias }}{% else %}---{% endif %}</td>
             </tr>
         </tbody>
     </table>
@@ -25,8 +29,8 @@
             <i class="large material-icons">menu</i>
         </a>
         <ul>
-            <li><a href="{{ path('disciplinagrupo_index') }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">view_list</i></a></li>
-            <li><a href="{{ path('disciplinagrupo_edit', { 'id': disciplinaGrupo.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a></li>
+            <li><a href="{{ path('curso_index') }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">view_list</i></a></li>
+            <li><a href="{{ path('curso_edit', { 'id': curso.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a></li>
             <li><a href="#modal1" class="btn-floating btn waves-effect waves-light red modal-trigger"><i class="material-icons">delete</i></a></li>
         </ul>
     </div>
@@ -34,8 +38,8 @@
     <!-- Modal Structure -->
     <div id="modal1" class="modal bottom-sheet">
         <div class="modal-content">
-            <h5>¿Estás seguro de eliminar el grupo disciplina: <span class="chip">{{ disciplinaGrupo.nombre }}</span>?</h5>
-            <p>La acción es irreversible. Se eliminará todo la información relacionada con el grupo disciplina (disciplinas, cursos, matriculas, preinscripciones, ...)</p>
+            <h5>¿Estás seguro de eliminar el curso: <span class="chip">{{ curso.disciplina }}</span>?</h5>
+            <p>La acción es irreversible. Se eliminará todo la información relacionada con el curso (matriculas, preinscripciones, etc...)</p>
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-action modal-close waves-effect waves-green btn grey">No, cancelar</a>
@@ -55,4 +59,3 @@
         });
     </script>
 {% endblock %}
-

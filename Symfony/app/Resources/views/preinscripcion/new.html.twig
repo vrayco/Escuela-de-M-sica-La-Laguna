@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ parent() }} - Grupos disciplinas{% endblock %}
+
+{% form_theme form 'form/fields.html.twig' %}
+{% block content %}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <h5>Datos del alumno</h5>
+    <div class="row">
+        <div class="input-field col s3 offset-s6">
+            {{ form_widget(form.prioridad) }}
+            {{ form_label(form.prioridad) }}
+        </div>
+        <div class="input-field col s3">
+            {{ form_widget(form.empadronado) }}
+            {{ form_label(form.empadronado) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m5">
+            {{ form_widget(form.nombre) }}
+            {{ form_label(form.nombre)  }}
+        </div>
+        <div class="input-field col s12 m7">
+            {{ form_widget(form.apellidos) }}
+            {{ form_label(form.apellidos) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m4">
+            {{ form_widget(form.fechaNacimiento, { 'attr' : { 'class' : 'datepicker' } }) }}
+            {{ form_label(form.fechaNacimiento) }}
+        </div>
+        <div class="input-field col s12 m4">
+            {{ form_widget(form.dni) }}
+            {{ form_label(form.dni) }}
+        </div>
+        <div class="input-field col s12 m4">
+            {{ form_label(form.telefonoMovil) }}
+            {{ form_widget(form.telefonoMovil) }}
+        </div>
+    </div>
+    <h5>Disciplinas en las que se pre-inscribe</h5>
+    <div class="row">
+        <div class="input-field col s12">
+            {{ form_widget(form.preinscripcionEnCursos[0]) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            {{ form_widget(form.preinscripcionEnCursos[1]) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            {{ form_widget(form.preinscripcionEnCursos[2]) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}
+    <div class="col s12 center-align">
+        <div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
+            <button class="btn-floating btn-large waves-effect waves-light" type="submit" name="action">
+                <i class="large material-icons">done</i>
+            </button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+            {% set fecha_max = '31-12-'~('now - 4year'|date('Y')) %}
+            $('.datepicker').pickadate({
+                container: 'body',
+                max: "{{ fecha_max }}",
+                selectYears: 100,
+                monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                showMonthsShort: undefined,
+                showWeekdaysFull: undefined,
+                // Buttons
+                today: false,
+                clear: false,
+                close: 'Ok',
+                // Accessibility labels
+                labelMonthNext: 'Siguiente mes',
+                labelMonthPrev: 'Mes anterior',
+                labelMonthSelect: 'Escoge un mes',
+                labelYearSelect: 'Escoge un año',
+
+                //The format to show on the `input` element
+                format: 'dd/mm/yyyy',
+                closeOnSelect: true,
+            });
+        });
+
+        $('select').material_select();
+
+        $( "input" ).change(function() {
+            $(this).removeClass('invalid');
+        });
+
+
+        {% if form_errors(form)|length > 0 %}
+            Materialize.toast("{{ form_errors(form) }}",4000, "error");
+        {% endif %}
+
+    </script>
+{% endblock %}

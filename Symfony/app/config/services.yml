@@ -19,6 +19,24 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: cursoacademico.periodo.validator }
 
+    validator.disciplina.edad:
+        class: AppBundle\Validator\Constraints\DisciplinaEdadValidator
+        arguments: []
+        tags:
+            - { name: validator.constraint_validator, alias: disciplina.edad.validator }
+
+    validator.curso.plazas:
+        class: AppBundle\Validator\Constraints\CursoPlazasValidator
+        arguments: []
+        tags:
+            - { name: validator.constraint_validator, alias: curso.plazas.validator }
+
+    validator.preinscripcion:
+        class: AppBundle\Validator\Constraints\PreinscripcionValidator
+        arguments: []
+        tags:
+            - { name: validator.constraint_validator, alias: preinscripcion.validator }
+
     utils.fechas:
         class: AppBundle\Utils\FechasService
         arguments: []
@@ -26,3 +44,14 @@ services:
     utils.expediente:
         class: AppBundle\Utils\ExpedienteService
         arguments: [@doctrine.orm.default_entity_manager]
+
+    utils.curso:
+        class: AppBundle\Utils\CursoService
+        arguments: [@doctrine.orm.default_entity_manager, @session]
+
+
+    preinscripcionencurso.form.type.view:
+        class: AppBundle\Form\PreinscripcionEnCursoType
+        arguments: [ "@utils.curso" ]
+        tags:
+            - { name: form.type, alias: view }

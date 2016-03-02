@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Grupos disciplinas{% endblock %}
+
+{% block content %}
+    <table class="highlight">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Grupo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for disciplina in disciplinas %}
+            <tr onclick="document.location = '{{ path('disciplina_show', { 'id': disciplina.id }) }}';">
+                <td>{{ disciplina.nombre }}</td>
+                <td>{{ disciplina.disciplinaGrupo }}</td>
+                <td class="hide-on-small-only right-align">
+                    <a href="{{ path('disciplina_show', { 'id': disciplina.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
+                    <a href="{{ path('disciplina_edit', { 'id': disciplina.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large waves-effect waves-light purple">
+            <i class="large material-icons">menu</i>
+        </a>
+        <ul>
+            <li><a href="{{ path('disciplina_new') }}" class="btn-floating waves-effect waves-light green"><i class="material-icons">add</i></a></li>
+        </ul>
+    </div>
+
+{% endblock %}

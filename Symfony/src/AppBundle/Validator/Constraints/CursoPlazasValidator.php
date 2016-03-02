@@ -4,23 +4,22 @@ namespace AppBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class CursoAcademicoPeriodoValidator extends ConstraintValidator
+class CursoPlazasValidator extends ConstraintValidator
 {
     public function __construct() {}
 
     public function validate($protocol, Constraint $constraint)
     {
+        $numeroPlazas = $protocol->getNumeroPlazas();
+        $numeroPlazasPrioritarias = $protocol->getNumeroPlazasPrioritarias();
 
-        $fechaInicio = $protocol->getFechaInicio();
-        $fechaFin = $protocol->getFechaFin();
-
-        if($fechaInicio and $fechaFin and $fechaFin <= $fechaInicio) {
+        if($numeroPlazas and $numeroPlazasPrioritarias and $numeroPlazas < $numeroPlazasPrioritarias) {
             $this->context->buildViolation($constraint->message)
-                ->atPath('fechaInicio')
+                ->atPath('numeroPlazas')
                 ->addViolation();
 
             $this->context->buildViolation($constraint->message)
-                ->atPath('fechaFin')
+                ->atPath('numeroPlazasPrioritarias')
                 ->addViolation();
         }
     }

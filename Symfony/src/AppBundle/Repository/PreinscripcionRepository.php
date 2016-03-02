@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\CursoAcademico;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,49 @@ use Doctrine\ORM\EntityRepository;
  */
 class PreinscripcionRepository extends EntityRepository
 {
+    public function getPreinscripciones(CursoAcademico $cursoAcademico, $filter)
+    {
+        $identificador = $filter['identificador'];
+        $dni = $filter['dni'];
+        $nombre = $filter['nombre'];
+        $apellidos = $filter['apellidos'];
+        $fechaNacimiento = $filter['fecha_nacimiento'];
+
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder();
+        $query = $qb->select('p')
+            ->from('AppBundle:Preinscripcion', 'p')
+            ->innerJoin('p.preinscripcionEnCursos','pre')
+            ->innerJoin('pre.curso','c')
+            ->innerJoin('c.cursoAcademico','ca')
+            ->where('ca = :cursoAcademico')
+            ->setParameter('cursoAcademico', $cursoAcademico);
+        if($identificador)
+            $query->andWhere(
+                $qb->expr()->like('p.id', ':identificador')
+            )
+                ->setParameter('identificador','%'.$identificador.'%');
+        if($dni)
+            $query->andWhere(
+                $qb->expr()->like('p.dni', ':dni')
+            )
+                ->setParameter('dni','%'.$dni.'%');
+        if($nombre)
+            $query->andWhere(
+                $qb->expr()->like('p.nombre', ':nombre')
+            )
+                ->setParameter('nombre','%'.$nombre.'%');
+        if($apellidos)
+            $query->andWhere(
+                $qb->expr()->like('p.apellidos', ':apellidos')
+            )
+                ->setParameter('apellidos','%'.$apellidos.'%');
+        if($fechaNacimiento)
+            $query->andWhere('p.fechaNacimiento = :fechaNacimiento')
+                ->setParameter('fechaNacimiento', $fechaNacimiento);
+
+        $query->orderBy('p.id','ASC');
+
+        return $query->getQuery()->getResult();
+    }
 }

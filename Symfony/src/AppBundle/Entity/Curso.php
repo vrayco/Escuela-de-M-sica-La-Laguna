@@ -4,13 +4,18 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AppBundleAssert;
 
 /**
  * Curso
  *
  * @ORM\Table(name="curso")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CursoRepository")
- //* @UniqueEntity({"cursoAcademico_id","disciplina_id"})
+ * @UniqueEntity({"disciplina","cursoAcademico"},
+ *     message="Ya existe un curso con esta disciplina para el curso en curso."
+ * )
+ * @AppBundleAssert\CursoPlazas()
  */
 class Curso
 {
@@ -27,6 +32,9 @@ class Curso
      * @var int
      *
      * @ORM\Column(name="numeroPlazas", type="integer", nullable=true)
+     * @Assert\GreaterThanOrEqual(
+     *     value = 0
+     * )
      */
     private $numeroPlazas;
 
@@ -34,11 +42,14 @@ class Curso
      * @var int
      *
      * @ORM\Column(name="numeroPlazasPrioritarias", type="integer", nullable=true)
+     * @Assert\GreaterThanOrEqual(
+     *     value = 0
+     * )
      */
     private $numeroPlazasPrioritarias;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CursoAcademico", inversedBy="cursos")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CursoAcademico", inversedBy="cursos", cascade={"persist"})
      * @ORM\JoinColumn(name="curso_academico_id", referencedColumnName="id", nullable=false)
      */
     private $cursoAcademico;
@@ -58,6 +69,11 @@ class Curso
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\PreinscripcionEnCurso", mappedBy="curso", cascade={"persist","remove"})
      */
     private $preinscripciones;
+
+    public function __toString()
+    {
+        return $this->disciplina->getNombre() . ' (' .$this->disciplina->getDisciplinaGrupo()->getNombre(). ')';
+    }
 
     /**
      * Get id

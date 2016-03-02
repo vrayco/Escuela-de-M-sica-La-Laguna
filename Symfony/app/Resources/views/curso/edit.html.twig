@@ -1,25 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Grupos disciplinas{% endblock %}
+{% block title %}{{ parent() }} - Cursos Academicos{% endblock %}
 
 {% form_theme edit_form 'form/fields.html.twig' %}
-
 {% block content %}
-    {{ form_start(edit_form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    {{ form_start(edit_form) }}
     <div class="row">
         <div class="input-field col s12">
-            {{ form_widget(edit_form.nombre) }}
-            {{ form_label(edit_form.nombre) }}
+            {{ form_widget(edit_form.disciplina) }}
+            {#{{ form_label(form.disciplina) }}#}
         </div>
     </div>
     <div class="row">
-        <div class="input-field col s12 m2">
-            {{ form_widget(edit_form.maximoInscripciones) }}
-            {{ form_label(edit_form.maximoInscripciones) }}
+        <div class="input-field col s6">
+            {{ form_widget(edit_form.numeroPlazas) }}
+            {{ form_label(edit_form.numeroPlazas) }}
         </div>
-        <div class="input-field col s12 m6 offset-m4">
-            {{ form_widget(edit_form.incompatibleConOtro) }}
-            {{ form_label(edit_form.incompatibleConOtro) }}
+        <div class="input-field col s6">
+            {{ form_widget(edit_form.numeroPlazasPrioritarias) }}
+            {{ form_label(edit_form.numeroPlazasPrioritarias)  }}
         </div>
     </div>
     {{ form_rest(edit_form) }}
@@ -34,15 +34,19 @@
 {% endblock %}
 
 {% block javascripts %}
-
     <script>
         $( document ).ready(function() {
+
+            $('select').material_select();
 
             $( "input" ).change(function() {
                 $(this).removeClass('invalid');
             });
 
+            {% if form_errors(edit_form.disciplina)|length > 0 %}
+            Materialize.toast("{{ form_errors(edit_form.disciplina) }}",4000, "error");
+            {% endif %}
+
         });
     </script>
-
 {% endblock %}

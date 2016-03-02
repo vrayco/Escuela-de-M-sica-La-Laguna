@@ -2,11 +2,13 @@
 
 namespace AppBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DisciplinaGrupoType extends AbstractType
+class CursoType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,9 +17,14 @@ class DisciplinaGrupoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
-            ->add('incompatibleConOtro', null, array('label' => '¿Es incompatible este grupo con otro grupo de disciplinas?'))
-            ->add('maximoInscripciones')
+            ->add('disciplina', EntityType::class, array(
+                'class' => 'AppBundle:Disciplina',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('d')
+                        ->orderBy('d.nombre', 'ASC');
+                },))
+            ->add('numeroPlazas')
+            ->add('numeroPlazasPrioritarias')
         ;
     }
     
@@ -27,7 +34,7 @@ class DisciplinaGrupoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\DisciplinaGrupo'
+            'data_class' => 'AppBundle\Entity\Curso'
         ));
     }
 }

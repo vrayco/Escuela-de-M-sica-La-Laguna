@@ -3,12 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * PreinscripcionEnCurso
  *
  * @ORM\Table(name="preinscripcion_en_curso")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PreinscripcionEnCursoRepository")
+ * @UniqueEntity({"curso","preinscripcion"},
+ *    errorPath="curso",
+ *    message="Disciplina repetida en la preinscripción.")
  */
 class PreinscripcionEnCurso
 {
@@ -46,14 +50,14 @@ class PreinscripcionEnCurso
     private $estado;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Curso", inversedBy="curso")
-     * @ORM\JoinColumn(name="curso_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Curso", inversedBy="preinscripciones")
+     * @ORM\JoinColumn(name="curso_id", referencedColumnName="id", nullable=false)
      */
     private $curso;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Preinscripcion", inversedBy="preinscripciones")
-     * @ORM\JoinColumn(name="preinscripcion_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Preinscripcion", inversedBy="preinscripcionEnCursos")
+     * @ORM\JoinColumn(name="preinscripcion_id", referencedColumnName="id", nullable=false)
      */
     private $preinscripcion;
 

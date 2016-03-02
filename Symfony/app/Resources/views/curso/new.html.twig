@@ -1,25 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Grupos disciplinas{% endblock %}
+{% block title %}{{ parent() }} - Cursos Academicos{% endblock %}
 
 {% form_theme form 'form/fields.html.twig' %}
-
 {% block content %}
+
     {{ form_start(form) }}
     <div class="row">
         <div class="input-field col s12">
-            {{ form_widget(form.nombre) }}
-            {{ form_label(form.nombre) }}
+            {{ form_widget(form.disciplina) }}
+            {#{{ form_label(form.disciplina) }}#}
         </div>
     </div>
     <div class="row">
-        <div class="input-field col s12 m2">
-            {{ form_widget(form.maximoInscripciones) }}
-            {{ form_label(form.maximoInscripciones) }}
+        <div class="input-field col s6">
+            {{ form_widget(form.numeroPlazas) }}
+            {{ form_label(form.numeroPlazas) }}
         </div>
-        <div class="input-field col s12 m6 offset-m4">
-            {{ form_widget(form.incompatibleConOtro) }}
-            {{ form_label(form.incompatibleConOtro) }}
+        <div class="input-field col s6">
+            {{ form_widget(form.numeroPlazasPrioritarias) }}
+            {{ form_label(form.numeroPlazasPrioritarias)  }}
         </div>
     </div>
     {{ form_rest(form) }}
@@ -34,15 +34,19 @@
 {% endblock %}
 
 {% block javascripts %}
-
     <script>
         $( document ).ready(function() {
+
+            $('select').material_select();
 
             $( "input" ).change(function() {
                 $(this).removeClass('invalid');
             });
 
+            {% if form_errors(form.disciplina)|length > 0 %}
+                Materialize.toast("{{ form_errors(form.disciplina) }}",4000, "error");
+            {% endif %}
+
         });
     </script>
-
 {% endblock %}

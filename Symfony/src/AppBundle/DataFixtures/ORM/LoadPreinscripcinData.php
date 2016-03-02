@@ -31,10 +31,13 @@ class LoadPreinscripcionData extends AbstractFixture implements OrderedFixtureIn
     public function load(ObjectManager $manager)
     {
 
-        $cursos = $manager->getRepository('AppBundle:Curso')->findAll();
+        $cursoEnCurso = $this->getReference('CURSO-ACADEMICO-1');
+
+        $cursos = $manager->getRepository('AppBundle:Curso')->findBy(array('cursoAcademico' => $cursoEnCurso));
 
         for($j=0; $j<self::NUM_ENTITIES; $j++) {
             $entity = new Preinscripcion();
+            $entity->setPrefijo($cursoEnCurso->getPrefijoExpediente());
             $entity->setNombre("Alumno");
             $entity->setApellidos(time());
             $entity->setFechaNacimiento(new \DateTime('now -'.rand(4,18).'year'));
@@ -49,6 +52,7 @@ class LoadPreinscripcionData extends AbstractFixture implements OrderedFixtureIn
                 $entity2->setPreinscripcion($entity);
                 $entity2->setCurso($cursos[rand(0,sizeof($cursos)-1)]);
                 $entity->addPreinscripcionEnCurso($entity2);
+
 //                $manager->persist($entity2);
             }
 

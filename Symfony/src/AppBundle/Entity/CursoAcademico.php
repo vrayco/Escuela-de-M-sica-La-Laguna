@@ -82,6 +82,11 @@ class CursoAcademico
         $this->enCurso = false;
     }
 
+    public function __toString()
+    {
+        return $this->nombre;
+    }
+
     /**
      * Get id
      *

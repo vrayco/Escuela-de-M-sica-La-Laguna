@@ -3,12 +3,17 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use AppBundle\Validator\Constraints as AppBundleAssert;
 
 /**
  * Disciplina
  *
  * @ORM\Table(name="disciplina")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DisciplinaRepository")
+ * @UniqueEntity({"nombre","disciplinaGrupo"})
+ * @AppBundleAssert\DisciplinaEdad
  */
 class Disciplina
 {
@@ -25,6 +30,7 @@ class Disciplina
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255)
+     * @Assert\NotBlank(message="")
      */
     private $nombre;
 
@@ -32,6 +38,9 @@ class Disciplina
      * @var int
      *
      * @ORM\Column(name="edadMinima", type="integer", nullable=true)
+     * @Assert\GreaterThanOrEqual(
+     *     value = 0
+     * )
      */
     private $edadMinima;
 
@@ -39,12 +48,15 @@ class Disciplina
      * @var int
      *
      * @ORM\Column(name="edadMaxima", type="integer", nullable=true)
+     * @Assert\GreaterThanOrEqual(
+     *     value = 0
+     * )
      */
     private $edadMaxima;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\DisciplinaGrupo", inversedBy="disciplinas")
-     * @ORM\JoinColumn(name="disciplina_grupo_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="disciplina_grupo_id", referencedColumnName="id", nullable=false)
      */
     private $disciplinaGrupo;
 
@@ -52,6 +64,11 @@ class Disciplina
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Curso", mappedBy="disciplina", cascade={"persist","remove"})
      */
     private $cursos;
+
+    public function __toString()
+    {
+        return $this->nombre;
+    }
 
     /**
      * Get id

@@ -33,9 +33,34 @@ class DisciplinaGrupo
     private $nombre;
 
     /**
+     * @ORM\Column(name="incompatible_con_otro", type="boolean")
+     */
+    private $incompatibleConOtro;
+
+    /**
+     * @ORM\Column(name="maximo_inscripciones", type="integer")
+     * @Assert\GreaterThanOrEqual(
+     *     value = 1
+     * )
+     */
+    private $maximoInscripciones;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Disciplina", mappedBy="disciplinaGrupo", cascade={"persist","remove"})
      */
     private $disciplinas;
+
+    public function __construct()
+    {
+        $this->disciplinas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->incompatibleConOtro = false;
+        $this->maximoInscripciones = 1;
+    }
+
+    public function __toString()
+    {
+        return $this->nombre;
+    }
 
     /**
      * Get id
@@ -69,13 +94,6 @@ class DisciplinaGrupo
     {
         return $this->nombre;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->disciplinas = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add disciplinas
@@ -108,5 +126,51 @@ class DisciplinaGrupo
     public function getDisciplinas()
     {
         return $this->disciplinas;
+    }
+
+    /**
+     * Set incompatibleConOtro
+     *
+     * @param boolean $incompatibleConOtro
+     * @return DisciplinaGrupo
+     */
+    public function setIncompatibleConOtro($incompatibleConOtro)
+    {
+        $this->incompatibleConOtro = $incompatibleConOtro;
+
+        return $this;
+    }
+
+    /**
+     * Get incompatibleConOtro
+     *
+     * @return boolean 
+     */
+    public function getIncompatibleConOtro()
+    {
+        return $this->incompatibleConOtro;
+    }
+
+    /**
+     * Set maximoInscripciones
+     *
+     * @param integer $maximoInscripciones
+     * @return DisciplinaGrupo
+     */
+    public function setMaximoInscripciones($maximoInscripciones)
+    {
+        $this->maximoInscripciones = $maximoInscripciones;
+
+        return $this;
+    }
+
+    /**
+     * Get maximoInscripciones
+     *
+     * @return integer 
+     */
+    public function getMaximoInscripciones()
+    {
+        return $this->maximoInscripciones;
     }
 }

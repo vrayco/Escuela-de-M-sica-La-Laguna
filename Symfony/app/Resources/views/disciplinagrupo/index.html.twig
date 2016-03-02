@@ -8,12 +8,16 @@
             <tr>
                 <th>Nombre</th>
                 <th></th>
+                <th>Máximo inscripciones</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
         {% for disciplinaGrupo in disciplinaGrupos %}
             <tr onclick="document.location = '{{ path('disciplinagrupo_show', { 'id': disciplinaGrupo.id }) }}';">
                 <td>{{ disciplinaGrupo.nombre }}</td>
+                <td>{% if disciplinaGrupo.incompatibleConOtro %}<span class="chip orange lighten-4">INCOMPATIBLE</span>{% else %}<span class="chip green lighten-4">COMPATIBLE</span></td>{% endif %}</td>
+                <td>{{ disciplinaGrupo.maximoInscripciones }}</td>
                 <td class="hide-on-small-only right-align">
                     <a href="{{ path('disciplinagrupo_show', { 'id': disciplinaGrupo.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
                     <a href="{{ path('disciplinagrupo_edit', { 'id': disciplinaGrupo.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>

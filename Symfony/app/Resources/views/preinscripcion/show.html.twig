@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Preinscripciones{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col s12">
+            <h5>Datos del alumno</h5>
+            <table class="highlight bordered">
+                <tbody>
+                <tr>
+                    <th>Identificador</th>
+                    <td class="right-align"><span class="chip">PRE-{{ preinscripcion.identificador }}</span></td>
+                </tr>
+                <tr>
+                    <th>DNI</th>
+                    <td class="right-align">{% if preinscripcion.dni %}{{ preinscripcion.dni }}{% else %}---{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <td class="right-align">{{ preinscripcion.apellidos }}, {{ preinscripcion.nombre }}</td>
+                </tr>
+                <tr>
+                    <th>Fecha Nacimiento</th>
+                    <td class="right-align">{% if preinscripcion.fechaNacimiento %}{{ preinscripcion.fechaNacimiento|date('d/m/Y') }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Teléfono movil</th>
+                    <td class="right-align">{{ preinscripcion.telefonoMovil }}</td>
+                </tr>
+                <tr>
+                    <th>Prioridad</th>
+                    <td class="right-align">{% if preinscripcion.prioridad %}<span class="chip yellow lighten-4"><i class="large material-icons">done</i> PRIORIDAD</span>{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Empadronado</th>
+                    <td class="right-align">{% if preinscripcion.empadronado %}<span class="chip purple lighten-4"><i class="large material-icons">done</i> EMPADRONADO</span>{% endif %}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px">
+        <div class="col s12">
+            <h5>Disciplina en la que se pre-inscribe</h5>
+            <table class="highlight bordered">
+                <tbody>
+                {% for preinscripcionEnCurso in preinscripcion.preinscripcionEnCursos %}
+                    <tr>
+                        <th>DISCIPLINA {{ loop.index }}</th>
+                        <td class="right-align">{{ preinscripcionEnCurso.curso }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large waves-effect waves-light purple">
+            <i class="large material-icons">menu</i>
+        </a>
+        <ul>
+            <li><a href="{{ path('preinscripcion_index') }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">view_list</i></a></li>
+            <li><a href="#modal1" class="btn-floating btn waves-effect waves-light red modal-trigger"><i class="material-icons">delete</i></a></li>
+        </ul>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h5>¿Estás seguro de eliminar la preinscipcion <span class="chip">PRE-{{ preinscripcion.id }}</span>?</h5>
+            <p>La acción es irreversible.</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn grey">No, cancelar</a>
+            {{ form_start(delete_form) }}
+            <button class="modal-action modal-close waves-effect waves-green btn red" type="submit" name="action">Eliminar
+                <i class="material-icons right">delete</i>
+            </button>
+            {{ form_end(delete_form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+            $('.modal-trigger').leanModal();
+        });
+    </script>
+{% endblock %}

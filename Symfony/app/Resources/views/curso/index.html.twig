@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Cursos{% endblock %}
+
+{% block content %}
+    <table class="highlight bordered">
+        <thead>
+            <tr>
+                <th>Curso</th>
+                <th class="right-align">
+                    <span class="hide-on-small-only">Preinscripciones</span>
+                    <span class="hide-on-med-and-up">Preins...</span>
+                </th>
+                <th class="right-align">
+                    <span class="hide-on-small-only">Matrículas</span>
+                    <span class="hide-on-med-and-up">Matri...</span>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for curso in cursos %}
+            <tr onclick="document.location = '{{ path('curso_show', { 'id': curso.id }) }}';">
+                <td><small>{{ curso.disciplina.disciplinaGrupo }}</small><br>{{ curso.disciplina }}</td>
+                <td class="right-align">{{ curso.preinscripciones|length }}</td>
+                <td class="right-align">{{ curso.matriculas|length }}</td>
+                <td class="hide-on-small-only right-align">
+                    <a href="{{ path('curso_show', { 'id': curso.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
+                    <a href="{{ path('curso_edit', { 'id': curso.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px;">
+    <a class="btn-floating btn-large waves-effect waves-light purple">
+        <i class="large material-icons">menu</i>
+    </a>
+    <ul>
+        <li><a href="{{ path('curso_new') }}" class="btn-floating waves-effect waves-light green"><i class="material-icons">add</i></a></li>
+    </ul>
+    </div>
+{% endblock %}
