@@ -11,3 +11,6 @@ fos_user.change_password:
 fos_user.resetting:
     prefix: "resetting"
     resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+
+fos_user_profile_show:
+    path: /

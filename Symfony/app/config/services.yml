@@ -7,11 +7,11 @@ services:
     fos_user.doctrine_registry:
         alias: doctrine
 
-    app_bundle.password_resetting:
-        class: AppBundle\EventListener\PasswordResettingListener
-        arguments: [ @router ]
-        tags:
-            - { name: kernel.event_subscriber }
+#    app_bundle.password_resetting:
+#        class: AppBundle\EventListener\PasswordResettingListener
+#        arguments: [ @router ]
+#        tags:
+#            - { name: kernel.event_subscriber }
 
     validator.cursoacademico.periodo:
         class: AppBundle\Validator\Constraints\CursoAcademicoPeriodoValidator
