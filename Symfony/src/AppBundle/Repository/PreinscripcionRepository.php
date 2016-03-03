@@ -54,8 +54,26 @@ class PreinscripcionRepository extends EntityRepository
             $query->andWhere('p.fechaNacimiento = :fechaNacimiento')
                 ->setParameter('fechaNacimiento', $fechaNacimiento);
 
-        $query->orderBy('p.id','ASC');
+        $query->orderBy('p.id','DESC');
 
         return $query->getQuery()->getResult();
     }
+
+    public function getTotal(CursoAcademico $cursoAcademico)
+    {
+        $result = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('COUNT(p) as total')
+            ->from('AppBundle:Preinscripcion', 'p')
+            ->innerJoin('p.preinscripcionEnCursos', 'pre')
+            ->innerJoin('pre.curso','c')
+            ->innerJoin('c.cursoAcademico','cu')
+            ->where('cu = :cursoAcademico')
+            ->setParameter('cursoAcademico', $cursoAcademico)
+            ->getQuery()
+            ->getResult();
+
+        return $result[0]['total'];
+    }
+
 }

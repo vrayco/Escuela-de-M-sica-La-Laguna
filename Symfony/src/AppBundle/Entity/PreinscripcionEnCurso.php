@@ -17,7 +17,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class PreinscripcionEnCurso
 {
 
-    const ESTADO_PREINSCRITO = "PREINSCRITO";
+    const ESTADO_PREINSCRITO    = "PREINSCRITO";
+    const ESTADO_PLAZA          = "PLAZA";
+    const ESTADO_ACEPTADA       = "ACEPTADA";
+    const ESTADO_RECHAZADA      = "RECHAZADA";
+    const ESTADO_RESERVA        = "RESERVA";
+
+    const SIN_PLAZA = -1;
 
     /**
      * @var int
@@ -27,13 +33,6 @@ class PreinscripcionEnCurso
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numeroSorteo", type="integer")
-     */
-    private $numeroSorteo;
 
     /**
      * @var int
@@ -64,8 +63,7 @@ class PreinscripcionEnCurso
     public function __construct()
     {
         $this->estado = self::ESTADO_PREINSCRITO;
-        $this->numeroLista = -1;
-        $this->numeroSorteo = -1;
+        $this->numeroLista = self::SIN_PLAZA;
     }
 
     /**
@@ -76,29 +74,6 @@ class PreinscripcionEnCurso
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set numeroSorteo
-     *
-     * @param integer $numeroSorteo
-     * @return PreinscripcionEnCurso
-     */
-    public function setNumeroSorteo($numeroSorteo)
-    {
-        $this->numeroSorteo = $numeroSorteo;
-
-        return $this;
-    }
-
-    /**
-     * Get numeroSorteo
-     *
-     * @return integer 
-     */
-    public function getNumeroSorteo()
-    {
-        return $this->numeroSorteo;
     }
 
     /**

@@ -42,6 +42,7 @@ class AlumnoType extends AbstractType
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                 // Relaciono el tutor con el alumno
                 $alumno = $event->getForm()->getData();
+
                 if($alumno->getTutor())
                     $alumno->getTutor()->setAlumno($alumno);
             })

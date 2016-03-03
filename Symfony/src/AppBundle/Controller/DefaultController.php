@@ -13,18 +13,19 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
+        $cursoAcademico = $this->get('utils.curso')->getCursoActual();
+
+        $em = $this->getDoctrine()->getManager();
+        $totalMatriculas = $em->getRepository('AppBundle:Matricula')->getTotal($cursoAcademico);
+        $totalPreinscripciones = $em->getRepository('AppBundle:Preinscripcion')->getTotal($cursoAcademico);
+        $totalPlazas = $em->getRepository('AppBundle:Curso')->getTotalPlazas($cursoAcademico);
+
         return $this->render('default/index.html.twig', array(
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
+            'cursoAcademico'    => $cursoAcademico,
+            'totalMatriculas'   => $totalMatriculas,
+            'totalPreinscripciones' => $totalPreinscripciones,
+            'totalPlazas'           => $totalPlazas
         ));
     }
 
-//    /**
-//     * @Route("/login", name="login")
-//     */
-//    public function loginAction(Request $request)
-//    {
-//        // replace this example code with whatever you need
-//        return $this->render('login.html.twig', array());
-//    }
 }

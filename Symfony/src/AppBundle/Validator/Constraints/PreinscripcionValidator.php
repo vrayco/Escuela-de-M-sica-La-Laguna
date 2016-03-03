@@ -68,7 +68,6 @@ class PreinscripcionValidator extends ConstraintValidator
                             $edadMinima = $p->getCurso()->getDisciplina()->getEdadMinima();
                             $edadMaxima = $p->getCurso()->getDisciplina()->getEdadMaxima();
 
-                            dump($edadMinima, $edadMaxima, $fechaNacimiento);
                             if($edadMinima) {
                                 $fechaLimite = new \DateTime('now');
                                 $fechaLimite->setDate($fechaLimite->format('Y')-$edadMinima,1,1);

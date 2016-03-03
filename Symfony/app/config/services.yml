@@ -49,9 +49,18 @@ services:
         class: AppBundle\Utils\CursoService
         arguments: [@doctrine.orm.default_entity_manager, @session]
 
+    utils.sorteoplazas:
+        class: AppBundle\Utils\SorteoPlazasService
+        arguments: [@doctrine.orm.default_entity_manager, @monolog.logger.escuelademusica_sorteo]
 
     preinscripcionencurso.form.type.view:
         class: AppBundle\Form\PreinscripcionEnCursoType
+        arguments: [ "@utils.curso" ]
+        tags:
+            - { name: form.type, alias: view }
+
+    matricula.form.type.view:
+        class: AppBundle\Form\MatriculaType
         arguments: [ "@utils.curso" ]
         tags:
             - { name: form.type, alias: view }

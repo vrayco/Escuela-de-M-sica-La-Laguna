@@ -29,6 +29,11 @@ class Curso
     private $id;
 
     /**
+     * @ORM\Column(name="entra_en_sorteo", type="boolean")
+     */
+    private $entraEnSorteo;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="numeroPlazas", type="integer", nullable=true)
@@ -73,6 +78,15 @@ class Curso
     public function __toString()
     {
         return $this->disciplina->getNombre() . ' (' .$this->disciplina->getDisciplinaGrupo()->getNombre(). ')';
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->matriculas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->entraEnSorteo = true;
     }
 
     /**
@@ -152,13 +166,6 @@ class Curso
     public function getCursoAcademico()
     {
         return $this->cursoAcademico;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->matriculas = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -248,5 +255,28 @@ class Curso
     public function getDisciplina()
     {
         return $this->disciplina;
+    }
+
+    /**
+     * Set entraEnSorteo
+     *
+     * @param boolean $entraEnSorteo
+     * @return Curso
+     */
+    public function setEntraEnSorteo($entraEnSorteo)
+    {
+        $this->entraEnSorteo = $entraEnSorteo;
+
+        return $this;
+    }
+
+    /**
+     * Get entraEnSorteo
+     *
+     * @return boolean 
+     */
+    public function getEntraEnSorteo()
+    {
+        return $this->entraEnSorteo;
     }
 }

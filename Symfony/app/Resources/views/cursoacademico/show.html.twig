@@ -12,11 +12,15 @@
             </tr>
             <tr>
                 <th>Fecha Inicio</th>
-                <td>{% if cursoAcademico.fechaInicio %}{{ cursoAcademico.fechaInicio|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if cursoAcademico.fechaInicio %}{{ cursoAcademico.fechaInicio|date('d/m/Y') }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Fecha Fin</th>
-                <td>{% if cursoAcademico.fechaFin %}{{ cursoAcademico.fechaFin|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if cursoAcademico.fechaFin %}{{ cursoAcademico.fechaFin|date('d/m/Y') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Fecha Sorteo</th>
+                <td>{% if cursoAcademico.generacionDeListas %}{{ cursoAcademico.generacionDeListas|date('d/m/Y H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Prefijo Expediente</th>

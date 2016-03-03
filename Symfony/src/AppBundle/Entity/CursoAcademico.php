@@ -76,6 +76,11 @@ class CursoAcademico
      */
     private $cursos;
 
+    /**
+     * @ORM\Column(name="generacion_de_listas", type="datetime", nullable=true)
+     */
+    private $generacionDeListas;
+
     public function __construct()
     {
         $this->cursos = new \Doctrine\Common\Collections\ArrayCollection();
@@ -243,5 +248,28 @@ class CursoAcademico
     public function getEnCurso()
     {
         return $this->enCurso;
+    }
+
+    /**
+     * Set generacionDeListas
+     *
+     * @param \DateTime $generacionDeListas
+     * @return CursoAcademico
+     */
+    public function setGeneracionDeListas($generacionDeListas)
+    {
+        $this->generacionDeListas = $generacionDeListas;
+
+        return $this;
+    }
+
+    /**
+     * Get generacionDeListas
+     *
+     * @return \DateTime 
+     */
+    public function getGeneracionDeListas()
+    {
+        return $this->generacionDeListas;
     }
 }

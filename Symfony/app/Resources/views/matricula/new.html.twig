@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Matrículas{% endblock %}
+
+{% form_theme form 'form/fields.html.twig' %}
+{% block content %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="input-field col s12">
+            {{ form_widget(form.alumno) }}
+            {{ form_label(form.alumno)  }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_widget(form.curso) }}
+            {{ form_label(form.curso) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}
+    <div class="col s12 center-align">
+        <div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
+            <button class="btn-floating btn-large waves-effect waves-light" type="submit" name="action">
+                <i class="large material-icons">done</i>
+            </button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+
+            $('select').material_select();
+
+            $("input").change(function () {
+                $(this).removeClass('invalid');
+            });
+
+
+            {% if form_errors(form.alumno)|length > 0 %}
+                Materialize.toast("{{ form_errors(form.alumno) }}", 4000, "error");
+            {% endif %}
+        });
+
+    </script>
+{% endblock %}

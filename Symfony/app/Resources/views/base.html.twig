@@ -10,6 +10,7 @@
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="{{ asset('css/main.css') }}"  media="screen,projection"/>
+    {% block stylesheets %}{% endblock %}
 </head>
 
 <body>
@@ -26,17 +27,19 @@
     <li><a href="{{ path('fos_user_security_logout') }}">Cerrar sesión</a></li>
 </ul>
 
+{% set route_matricula = ['matricula_index','matricula_new','matricula_show','matricula_edit'] %}
+{% set route_preinscripcion = ['preinscripcion_index','preinscripcion_new','preinscripcion_show','preinscripcion_edit','preinscripcion_sortearplazas'] %}
 {% set route_alumnos = ['alumno_index','alumno_new','alumno_show','alumno_edit'] %}
 {% set route_configuracion = ['cursoacademico_index','cursoacademico_new','cursoacademico_show','cursoacademico_edit','disciplinagrupo_index','disciplinagrupo_new','disciplinagrupo_show','disciplinagrupo_edit','disciplina_index','disciplina_new','disciplina_show','disciplina_edit'] %}
-{% set route_cursos = ['curso_index','curso_new','curso_show','curso_edit'] %}
+{% set route_cursos = ['curso_index','curso_new','curso_show','curso_edit', 'curso_listados'] %}
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper purple darken-2">
             <a href="{{ path('homepage') }}" class="brand-logo">Escuela de Música</a>
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
-                <li><a href="{{ path('preinscripcion_index') }}">Preinscripcion</a></li>
-                <li><a href="#">Matriculas</a></li>
+                <li class="{% if app.request.get('_route') in route_preinscripcion %}active{% endif %}"><a href="{{ path('preinscripcion_index') }}">Preinscripcion</a></li>
+                <li class="{% if app.request.get('_route') in route_matricula %}active{% endif %}"><a href="{{ path('matricula_index') }}">Matriculas</a></li>
                 <li class="{% if app.request.get('_route') in route_cursos %}active{% endif %}"><a href="{{ path('curso_index') }}">Cursos</a></li>
                 {{ render(controller('AppBundle:UI:getSelectorCursoAcademico')) }}
                 <li class="{% if app.request.get('_route') in route_alumnos %}active{% endif %}"><a href="{{ path('alumno_index') }}">Alumnos</a></li>
@@ -46,7 +49,7 @@
             <ul class="side-nav" id="mobile-demo">
                 <li class="{% if app.request.get('_route') in route_alumnos %}active{% endif %}"><a href="{{ path('alumno_index') }}">Alumnos</a></li>
                 <li><a href="{{ path('curso_index') }}">Cursos</a></li>
-                <li><a href="#">Matriculas</a></li>
+                <li><a href="{{ path('matricula_index') }}">Matriculas</a></li>
                 <li><a href="{{ path('preinscripcion_index') }}">Preinscripcion</a></li>
                 <li><a href="#">Configuración</a></li>
                 <li><a href="{{ path('fos_user_change_password') }}">Cambiar contraseña</a></li>

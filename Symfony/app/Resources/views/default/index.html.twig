@@ -2,4 +2,27 @@
 
 {% block content %}
 
+    <div class="row">
+        <div class="col s12 m6 offset-m3">
+            <ul class="collection with-header">
+                <li class="collection-header"><h5>Resumen <small>{{ cursoAcademico }}</small></h5></li>
+                <li class="collection-item"><div>Matrículas<a href="{{ path('matricula_index') }}" class="secondary-content">{{ totalMatriculas }}</a></div></li>
+                <li class="collection-item"><div>Preinscripciones<a href="{{ path('preinscripcion_index') }}" class="secondary-content">{{ totalPreinscripciones }}</a></div></li>
+                <li class="collection-item"><div>Plazas ofertadas<a class="secondary-content">{{ totalPlazas }}</a></div></li>
+                <li class="collection-item"><div>Fecha del sorteo<a class="secondary-content">{% if cursoAcademico.generacionDeListas %}{{ cursoAcademico.generacionDeListas|date('d/m/Y H:i:s') }}{% else %}NO SE HA CELEBRADO{% endif %}</a></div></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 m8 offset-m2 center-align">
+            {% if not cursoAcademico.generacionDeListas %}
+                <a href="{{ path('preinscripcion_sortearplazas') }}" class="waves-effect waves-light btn-large lime"><i class="material-icons left">shuffle</i> Sortear plazas</a>
+            {% else %}
+                <a href="{{ path('preinscripcion_inicializarsorteo') }}" class="waves-effect waves-light btn-large blue"><i class="material-icons left">delete</i> Eliminar sorteo (botón temporal)</a>
+                <a href="{{ path('curso_listados') }}" class="waves-effect waves-light btn-large green"><i class="material-icons left">shuffle</i> Ver sorteo</a>
+            {% endif %}
+        </div>
+    </div>
+
 {% endblock %}

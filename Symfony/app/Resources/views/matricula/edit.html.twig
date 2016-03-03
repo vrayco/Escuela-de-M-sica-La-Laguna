@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Matrículas{% endblock %}
+
+{% form_theme edit_form 'form/fields.html.twig' %}
+{% block content %}
+    {{ form_start(edit_form) }}
+    <div class="row">
+        <div class="input-field col s12">
+            {{ form_widget(edit_form.estado) }}
+            {{ form_label(edit_form.estado)  }}
+        </div>
+    </div>
+    {{ form_rest(edit_form) }}
+    <div class="col s12 center-align">
+        <div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
+            <button class="btn-floating btn-large waves-effect waves-light" type="submit" name="action">
+                <i class="large material-icons">done</i>
+            </button>
+        </div>
+    </div>
+    {{ form_end(edit_form) }}
+{% endblock %}

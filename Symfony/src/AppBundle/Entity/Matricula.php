@@ -3,12 +3,18 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Matricula
  *
  * @ORM\Table(name="matricula")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MatriculaRepository")
+ * @UniqueEntity({"alumno","curso"},
+ *    errorPath="alumno",
+ *    message="El alumno ya esta matriculado en la disciplina."
+ * )
  */
 class Matricula
 {
@@ -23,9 +29,15 @@ class Matricula
     private $id;
 
     /**
+     * @ORM\Column(name="prefijo", type="string", length=2)
+     */
+    private $prefijo;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="estado", type="string", length=32)
+     * @Assert\Choice(choices = {"ALTA", "BAJA"}, message = "Los estado válidos son ALTA o BAJA.")
      */
     private $estado;
 
@@ -52,6 +64,11 @@ class Matricula
     {
         $this->createAt = new \DateTime('now');
         $this->estado = self::ESTADO_ALTA;
+    }
+
+    public function getIdentificador()
+    {
+        return 'MA-'.$this->prefijo.$this->id;
     }
 
     /**
@@ -154,5 +171,28 @@ class Matricula
     public function getCurso()
     {
         return $this->curso;
+    }
+
+    /**
+     * Set prefijo
+     *
+     * @param string $prefijo
+     * @return Matricula
+     */
+    public function setPrefijo($prefijo)
+    {
+        $this->prefijo = $prefijo;
+
+        return $this;
+    }
+
+    /**
+     * Get prefijo
+     *
+     * @return string 
+     */
+    public function getPrefijo()
+    {
+        return $this->prefijo;
     }
 }

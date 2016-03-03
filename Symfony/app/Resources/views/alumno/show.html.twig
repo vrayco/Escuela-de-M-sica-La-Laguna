@@ -60,6 +60,30 @@
         </tbody>
     </table>
 
+    <h5 style="margin-top:40px">Matrículas</h5>
+    <table class="highlight bordered">
+        <thead>
+        <tr>
+            <th>Identificador</th>
+            <th>Disciplina</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for matricula in alumno.matriculas %}
+            <tr onclick="document.location = '{{ path('matricula_show', { 'id': matricula.id }) }}';">
+                <td><span class="chip">{{ matricula.identificador }}</span></td>
+                <td><small>{{ matricula.curso.disciplina.disciplinaGrupo }}</small><br>
+                    {{ matricula.curso.disciplina }}</td>
+                <td class="hide-on-small-only right-align">
+                    <a href="{{ path('matricula_show', { 'id': matricula.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
+                    <a href="{{ path('matricula_edit', { 'id': matricula.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
     <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px;">
         <a class="btn-floating btn-large waves-effect waves-light purple">
             <i class="large material-icons">menu</i>

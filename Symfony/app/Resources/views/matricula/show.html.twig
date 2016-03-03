@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Matrículas{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        a,
+        a:hover {
+            color: rgba(0, 0, 0, 0.87);
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <table class="highlight bordered">
+        <tbody>
+            <tr>
+                <th>Identificador</th>
+                <td class="right-align"><span class="chip">{{ matricula.identificador }}</span></td>
+            </tr>
+            <tr>
+                <th>Disciplina</th>
+                <td class="right-align"><a href="{{ path('curso_show',{ 'id' : matricula.curso.id}) }}?tab=matriculas"><small>{{ matricula.curso.disciplina.disciplinaGrupo }}</small><br>{{ matricula.curso.disciplina }}</a></td>
+            </tr>
+            <tr>
+                <th>Expediente alumno</th>
+                <td class="right-align"><a href="{{ path('alumno_show', { 'id' : matricula.alumno.id }) }}"><span class="chip purple lighten-4">{{ matricula.alumno.expediente }}</span></a></td>
+            </tr>
+            <tr>
+                <th>Nombre alumno</th>
+                <td class="right-align">{{ matricula.alumno }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td class="right-align">{{ matricula.estado }}</td>
+            </tr>
+            <tr>
+                <th>Creado el</th>
+                <td class="right-align">{% if matricula.createAt %}{{ matricula.createAt|date('d/m/Y H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large waves-effect waves-light purple">
+            <i class="large material-icons">menu</i>
+        </a>
+        <ul>
+            <li><a href="{{ path('matricula_index') }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">view_list</i></a></li>
+            <li><a href="#modal1" class="btn-floating btn waves-effect waves-light red modal-trigger"><i class="material-icons">delete</i></a></li>
+        </ul>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h5>¿Estás seguro de eliminar la matricula <span class="chip">{{ matricula.identificador }}</span>?</h5>
+            <p>La acción es irreversible.</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn grey">No, cancelar</a>
+            {{ form_start(delete_form) }}
+            <button class="modal-action modal-close waves-effect waves-green btn red" type="submit" name="action">Eliminar
+                <i class="material-icons right">delete</i>
+            </button>
+            {{ form_end(delete_form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+            $('.modal-trigger').leanModal();
+        });
+    </script>
+{% endblock %}

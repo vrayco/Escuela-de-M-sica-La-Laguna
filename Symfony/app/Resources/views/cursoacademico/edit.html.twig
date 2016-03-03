@@ -6,14 +6,14 @@
 {% block content %}
     {{ form_start(edit_form) }}
     <div class="row">
-        <div class="input-field col s8">
+        <div class="input-field col s12">
             {{ form_widget(edit_form.nombre, {'attr' : { 'placeholder' : '2016-2017'}}) }}
             {{ form_label(edit_form.nombre) }}
         </div>
-        <div class="input-field col s4">
-            {{ form_widget(edit_form.prefijoExpediente) }}
-            {{ form_label(edit_form.prefijoExpediente)  }}
-        </div>
+        {#<div class="input-field col s4">#}
+            {#{{ form_widget(edit_form.prefijoExpediente) }}#}
+            {#{{ form_label(edit_form.prefijoExpediente)  }}#}
+        {#</div>#}
     </div>
     <div class="row">
         <div class="input-field col s4">

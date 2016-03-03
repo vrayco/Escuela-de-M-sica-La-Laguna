@@ -74,18 +74,49 @@ class CursoController extends Controller
     }
 
     /**
+     * @Route("/listados", name="curso_listados")
+     * @Method("GET")
+     */
+    public function listadosAction()
+    {
+        $cursoAcademico = $this->get('utils.curso')->getCursoActual();
+        $em = $this->getDoctrine()->getManager();
+        $cursos = $em->getRepository('AppBundle:Curso')->getCursosEntraEnSorteo($cursoAcademico);
+
+        $listados = array();
+        foreach($cursos as $curso)
+            $listados[$curso->getId()] = $em->getRepository('AppBundle:PreinscripcionEnCurso')->findBy(array('curso' => $curso), array('numeroLista' => 'ASC'));
+
+        return $this->render(':curso:listados.html.twig', array(
+            'cursos'    => $cursos,
+            'listados'  => $listados
+        ));
+    }
+
+    /**
      * Finds and displays a Curso entity.
      *
      * @Route("/{id}", name="curso_show")
      * @Method("GET")
      */
-    public function showAction(Curso $curso)
+    public function showAction(Request $request, Curso $curso)
     {
-        $deleteForm = $this->createDeleteForm($curso);
+        $deleteForm = null;
+        if(!$curso->getCursoAcademico()->getGeneracionDeListas())
+            $deleteForm = $this->createDeleteForm($curso);
+
+        $em = $this->getDoctrine()->getManager();
+        $preinscripciones = $em->getRepository('AppBundle:PreinscripcionEnCurso')->findBy(array('curso' => $curso), array('numeroLista' => 'ASC'));
+        $matriculas = $em->getRepository('AppBundle:Matricula')->findBy(array('curso' => $curso), array('id' => 'ASC'));
+
+        $tab = $request->query->get('tab');
 
         return $this->render('curso/show.html.twig', array(
-            'curso' => $curso,
-            'delete_form' => $deleteForm->createView(),
+            'curso'             => $curso,
+            'preinscripciones'  => $preinscripciones,
+            'matriculas'        => $matriculas,
+            'tab'               => $tab,
+            'delete_form'       => $deleteForm != null ? $deleteForm->createView() : null,
         ));
     }
 
@@ -97,6 +128,9 @@ class CursoController extends Controller
      */
     public function editAction(Request $request, Curso $curso)
     {
+        if(!$curso->getCursoAcademico()->getGeneracionDeListas())
+            throw new NotFoundHttpException('No se puede editar el curso despúes del sorteo.');
+
         $deleteForm = $this->createDeleteForm($curso);
         $editForm = $this->createForm('AppBundle\Form\CursoType', $curso);
         $editForm->handleRequest($request);

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\CursoAcademico;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,52 @@ use Doctrine\ORM\EntityRepository;
  */
 class CursoRepository extends EntityRepository
 {
+    public function getCursos(CursoAcademico $cursoAcademico)
+    {
+        return $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('c')
+            ->from('AppBundle:Curso', 'c')
+            ->innerJoin('c.cursoAcademico', 'cu')
+            ->innerJoin('c.disciplina','d')
+            ->where('cu = :cursoAcademico')
+            ->setParameter('cursoAcademico', $cursoAcademico)
+            ->orderBy('d.nombre','ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getCursosEntraEnSorteo(CursoAcademico $cursoAcademico)
+    {
+        return $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('c','p')
+            ->from('AppBundle:Curso', 'c')
+            ->innerJoin('c.cursoAcademico', 'cu')
+            ->innerJoin('c.disciplina','d')
+            ->innerJoin('c.preinscripciones','p')
+            ->where('cu = :cursoAcademico')
+            ->andWhere('c.entraEnSorteo = TRUE')
+            ->setParameter('cursoAcademico', $cursoAcademico)
+            ->orderBy('d.nombre','ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getTotalPlazas(CursoAcademico $cursoAcademico)
+    {
+        $result = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('SUM(c.numeroPlazas) as total')
+            ->from('AppBundle:Curso', 'c')
+            ->innerJoin('c.cursoAcademico', 'cu')
+            ->innerJoin('c.disciplina','d')
+            ->where('cu = :cursoAcademico')
+            ->setParameter('cursoAcademico', $cursoAcademico)
+            ->orderBy('d.nombre','ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $result[0]['total'];
+    }
 }

@@ -18,7 +18,7 @@
         <tbody>
         {% for preinscripcion in preinscripciones %}
             <tr onclick="document.location = '{{ path('preinscripcion_show', { 'id': preinscripcion.id }) }}';">
-                <td><span class="chip">PRE-{{ preinscripcion.identificador }}</span></td>
+                <td><span class="chip">{{ preinscripcion.identificador }}</span></td>
                 <td>{% if preinscripcion.dni %}{{ preinscripcion.dni }}{% else %}---{% endif %}</td>
                 <td>{{ preinscripcion.apellidos }}, {{ preinscripcion.nombre }}</td>
                 <td class="center-align">{% if preinscripcion.fechaNacimiento %}{{ preinscripcion.fechaNacimiento|date('d/m/Y') }}{% endif %}</td>

@@ -4,25 +4,133 @@
 
 {% block content %}
 
-    <table class="highlight bordered">
-        <tbody>
-            <tr>
-                <th>Disciplina</th>
-                <td class="right-align">
-                    <small>{{ curso.disciplina.disciplinaGrupo }}</small><br>
-                    {{ curso.disciplina }}
-                </td>
-            </tr>
-            <tr>
-                <th>Número plazas</th>
-                <td class="right-align">{% if curso.numeroPlazas %}{{ curso.numeroPlazas }}{% else %}---{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Número plazas prioritarias</th>
-                <td class="right-align">{% if curso.numeroPlazasPrioritarias %}{{ curso.numeroPlazasPrioritarias }}{% else %}---{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s4"><a class="{% if tab == 'info' %}active{% endif %}" href="#info">Información</a></li>
+                <li class="tab col s4"><a class="{% if tab == 'matriculas' %}active{% endif %}" href="#matriculas">Matrículas</a></li>
+                <li class="tab col s4"><a class="{% if tab == 'preinscripciones' %}active{% endif %}" href="#preinscripciones">Pre-inscripciones</a></li>
+            </ul>
+        </div>
+        <div id="info" class="col s12">
+            <table class="highlight bordered">
+                <tbody>
+                <tr>
+                    <th>Disciplina</th>
+                    <td class="right-align">
+                        <small>{{ curso.disciplina.disciplinaGrupo }}</small><br>
+                        {{ curso.disciplina }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>¿Entra en el sorteo de plazas?</th>
+                    <td class="right-align">{% if curso.entraEnSorteo %}<span class="chip green lighten-4">Sí</span>{% else %}<span class="chip grey lighten-4">No</span>{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Número plazas</th>
+                    <td class="right-align">{% if curso.numeroPlazas %}{{ curso.numeroPlazas }}{% else %}---{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Número plazas prioritarias</th>
+                    <td class="right-align">{% if curso.numeroPlazasPrioritarias %}{{ curso.numeroPlazasPrioritarias }}{% else %}---{% endif %}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="matriculas" class="col s12">
+            {% if matriculas|length == 0 %}
+                <div class="row">
+                    <div class="col s12 m8 offset-m2">
+                        <div class="card-panel purple lighten-4" style="margin-top: 50px">
+                            <span class="white-text center-align">No existen matrículas para este curso en el sistema</span>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <table class="highlight bordered">
+                    <thead>
+                    <tr>
+                        <th>Identificador</th>
+                        <th>Disciplina</th>
+                        <th>Expediente</th>
+                        <th>Nombre</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for matricula in curso.matriculas %}
+                        <tr onclick="document.location = '{{ path('matricula_show', { 'id': matricula.id }) }}';">
+                            <td><span class="chip">{{ matricula.identificador }}</span></td>
+                            <td><small>{{ matricula.curso.disciplina.disciplinaGrupo }}</small><br>
+                                {{ matricula.curso.disciplina }}</td>
+                            <td><a href="{{ path('alumno_show', { 'id' : matricula.alumno.id }) }}"><span class="chip purple lighten-4">{{ matricula.alumno.expediente }}</span></a></td>
+                            <td>{{ matricula.alumno }}</td>
+                            <td class="hide-on-small-only right-align">
+                                <a href="{{ path('matricula_show', { 'id': matricula.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
+                                <a href="{{ path('matricula_edit', { 'id': matricula.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+        <div id="preinscripciones" class="col s12">
+            {% if preinscripciones|length == 0 %}
+                <div class="row">
+                    <div class="col s12 m8 offset-m2">
+                        <div class="card-panel purple lighten-4" style="margin-top: 50px">
+                            <span class="white-text center-align">No existen pre-inscripciones para este curso en el sistema</span>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <table class="highlight bordered">
+                    <thead>
+                    <tr>
+                        <th>Posición</th>
+                        <th>Estado</th>
+                        <th>Identificador</th>
+                        <th>DNI</th>
+                        <th>Nombre</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for preinscripcion in preinscripciones %}
+                        <tr>
+                            <td><span class="chip">{{ preinscripcion.numeroLista }}</span></td>
+                            <td>
+                                {% if constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_PLAZA') == preinscripcion.estado %}
+                                    <span class="chip green lighten-4">{{ preinscripcion.estado }}</span>
+                                {% elseif constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_ACEPTADA') == preinscripcion.estado %}
+                                    <span class="chip blue lighten-4">{{ preinscripcion.estado }}</span>
+                                {% elseif constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_RECHAZADA') == preinscripcion.estado %}
+                                    <span class="chip grey lighten-4">{{ preinscripcion.estado }}</span>
+                                {% elseif constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_RESERVA') == preinscripcion.estado %}
+                                    <span class="chip orange lighten-4">{{ preinscripcion.estado }}</span>
+                                {% elseif constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_PREINSCRITO') == preinscripcion.estado %}
+                                    <span class="chip purple lighten-4">{{ preinscripcion.estado }}</span>
+                                {% endif %}
+                            </td>
+                            <td><a href="{{ path('preinscripcion_show', { 'id' : preinscripcion.preinscripcion.id }) }}"><span class="chip lime lighten-4">{{ preinscripcion.preinscripcion.identificador }}</span></a></td>
+                            <td>{{ preinscripcion.preinscripcion.dni }}</td>
+                            <td>{{ preinscripcion.preinscripcion.apellidos }}, {{ preinscripcion.preinscripcion.nombre }}</td>
+                            {#<td class="center-align">{% if preinscripcion.preinscripcion.prioridad %}<span class="chip yellow lighten-4">PRIORIDAD</span>{% endif %}</td>#}
+                            {#<td class="center-align">{% if preinscripcion.preinscripcion.empadronado %}<span class="chip purple lighten-4">EMPADRONADO</span>{% endif %}</td>#}
+                            <td class="right-align">
+                                {% if constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_PLAZA') == preinscripcion.estado or constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_ACEPTADA') == preinscripcion.estado or constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_RECHAZADA') == preinscripcion.estado %}
+                                    <a href="{{ path('preinscripcion_plazaaceptarorechazar', {'id' : preinscripcion.id}) }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">thumbs_up_down</i></a>
+                                {% endif %}
+                                <a href="{{ path('preinscripcion_show', { 'id': preinscripcion.preinscripcion.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
 
     <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px;">
         <a class="btn-floating btn-large waves-effect waves-light purple">
@@ -30,32 +138,37 @@
         </a>
         <ul>
             <li><a href="{{ path('curso_index') }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">view_list</i></a></li>
-            <li><a href="{{ path('curso_edit', { 'id': curso.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a></li>
-            <li><a href="#modal1" class="btn-floating btn waves-effect waves-light red modal-trigger"><i class="material-icons">delete</i></a></li>
+            {% if delete_form is not null %}
+                <li><a href="{{ path('curso_edit', { 'id': curso.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a></li>
+                <li><a href="#modal1" class="btn-floating btn waves-effect waves-light red modal-trigger"><i class="material-icons">delete</i></a></li>
+            {% endif %}
         </ul>
     </div>
 
-    <!-- Modal Structure -->
-    <div id="modal1" class="modal bottom-sheet">
-        <div class="modal-content">
-            <h5>¿Estás seguro de eliminar el curso: <span class="chip">{{ curso.disciplina }}</span>?</h5>
-            <p>La acción es irreversible. Se eliminará todo la información relacionada con el curso (matriculas, preinscripciones, etc...)</p>
+    {% if delete_form is not null %}
+        <!-- Modal Structure -->
+        <div id="modal1" class="modal bottom-sheet">
+            <div class="modal-content">
+                <h5>¿Estás seguro de eliminar el curso: <span class="chip">{{ curso.disciplina }}</span>?</h5>
+                <p>La acción es irreversible. Se eliminará todo la información relacionada con el curso (matriculas, preinscripciones, etc...)</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn grey">No, cancelar</a>
+                {{ form_start(delete_form) }}
+                <button class="modal-action modal-close waves-effect waves-green btn red" type="submit" name="action">Eliminar
+                    <i class="material-icons right">delete</i>
+                </button>
+                {{ form_end(delete_form) }}
+            </div>
         </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn grey">No, cancelar</a>
-            {{ form_start(delete_form) }}
-            <button class="modal-action modal-close waves-effect waves-green btn red" type="submit" name="action">Eliminar
-                <i class="material-icons right">delete</i>
-            </button>
-            {{ form_end(delete_form) }}
-        </div>
-    </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
     <script>
         $( document ).ready(function() {
             $('.modal-trigger').leanModal();
+            $('ul.tabs').tabs();
         });
     </script>
 {% endblock %}

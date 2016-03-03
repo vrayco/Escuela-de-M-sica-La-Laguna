@@ -112,7 +112,7 @@ class Preinscripcion
 
     public function getIdentificador()
     {
-        return $this->prefijo.$this->id;
+        return "PRE-" . $this->prefijo.$this->id;
     }
 
     /**

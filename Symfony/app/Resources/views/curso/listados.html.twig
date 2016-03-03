@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Cursos{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col s12">
+            <ul class="collapsible" data-collapsible="accordion">
+                {% for curso in cursos %}
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">view_list</i><small>{{ curso.disciplina.disciplinaGrupo }}</small> {{ curso.disciplina }}</div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="col s12">
+                                        <table class="highlight bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>Posición</th>
+                                                <th>Estado</th>
+                                                <th>Identificador</th>
+                                                <th>DNI</th>
+                                                <th>Nombre</th>
+                                                <th></th>
+                                                <th></th>
+                                                {#<th></th>#}
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for preinscripcion in listados[curso.id] %}
+                                                <tr>
+                                                    <td><span class="chip">{{ preinscripcion.numeroLista }}</span></td>
+                                                    <td>
+                                                        {% if constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_PLAZA') == preinscripcion.estado %}
+                                                            <span class="chip green lighten-4">{{ preinscripcion.estado }}</span>
+                                                        {% elseif constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_ACEPTADA') == preinscripcion.estado %}
+                                                            <span class="chip blue lighten-4">{{ preinscripcion.estado }}</span>
+                                                        {% elseif constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_RECHAZADA') == preinscripcion.estado %}
+                                                            <span class="chip grey lighten-4">{{ preinscripcion.estado }}</span>
+                                                        {% elseif constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_RESERVA') == preinscripcion.estado %}
+                                                            <span class="chip orange lighten-4">{{ preinscripcion.estado }}</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td><span class="chip lime lighten-4">{{ preinscripcion.preinscripcion.identificador }}</span></td>
+                                                    <td>{{ preinscripcion.preinscripcion.dni }}</td>
+                                                    <td>{{ preinscripcion.preinscripcion.apellidos }}, {{ preinscripcion.preinscripcion.nombre }}</td>
+                                                    <td class="center-align">{% if preinscripcion.preinscripcion.prioridad %}<span class="chip yellow lighten-4">PRIORIDAD</span>{% endif %}</td>
+                                                    <td class="center-align">{% if preinscripcion.preinscripcion.empadronado %}<span class="chip purple lighten-4">EMPADRONADO</span>{% endif %}</td>
+                                                    {#<td>#}
+                                                        {#{% if constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_PLAZA') == preinscripcion.estado or constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_ACEPTADA') == preinscripcion.estado or constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_RECHAZADA') == preinscripcion.estado %}#}
+                                                            {#<li><a href="{{ path('preinscripcion_plazaaceptarorechazar', {'id' : preinscripcion.id}) }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">thumbs_up_down</i></a></li>#}
+                                                        {#{% endif %}#}
+                                                    {#</td>#}
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts  %}
+    <script>
+        $(document).ready(function(){
+            $('ul.tabs').tabs();
+        });
+    </script>
+{% endblock %}

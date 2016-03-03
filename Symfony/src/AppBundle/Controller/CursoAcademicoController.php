@@ -132,8 +132,8 @@ class CursoAcademicoController extends Controller
      */
     public function editAction(Request $request, CursoAcademico $cursoAcademico)
     {
-        $deleteForm = $this->createDeleteForm($cursoAcademico);
         $editForm = $this->createForm('AppBundle\Form\CursoAcademicoType', $cursoAcademico);
+        $editForm->remove('prefijoExpediente');
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -156,7 +156,6 @@ class CursoAcademicoController extends Controller
         return $this->render('cursoacademico/edit.html.twig', array(
             'cursoAcademico' => $cursoAcademico,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
     /**

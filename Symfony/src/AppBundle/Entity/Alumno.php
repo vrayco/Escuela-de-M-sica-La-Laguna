@@ -148,6 +148,11 @@ class Alumno
         $this->createAt = new \DateTime('now');
     }
 
+    public function __toString()
+    {
+        return $this->apellidos.', '.$this->nombre;
+    }
+
     /**
      * Get id
      *
@@ -165,7 +170,7 @@ class Alumno
      */
     public function getExpediente()
     {
-        return $this->expedienteLetra . '-' .sprintf('%04d', $this->expedienteNumero);
+        return 'EXP-'.$this->expedienteLetra.sprintf('%04d', $this->expedienteNumero);
     }
 
     /**
