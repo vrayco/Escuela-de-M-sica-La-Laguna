@@ -44,6 +44,7 @@ class LoadPreinscripcionData extends AbstractFixture implements OrderedFixtureIn
             $entity->setEmpadronado(rand(0,1));
             $entity->setPrioridad(rand(0,1));
 
+
             $numCursos = rand(1,3);
 
             // Para evitar que se repitan
@@ -80,6 +81,6 @@ class LoadPreinscripcionData extends AbstractFixture implements OrderedFixtureIn
      */
     public function getOrder()
     {
-        return 4;
+        return 5;
     }
 }
