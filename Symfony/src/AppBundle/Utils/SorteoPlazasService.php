@@ -11,7 +11,7 @@ use Symfony\Bridge\Monolog\Logger;
 
 class SorteoPlazasService
 {
-    const TIEMPO_EJECUCION_MAX = 60*10;
+    const TIEMPO_EJECUCION_MAX = 600;
 
     private $em;
     private $logger;
