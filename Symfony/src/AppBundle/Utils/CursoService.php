@@ -73,10 +73,10 @@ class CursoService
                 if($preinscripcion->getEstado() != PreinscripcionEnCurso::ESTADO_ACEPTADA and $preinscripcion->getEstado() != PreinscripcionEnCurso::ESTADO_RECHAZADA) {
                     $preinscripcion->setEstado(PreinscripcionEnCurso::ESTADO_PLAZA);
                     $asignadas++;
-
                 }
             } else {
-                $preinscripcion->setEstado(PreinscripcionEnCurso::ESTADO_RESERVA);
+                if($preinscripcion->getEstado() != PreinscripcionEnCurso::ESTADO_RECHAZADA)
+                    $preinscripcion->setEstado(PreinscripcionEnCurso::ESTADO_RESERVA);
             }
 
             $this->em->persist($preinscripcion);
