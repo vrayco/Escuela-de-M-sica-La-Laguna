@@ -37,6 +37,7 @@ class Curso
      * @var int
      *
      * @ORM\Column(name="numeroPlazas", type="integer", nullable=true)
+     * @Assert\NotBlank(message="")
      * @Assert\GreaterThanOrEqual(
      *     value = 0
      * )
@@ -47,6 +48,7 @@ class Curso
      * @var int
      *
      * @ORM\Column(name="numeroPlazasPrioritarias", type="integer", nullable=true)
+     * @Assert\NotBlank(message="")
      * @Assert\GreaterThanOrEqual(
      *     value = 0
      * )
@@ -87,6 +89,8 @@ class Curso
     {
         $this->matriculas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->entraEnSorteo = true;
+        $this->numeroPlazas = 0;
+        $this->numeroPlazasPrioritarias = 0;
     }
 
     /**

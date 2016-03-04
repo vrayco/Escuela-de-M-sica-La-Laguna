@@ -250,6 +250,16 @@ class PreinscripcionController extends Controller
     }
 
     /**
+     * @Route("/descargar/listado", name="preinscripcion_descargarlistado")
+     * @Method("GET")
+     */
+    public function descargarListado()
+    {
+        $cursoAcademico = $this->get('utils.curso')->getCursoActual();
+        return $this->get('utils.listados')->generarListadoPreinscripciones($cursoAcademico);
+    }
+
+    /**
      * Deletes a Preinscripcion entity.
      *
      * @Route("/{id}", name="preinscripcion_delete")
@@ -298,6 +308,6 @@ class PreinscripcionController extends Controller
             ->setAction($this->generateUrl('preinscripcion_delete', array('id' => $preinscripcion->getId())))
             ->setMethod('DELETE')
             ->getForm()
-        ;
+            ;
     }
 }

@@ -28,6 +28,36 @@ class PreinscripcionEnCursoRepository extends EntityRepository
             ->getResult();
     }
 
+    public function getPreinscripcionesOrdenAlfabetico(Curso $curso)
+    {
+        return $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('pre, p')
+            ->from('AppBundle:PreinscripcionEnCurso', 'pre')
+            ->innerJoin('pre.preinscripcion', 'p')
+            ->innerJoin('pre.curso','c')
+            ->where('c = :curso')
+            ->setParameter('curso', $curso)
+            ->orderBy('p.apellidos','ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getPreinscripcionesOrdenLista(Curso $curso)
+    {
+        return $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('pre, p')
+            ->from('AppBundle:PreinscripcionEnCurso', 'pre')
+            ->innerJoin('pre.preinscripcion', 'p')
+            ->innerJoin('pre.curso','c')
+            ->where('c = :curso')
+            ->setParameter('curso', $curso)
+            ->orderBy('pre.numeroLista','ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function getPreinscripcionesPrioritarias(Curso $curso)
     {
         return $this->getEntityManager()

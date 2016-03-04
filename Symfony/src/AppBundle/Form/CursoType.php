@@ -19,6 +19,9 @@ class CursoType extends AbstractType
         $builder
             ->add('disciplina', EntityType::class, array(
                 'class' => 'AppBundle:Disciplina',
+                'choice_label' => function ($disciplina) {
+                    return $disciplina->getNombre().' ('. $disciplina->getDisciplinaGrupo()->getNombre().')';
+                },
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('d')
                         ->orderBy('d.nombre', 'ASC');

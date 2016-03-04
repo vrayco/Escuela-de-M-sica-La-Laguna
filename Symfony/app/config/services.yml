@@ -53,6 +53,10 @@ services:
         class: AppBundle\Utils\SorteoPlazasService
         arguments: [@doctrine.orm.default_entity_manager, @monolog.logger.escuelademusica_sorteo]
 
+    utils.listados:
+        class: AppBundle\Utils\ListadosService
+        arguments: [@doctrine.orm.default_entity_manager, @phpexcel]
+
     preinscripcionencurso.form.type.view:
         class: AppBundle\Form\PreinscripcionEnCursoType
         arguments: [ "@utils.curso" ]

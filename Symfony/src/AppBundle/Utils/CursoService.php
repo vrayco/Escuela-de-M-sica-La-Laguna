@@ -45,7 +45,6 @@ class CursoService
         return $cursoActual;
     }
 
-    //
     public function refreshCursoAcademico()
     {
         $cursoActual = $this->session->get(CursoAcademico::CURSO_ACADEMICO_SESSION_VAR);

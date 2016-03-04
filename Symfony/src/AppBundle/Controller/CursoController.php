@@ -156,6 +156,16 @@ class CursoController extends Controller
     }
 
     /**
+     * @Route("/descargar/listado", name="curso_descargarlistado")
+     * @Method("GET")
+     */
+    public function descargarListado()
+    {
+        $cursoAcademico = $this->get('utils.curso')->getCursoActual();
+        return $this->get('utils.listados')->generarListadoCursos($cursoAcademico);
+    }
+
+    /**
      * Deletes a Curso entity.
      *
      * @Route("/{id}", name="curso_delete")

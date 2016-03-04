@@ -38,8 +38,8 @@
             <a href="{{ path('homepage') }}" class="brand-logo">Escuela de Música</a>
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
-                <li class="{% if app.request.get('_route') in route_preinscripcion %}active{% endif %}"><a href="{{ path('preinscripcion_index') }}">Preinscripcion</a></li>
-                <li class="{% if app.request.get('_route') in route_matricula %}active{% endif %}"><a href="{{ path('matricula_index') }}">Matriculas</a></li>
+                <li class="{% if app.request.get('_route') in route_preinscripcion %}active{% endif %}"><a href="{{ path('preinscripcion_index') }}">Pre-inscripciones</a></li>
+                <li class="{% if app.request.get('_route') in route_matricula %}active{% endif %}"><a href="{{ path('matricula_index') }}">Matrículas</a></li>
                 <li class="{% if app.request.get('_route') in route_cursos %}active{% endif %}"><a href="{{ path('curso_index') }}">Cursos</a></li>
                 {{ render(controller('AppBundle:UI:getSelectorCursoAcademico')) }}
                 <li class="{% if app.request.get('_route') in route_alumnos %}active{% endif %}"><a href="{{ path('alumno_index') }}">Alumnos</a></li>
@@ -47,11 +47,15 @@
                 <li><a class="dropdown-perfil" href="#!" data-activates="dropdown-perfil"><i class="material-icons">perm_identity</i></a></li>
             </ul>
             <ul class="side-nav" id="mobile-demo">
+                <li class="{% if app.request.get('_route') == 'homepage' %}active{% endif %}"><a href="{{ path('homepage') }}">Home</a></li>
+                <li class="{% if app.request.get('_route') in route_preinscripcion %}active{% endif %}"><a href="{{ path('preinscripcion_index') }}">Pre-inscripciones</a></li>
+                <li class="{% if app.request.get('_route') in route_matricula %}active{% endif %}"><a href="{{ path('matricula_index') }}">Matrículas</a></li>
+                <li class="{% if app.request.get('_route') in route_cursos %}active{% endif %}"><a href="{{ path('curso_index') }}">Cursos</a></li>
+                {{ render(controller('AppBundle:UI:getSelectorCursoAcademico')) }}
                 <li class="{% if app.request.get('_route') in route_alumnos %}active{% endif %}"><a href="{{ path('alumno_index') }}">Alumnos</a></li>
-                <li><a href="{{ path('curso_index') }}">Cursos</a></li>
-                <li><a href="{{ path('matricula_index') }}">Matriculas</a></li>
-                <li><a href="{{ path('preinscripcion_index') }}">Preinscripcion</a></li>
-                <li><a href="#">Configuración</a></li>
+                <li><a href="{{ path('cursoacademico_index') }}">Cursos Académicos</a></li>
+                <li><a href="{{ path('disciplinagrupo_index') }}">Grupos disciplinas</a></li>
+                <li><a href="{{ path('disciplina_index') }}">Disciplinas</a></li>
                 <li><a href="{{ path('fos_user_change_password') }}">Cambiar contraseña</a></li>
                 <li><a href="{{ path('fos_user_security_logout') }}">Cerrar sesión</a></li>
             </ul>
