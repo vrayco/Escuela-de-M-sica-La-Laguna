@@ -1,6 +1,7 @@
-<li><a class="dropdown-curso" data-activates="dropdown_curso_academico">{{ cursoAcademicoActual.nombre }}<i class="material-icons right">arrow_drop_down</i></a></li>
+{% set randomId = random() %}
+<li><a class="dropdown-curso" data-activates="dropdown_curso_academico-{{ randomId }}">{{ cursoAcademicoActual.nombre }}<i class="material-icons right">arrow_drop_down</i></a></li>
 
-<ul id="dropdown_curso_academico" class="dropdown-content" style="top: 64px">
+<ul id="dropdown_curso_academico-{{ randomId }}" class="dropdown-content" style="top: 64px">
     {% for cursoAcademico in cursosAcademicos %}
         <li><a class="selector-curso-academico-item" data-url-set="{{ path('ui_curso_academico_set') }}?id-curso-academico={{ cursoAcademico.id }}" data-url-refresh="{{ path('homepage') }}">{{ cursoAcademico.nombre }}</a></li>
     {% endfor %}
