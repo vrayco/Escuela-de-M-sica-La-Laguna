@@ -12972,9 +12972,11 @@ html, body {
   width: 100%;
 }
 
-/* line 79, ../sass/main.scss */
-#dropdown_curso_academico,
-#dropdown-configuracion,
-#dropdown-perfil {
-  top: 64px !important;
+@media only screen and (min-width: 993px) {
+  /* line 79, ../sass/main.scss */
+  .dropdown_curso_academico,
+  #dropdown-configuracion,
+  #dropdown-perfil {
+    top: 64px !important;
+  }
 }

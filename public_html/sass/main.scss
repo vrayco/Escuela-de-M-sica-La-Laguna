@@ -76,8 +76,11 @@ html, body {
   width: 100%;
 }
 
-#dropdown_curso_academico,
+.dropdown_curso_academico,
 #dropdown-configuracion,
 #dropdown-perfil{
-  top: 64px !important;
+  @media #{$large-and-up} {
+    top: 64px !important;
+  }
+
 }
