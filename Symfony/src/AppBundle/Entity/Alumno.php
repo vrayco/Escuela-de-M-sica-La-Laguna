@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="alumno")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AlumnoRepository")
  * @UniqueEntity({"dni"})
+ * @UniqueEntity({"apellidos","nombre","fechaNacimiento"})
  */
 class Alumno
 {

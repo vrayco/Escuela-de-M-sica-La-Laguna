@@ -28,6 +28,11 @@ class LoadAlumnosData extends AbstractFixture implements OrderedFixtureInterface
 
     public function load(ObjectManager $manager)
     {
+        //$this->datosFalsos();
+    }
+
+    public function datosFalsos()
+    {
         for($i=0; $i<self::NUM_ENTITIES; $i++)
         {
             $entity = new Alumno();
@@ -56,8 +61,6 @@ class LoadAlumnosData extends AbstractFixture implements OrderedFixtureInterface
             $manager->persist($entity);
             $manager->flush();
         }
-
-
     }
 
     /**

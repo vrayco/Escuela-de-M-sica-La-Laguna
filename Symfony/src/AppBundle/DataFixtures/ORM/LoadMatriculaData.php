@@ -25,23 +25,23 @@ class LoadMatriculaData extends AbstractFixture implements OrderedFixtureInterfa
 
     public function load(ObjectManager $manager)
     {
-        $cursoEnCurso = $this->getReference('CURSO-ACADEMICO-1');
-        $alumnos = $manager->getRepository('AppBundle:Alumno')->findAll();
-        $cursos = $manager->getRepository('AppBundle:Curso')->findAll();
-
-        foreach($alumnos as $alumno)
-        {
-            if(rand(0,5))
-            {
-                $entity = new Matricula();
-                $entity->setPrefijo($cursoEnCurso->getPrefijoExpediente());
-                $entity->setAlumno($alumno);
-                $entity->setCurso($cursos[rand(0,sizeof($cursos)-1)]);
-                $manager->persist($entity);
-            }
-        }
-
-        $manager->flush();
+//        $cursoEnCurso = $this->getReference('CURSO-ACADEMICO-1');
+//        $alumnos = $manager->getRepository('AppBundle:Alumno')->findAll();
+//        $cursos = $manager->getRepository('AppBundle:Curso')->findAll();
+//
+//        foreach($alumnos as $alumno)
+//        {
+//            if(rand(0,5))
+//            {
+//                $entity = new Matricula();
+//                $entity->setPrefijo($cursoEnCurso->getPrefijoExpediente());
+//                $entity->setAlumno($alumno);
+//                $entity->setCurso($cursos[rand(0,sizeof($cursos)-1)]);
+//                $manager->persist($entity);
+//            }
+//        }
+//
+//        $manager->flush();
     }
 
     /**
