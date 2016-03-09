@@ -82,5 +82,11 @@ html, body {
   @media #{$large-and-up} {
     top: 64px !important;
   }
+}
 
+
+nav .brand-logo {
+  @media #{$medium-and-up} {
+    margin-left: 15px;
+  }
 }

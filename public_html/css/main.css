@@ -12980,3 +12980,10 @@ html, body {
     top: 64px !important;
   }
 }
+
+@media only screen and (min-width: 601px) {
+  /* line 88, ../sass/main.scss */
+  nav .brand-logo {
+    margin-left: 15px;
+  }
+}
