@@ -129,7 +129,7 @@ class CursoController extends Controller
      */
     public function editAction(Request $request, Curso $curso)
     {
-        if(!$curso->getCursoAcademico()->getGeneracionDeListas())
+        if($curso->getCursoAcademico()->getGeneracionDeListas())
             throw new NotFoundHttpException('No se puede editar el curso despúes del sorteo.');
 
         $deleteForm = $this->createDeleteForm($curso);

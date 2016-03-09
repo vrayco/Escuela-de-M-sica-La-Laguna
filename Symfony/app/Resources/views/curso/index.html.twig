@@ -26,7 +26,11 @@
                 <td class="right-align">{{ curso.matriculas|length }}</td>
                 <td class="hide-on-small-only right-align">
                     <a href="{{ path('curso_show', { 'id': curso.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
-                    <a href="{{ path('curso_edit', { 'id': curso.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>
+                    {% if not curso.cursoAcademico.generacionDeListas %}
+                        <a href="{{ path('curso_edit', { 'id': curso.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>
+                    {% else %}
+                        <a class="btn-floating btn waves-effect waves-light blue disabled tooltipped" data-position="top" data-delay="50" data-tooltip="Los cursos no son editables después del sorteo"><i class="material-icons">edit</i></a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
