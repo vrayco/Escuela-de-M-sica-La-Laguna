@@ -28,10 +28,10 @@ class LoadAlumnosData extends AbstractFixture implements OrderedFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        //$this->datosFalsos();
+        //$this->datosFalsos($manager);
     }
 
-    public function datosFalsos()
+    public function datosFalsos(ObjectManager $manager)
     {
         for($i=0; $i<self::NUM_ENTITIES; $i++)
         {
@@ -47,7 +47,9 @@ class LoadAlumnosData extends AbstractFixture implements OrderedFixtureInterface
             $entity->setTelefonofijo(rand(922000000,922999999));
             $entity->setTelefonoMovil(rand(600000000,660000000));
             //$entity->setEmail();
-            $entity->setFechaNacimiento(new \DateTime('now -'.rand(4,18).'year'));
+            $minDias = 4*365 + 1;
+            $maxDias = 20*365;
+            $entity->setFechaNacimiento(new \DateTime('now -'.rand($minDias,$maxDias).'days'));
 
             if(rand(0,1)) {
                 $entity2 = new Tutor();

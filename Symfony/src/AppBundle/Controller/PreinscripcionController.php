@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Preinscripcion;
 use AppBundle\Form\PreinscripcionType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints\IsTrue;
 
 /**
@@ -19,6 +20,11 @@ use Symfony\Component\Validator\Constraints\IsTrue;
  */
 class PreinscripcionController extends Controller
 {
+
+    const LISTADO_PRIORIDAD         = "LISTADO_PRIORIDAD";
+    const LISTADO_EMPADRONADOS      = "LISTADO_EMPADRONADOS";
+    const LISTADO_NO_EMPADRONADOS   = "LISTADO_NO_EMPADRONADOS";
+
     /**
      * Lists all Preinscripcion entities.
      *
@@ -117,7 +123,7 @@ class PreinscripcionController extends Controller
         $deleteForm = null;
         $preinscripcionEnCursos = $preinscripcion->getPreinscripcionEnCursos();
         foreach($preinscripcionEnCursos as $p)
-            $cursoAcademico = $p->getCurso()->getCursoAcademico();
+            $cursoAcademico = $p->getCurso()->getCursoAcademico();   // <--- NO ENTIENDO PORQUE HACERLO ASI
 
         if(!$cursoAcademico->getGeneracionDeListas())
             $deleteForm = $this->createDeleteForm($preinscripcion);
@@ -199,15 +205,16 @@ class PreinscripcionController extends Controller
      */
     public function cambiarEstadoPlazaActionAction(Request $request, PreinscripcionEnCurso $preinscripcionEnCurso)
     {
-        if($preinscripcionEnCurso->getEstado() != PreinscripcionEnCurso::ESTADO_PLAZA AND $preinscripcionEnCurso->getEstado() != PreinscripcionEnCurso::ESTADO_RECHAZADA)
-        {
-            $this->addFlash(
-                'info',
-                sprintf('No se puede cambiar la preinscripción a el estado: %s', $preinscripcionEnCurso->getEstado())
-            );
-
-            return $this->redirect($this->generateUrl('curso_listados'));
-        }
+//        // Si tiene plaza o la tiene rechazada
+//        if($preinscripcionEnCurso->getEstado() != PreinscripcionEnCurso::ESTADO_PLAZA AND $preinscripcionEnCurso->getEstado() != PreinscripcionEnCurso::ESTADO_RECHAZADA)
+//        {
+//            $this->addFlash(
+//                'info',
+//                sprintf('No se puede cambiar la preinscripción a el estado: %s', $preinscripcionEnCurso->getEstado())
+//            );
+//
+//            return $this->redirect($this->generateUrl('curso_listados'));
+//        }
 
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm('AppBundle\Form\PreinscripcionEnCursoEstadoType', $preinscripcionEnCurso);
@@ -218,27 +225,24 @@ class PreinscripcionController extends Controller
 
             if($preinscripcionEnCurso->getEstado() == PreinscripcionEnCurso::ESTADO_ACEPTADA) {
                 $preinscripciones = $preinscripcionEnCurso->getPreinscripcion()->getPreinscripcionEnCursos();
-                foreach($preinscripciones as $p) {
+                foreach($preinscripciones as $p)
                     if($preinscripcionEnCurso != $p)
-                        $p->setEstado(PreinscripcionEnCurso::ESTADO_RECHAZADA);
-                }
+                        if($preinscripcionEnCurso->getEstado() != PreinscripcionEnCurso::ESTADO_PLAZA OR $preinscripcionEnCurso->getEstado() != PreinscripcionEnCurso::ESTADO_RESERVA)
+                            $p->setEstado(PreinscripcionEnCurso::ESTADO_RECHAZADA);
 
-                foreach($preinscripciones as $p) {
+                foreach($preinscripciones as $p)
                     $this->get('utils.curso')->actualizarAsignacionPlazas($p->getCurso());
-                }
 
             } else if($preinscripcionEnCurso->getEstado() == PreinscripcionEnCurso::ESTADO_RECHAZADA) {
                 $this->get('utils.curso')->actualizarAsignacionPlazas($preinscripcionEnCurso->getCurso());
             } else if($preinscripcionEnCurso->getEstado() == PreinscripcionEnCurso::ESTADO_PLAZA) {
                 $preinscripciones = $preinscripcionEnCurso->getPreinscripcion()->getPreinscripcionEnCursos();
-                foreach($preinscripciones as $p) {
+                foreach($preinscripciones as $p)
                     if($preinscripcionEnCurso != $p)
                         $p->setEstado(PreinscripcionEnCurso::ESTADO_PLAZA);
-                }
 
-                foreach($preinscripciones as $p) {
+                foreach($preinscripciones as $p)
                     $this->get('utils.curso')->actualizarAsignacionPlazas($p->getCurso());
-                }
             }
 
             return $this->redirect($this->generateUrl('curso_show', array('id' => $preinscripcionEnCurso->getCurso()->getId())).'?tab=preinscripciones');
@@ -253,10 +257,21 @@ class PreinscripcionController extends Controller
      * @Route("/descargar/listado", name="preinscripcion_descargarlistado")
      * @Method("GET")
      */
-    public function descargarListado()
+    public function descargarListado(Request $request)
     {
+        $tipo = $request->query->get('tipo-listado');
+
         $cursoAcademico = $this->get('utils.curso')->getCursoActual();
-        return $this->get('utils.listados')->generarListadoPreinscripciones($cursoAcademico);
+        if(!$tipo)
+            return $this->get('utils.listados')->generarListadoPreinscripciones($cursoAcademico);
+        elseif($tipo == self::LISTADO_PRIORIDAD)
+            return $this->get('utils.listados')->generarListadoPreinscripciones($cursoAcademico, self::LISTADO_PRIORIDAD);
+        elseif($tipo == self::LISTADO_EMPADRONADOS)
+            return $this->get('utils.listados')->generarListadoPreinscripciones($cursoAcademico, self::LISTADO_EMPADRONADOS);
+        elseif($tipo == self::LISTADO_NO_EMPADRONADOS)
+            return $this->get('utils.listados')->generarListadoPreinscripciones($cursoAcademico, self::LISTADO_NO_EMPADRONADOS);
+        else
+            throw new NotFoundHttpException('Tipo de listado desconocido');
     }
 
     /**

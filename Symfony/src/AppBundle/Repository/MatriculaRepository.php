@@ -13,8 +13,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class MatriculaRepository extends EntityRepository
 {
-    public function getMatriculas(CursoAcademico $cursoAcademico, $filter)
+    public function getMatriculas(CursoAcademico $cursoAcademico = null, $filter)
     {
+        if(!$cursoAcademico)
+            return null;
 
         $identificador = $filter['identificador'];
         $curso = $filter['curso'];
@@ -77,8 +79,11 @@ class MatriculaRepository extends EntityRepository
         return $query->getQuery()->getResult();
     }
 
-    public function getTotal(CursoAcademico $cursoAcademico)
+    public function getTotal(CursoAcademico $cursoAcademico = null)
     {
+        if(!$cursoAcademico)
+            return 0;
+
         $result = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('COUNT(m) as total')

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Controller\PreinscripcionController;
 use AppBundle\Entity\Curso;
 use AppBundle\Entity\PreinscripcionEnCurso;
 use Doctrine\ORM\EntityRepository;
@@ -28,17 +29,28 @@ class PreinscripcionEnCursoRepository extends EntityRepository
             ->getResult();
     }
 
-    public function getPreinscripcionesOrdenAlfabetico(Curso $curso)
+    public function getPreinscripcionesOrdenAlfabetico(Curso $curso, $tipo = null)
     {
-        return $this->getEntityManager()
+        $query = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('pre, p')
             ->from('AppBundle:PreinscripcionEnCurso', 'pre')
             ->innerJoin('pre.preinscripcion', 'p')
             ->innerJoin('pre.curso','c')
             ->where('c = :curso')
-            ->setParameter('curso', $curso)
-            ->orderBy('p.apellidos','ASC')
+            ->setParameter('curso', $curso);
+
+        if($tipo == PreinscripcionController::LISTADO_PRIORIDAD)
+            $query->andWhere('p.prioridad = TRUE');
+        else if($tipo == PreinscripcionController::LISTADO_EMPADRONADOS)
+            $query->andWhere('p.prioridad = FALSE and p.empadronado = TRUE');
+        else if($tipo == PreinscripcionController::LISTADO_NO_EMPADRONADOS)
+            $query->andWhere('p.prioridad = FALSE and p.empadronado = FALSE');
+
+        $query
+            ->orderBy('p.apellidos','ASC');
+
+        return $query
             ->getQuery()
             ->getResult();
     }

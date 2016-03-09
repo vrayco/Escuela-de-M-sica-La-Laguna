@@ -13,6 +13,7 @@
                 <th class="center-align">Fecha de Nacimiento</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -22,7 +23,8 @@
                 <td>{% if preinscripcion.dni %}{{ preinscripcion.dni }}{% else %}---{% endif %}</td>
                 <td>{{ preinscripcion.apellidos }}, {{ preinscripcion.nombre }}</td>
                 <td class="center-align">{% if preinscripcion.fechaNacimiento %}{{ preinscripcion.fechaNacimiento|date('d/m/Y') }}{% endif %}</td>
-                <td class="center-align">{% if preinscripcion.prioridad %}<span class="chip yellow lighten-4">PRIORIDAD</span>{% endif %}</td>
+                <td class="center-align">{% if preinscripcion.prioridad %}<i class="material-icons tooltipped" data-position="top" data-delay="50" data-tooltip="Prioridad">grade</i>{% endif %}</td>
+                <td class="center-align">{% if preinscripcion.empadronado %}<i class="material-icons tooltipped" data-position="top" data-delay="50" data-tooltip="Empadronado">room</i>{% endif %}</td>
                 <td class="hide-on-small-only right-align">
                     <a href="{{ path('preinscripcion_show', { 'id': preinscripcion.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
                 </td>
@@ -39,8 +41,12 @@
         </a>
         <ul>
             <li><a href="{{ path('preinscripcion_new') }}" class="btn-floating waves-effect waves-light green"><i class="material-icons">add</i></a></li>
-            <li><a href="#modal-buscardor-preinscripcion" class="btn-floating waves-effect waves-light indigo modal-trigger"><i class="material-icons">search</i></a></li>
-            <li><a href="{{ path('preinscripcion_descargarlistado') }}" class="btn-floating waves-effect waves-light indigo tooltipped" data-position="top" data-delay="50" data-tooltip="Descargar listado"><i class="material-icons">description</i></a></li>
+            {% if preinscripciones|length > 0 %}
+                <li><a href="#modal-buscardor-preinscripcion" class="btn-floating waves-effect waves-light indigo modal-trigger"><i class="material-icons">search</i></a></li>
+                <li><a href="{{ path('preinscripcion_descargarlistado') }}?tipo-listado={{ constant('\\AppBundle\\Controller\\PreinscripcionController::LISTADO_PRIORIDAD') }}" class="btn-floating waves-effect waves-light indigo tooltipped" data-position="top" data-delay="50" data-tooltip="Descargar listado PRIORIDAD"><i class="material-icons">description</i></a></li>
+                <li><a href="{{ path('preinscripcion_descargarlistado') }}?tipo-listado={{ constant('\\AppBundle\\Controller\\PreinscripcionController::LISTADO_NO_EMPADRONADOS') }}" class="btn-floating waves-effect waves-light indigo tooltipped" data-position="top" data-delay="50" data-tooltip="Descargar listado NO EMPADRONADOS"><i class="material-icons">description</i></a></li>
+                <li><a href="{{ path('preinscripcion_descargarlistado') }}?tipo-listado={{ constant('\\AppBundle\\Controller\\PreinscripcionController::LISTADO_EMPADRONADOS') }}" class="btn-floating waves-effect waves-light indigo tooltipped" data-position="top" data-delay="50" data-tooltip="Descargar listado EMPADRONADOS"><i class="material-icons">description</i></a></li>
+            {% endif %}
         </ul>
     </div>
 

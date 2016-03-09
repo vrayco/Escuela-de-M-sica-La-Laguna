@@ -16,11 +16,13 @@ class LoadDisciplinaData extends AbstractFixture implements OrderedFixtureInterf
     const DG_MUSICA_MOVIMIENTO              = "Música y Movimiento";
     const DG_PRACTICA_INSTRUMETAL           = "Práctica Instrumental";
     const DG_PRATICA_INSTRUMENTAL_MODERNO   = "Práctica Instrumental Moderno";
-    const DG_BANDA_JUVENIL                  = "Banda Juvenil";
-    const DG_CORO_JUVENIL                   = "Coro Juvenil";
-    const DG_CORO_ADULTO                    = "Coro Adulto";
-    const DG_ORQUESTA_JUVENIL               = "Orquesta Juvenil";
-    const DG_TALLER_FOLKLORE                = "Taller Folklore";
+    const DG_ACTIVIDADES_DE_CONJUNTO        = "Actividades de conjunto";
+
+//    const DG_BANDA_JUVENIL                  = "Banda Juvenil";
+//    const DG_CORO_JUVENIL                   = "Coro Juvenil";
+//    const DG_CORO_ADULTO                    = "Coro Adulto";
+//    const DG_ORQUESTA_JUVENIL               = "Orquesta Juvenil";
+//    const DG_TALLER_FOLKLORE                = "Taller Folklore";
 
     const D_MUSICA_MOVIMIENTO_1_1   = "Música y Movimiento 1º - 1º Curso";
     const D_MUSICA_MOVIMIENTO_1_2   = "Música y Movimiento 1º - 2º Curso";
@@ -38,6 +40,13 @@ class LoadDisciplinaData extends AbstractFixture implements OrderedFixtureInterf
     const D_GUITARRA_MODERNA        = "Guitarra Moderna";
     const D_BAJO_MODERNO            = "Bajo Moderno";
     const D_BATERIA                 = "Batería";
+
+    const D_BANDA_JUVENIL           = "Banda Juvenil";
+    const D_CORO_JUVENIL            = "Coro Juvenil";
+    const D_CORO_ADULTO             = "Coro Adulto";
+    const D_ORQUESTA_JUVENIL        = "Orquesta Juvenil";
+    const D_TALLER_FOLKLORE         = "Taller Folklore";
+    const D_ARMONIA                 = "Armonía";
 
     /**
      * @var ContainerInterface
@@ -74,34 +83,40 @@ class LoadDisciplinaData extends AbstractFixture implements OrderedFixtureInterf
         $this->addReference('DISCIPLINA-GRUPO-PRACTICA-INSTRUMENTAL-MODERNO', $entity);
 
         $entity = new DisciplinaGrupo();
-        $entity->setNombre(self::DG_BANDA_JUVENIL);
+        $entity->setNombre(self::DG_ACTIVIDADES_DE_CONJUNTO);
         $entity->setMaximoInscripciones(3);
         $manager->persist($entity);
-        $this->addReference('DISCIPLINA-GRUPO-BANDA-JUVENIL', $entity);
+        $this->addReference('DISCIPLINA-GRUPO-ACTIVIDADES-DE-CONJUNTO', $entity);
 
-        $entity = new DisciplinaGrupo();
-        $entity->setNombre(self::DG_CORO_JUVENIL);
-        $entity->setMaximoInscripciones(1);
-        $manager->persist($entity);
-        $this->addReference('DISCIPLINA-GRUPO-CORO-JUVENIL', $entity);
-
-        $entity = new DisciplinaGrupo();
-        $entity->setNombre(self::DG_CORO_ADULTO);
-        $entity->setMaximoInscripciones(1);
-        $manager->persist($entity);
-        $this->addReference('DISCIPLINA-GRUPO-CORO-ADULTO', $entity);
-
-        $entity = new DisciplinaGrupo();
-        $entity->setNombre(self::DG_ORQUESTA_JUVENIL);
-        $entity->setMaximoInscripciones(3);
-        $manager->persist($entity);
-        $this->addReference('DISCIPLINA-GRUPO-ORQUESTA-JUVENIL', $entity);
-
-        $entity = new DisciplinaGrupo();
-        $entity->setNombre(self::DG_TALLER_FOLKLORE);
-        $entity->setMaximoInscripciones(3);
-        $manager->persist($entity);
-        $this->addReference('DISCIPLINA-GRUPO-TALLER-FOLKLORE', $entity);
+//        $entity = new DisciplinaGrupo();
+//        $entity->setNombre(self::DG_BANDA_JUVENIL);
+//        $entity->setMaximoInscripciones(3);
+//        $manager->persist($entity);
+//        $this->addReference('DISCIPLINA-GRUPO-BANDA-JUVENIL', $entity);
+//
+//        $entity = new DisciplinaGrupo();
+//        $entity->setNombre(self::DG_CORO_JUVENIL);
+//        $entity->setMaximoInscripciones(1);
+//        $manager->persist($entity);
+//        $this->addReference('DISCIPLINA-GRUPO-CORO-JUVENIL', $entity);
+//
+//        $entity = new DisciplinaGrupo();
+//        $entity->setNombre(self::DG_CORO_ADULTO);
+//        $entity->setMaximoInscripciones(1);
+//        $manager->persist($entity);
+//        $this->addReference('DISCIPLINA-GRUPO-CORO-ADULTO', $entity);
+//
+//        $entity = new DisciplinaGrupo();
+//        $entity->setNombre(self::DG_ORQUESTA_JUVENIL);
+//        $entity->setMaximoInscripciones(3);
+//        $manager->persist($entity);
+//        $this->addReference('DISCIPLINA-GRUPO-ORQUESTA-JUVENIL', $entity);
+//
+//        $entity = new DisciplinaGrupo();
+//        $entity->setNombre(self::DG_TALLER_FOLKLORE);
+//        $entity->setMaximoInscripciones(3);
+//        $manager->persist($entity);
+//        $this->addReference('DISCIPLINA-GRUPO-TALLER-FOLKLORE', $entity);
 
         // DISCIPLINAS
         $entity = new Disciplina();
@@ -201,6 +216,43 @@ class LoadDisciplinaData extends AbstractFixture implements OrderedFixtureInterf
         $entity = new Disciplina();
         $entity->setNombre(self::D_BATERIA);
         $entity->setDisciplinaGrupo($this->getReference('DISCIPLINA-GRUPO-PRACTICA-INSTRUMENTAL-MODERNO'));
+        $entity->setEdadMinima(14);
+        $manager->persist($entity);
+
+        // ACTIVIDADES DE CONJUNTO
+        $entity = new Disciplina();
+        $entity->setNombre(self::D_BANDA_JUVENIL);
+        $entity->setDisciplinaGrupo($this->getReference('DISCIPLINA-GRUPO-ACTIVIDADES-DE-CONJUNTO'));
+        $entity->setEdadMinima(14);
+        $manager->persist($entity);
+
+        $entity = new Disciplina();
+        $entity->setNombre(self::D_ORQUESTA_JUVENIL);
+        $entity->setDisciplinaGrupo($this->getReference('DISCIPLINA-GRUPO-ACTIVIDADES-DE-CONJUNTO'));
+        $entity->setEdadMinima(14);
+        $manager->persist($entity);
+
+        $entity = new Disciplina();
+        $entity->setNombre(self::D_CORO_JUVENIL);
+        $entity->setDisciplinaGrupo($this->getReference('DISCIPLINA-GRUPO-ACTIVIDADES-DE-CONJUNTO'));
+        $entity->setEdadMinima(14);
+        $manager->persist($entity);
+
+        $entity = new Disciplina();
+        $entity->setNombre(self::D_CORO_ADULTO);
+        $entity->setDisciplinaGrupo($this->getReference('DISCIPLINA-GRUPO-ACTIVIDADES-DE-CONJUNTO'));
+        $entity->setEdadMinima(14);
+        $manager->persist($entity);
+
+        $entity = new Disciplina();
+        $entity->setNombre(self::D_TALLER_FOLKLORE);
+        $entity->setDisciplinaGrupo($this->getReference('DISCIPLINA-GRUPO-ACTIVIDADES-DE-CONJUNTO'));
+        $entity->setEdadMinima(14);
+        $manager->persist($entity);
+
+        $entity = new Disciplina();
+        $entity->setNombre(self::D_ARMONIA);
+        $entity->setDisciplinaGrupo($this->getReference('DISCIPLINA-GRUPO-ACTIVIDADES-DE-CONJUNTO'));
         $entity->setEdadMinima(14);
         $manager->persist($entity);
 

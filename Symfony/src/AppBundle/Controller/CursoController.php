@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Curso;
 use AppBundle\Form\CursoType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Curso controller.

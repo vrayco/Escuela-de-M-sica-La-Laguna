@@ -19,6 +19,8 @@ class CargarExcelCommand extends ContainerAwareCommand
     const FILENAME_EXPEDIENTES = "../DataFixtures/ficheros/exp.xls";
     const FILENAME_MATRICULAS = "../DataFixtures/ficheros/matricula.xls";
 
+    const FILENAME_NUEVA_BD = "../DataFixtures/ficheros/base_datos_nueva.xls";
+
     private $alumnos = array();
     private $cursos = array();
     private $matriculas = array();
@@ -79,12 +81,10 @@ class CargarExcelCommand extends ContainerAwareCommand
 
     private function loadAlumnos(InputInterface $input, OutputInterface $output)
     {
-        $phpExcel = $this->getContainer()->get('phpexcel');
-
-        $phpExcelObject = $this->getContainer()->get('phpexcel')->createPHPExcelObject(__DIR__.'/'.self::FILENAME_EXPEDIENTES);
-
+        $phpExcelObject = $this->getContainer()->get('phpexcel')->createPHPExcelObject(__DIR__.'/'.self::FILENAME_NUEVA_BD);
+        $phpExcelObject->setActiveSheetIndex(0);
         $salir = false;
-        $index = 3;
+        $index = 5;
         $blanco = 0;
         $contador = 0;
         while(!$salir) {
@@ -92,17 +92,26 @@ class CargarExcelCommand extends ContainerAwareCommand
                 $blanco = 0;
                 $alumno = new Alumno();
                 $alumno = $this->getContainer()->get('utils.expediente')->setExpediente($alumno);
-                $alumno->setNombre($phpExcelObject->getActiveSheet()->getCell("A" . $index)->getValue());
-                $alumno->setApellidos($phpExcelObject->getActiveSheet()->getCell("B" . $index)->getValue());
-                $alumno->setAnoIngreso($phpExcelObject->getActiveSheet()->getCell("C" . $index)->getValue());
-                $observaciones = $phpExcelObject->getActiveSheet()->getCell("G" . $index)->getValue() . ' | Expediente anterior: ' . $phpExcelObject->getActiveSheet()->getCell("D" . $index)->getValue() . ' | Especialidad: ' . $phpExcelObject->getActiveSheet()->getCell("E" . $index)->getValue() . ' | Estado:' . $phpExcelObject->getActiveSheet()->getCell("F" . $index)->getValue();
+                $alumno->setNombre($phpExcelObject->getActiveSheet()->getCell("B" . $index)->getValue());
+                $alumno->setApellidos($phpExcelObject->getActiveSheet()->getCell("C" . $index)->getValue());
+                $fechaNacimiento    = $phpExcelObject->getActiveSheet()->getCell("D" . $index)->getValue();
+                date($format = "Y/m/d", PHPExcel_Shared_Date::ExcelToPHP($fechaNacimiento));
+                $InvDate = date($format, PHPExcel_Shared_Date::ExcelToPHP($fechaNacimiento));
+                $alumno->setFechaNacimiento(new \DateTime($InvDate));
+                if($phpExcelObject->getActiveSheet()->getCell("E" . $index)->getValue() != null)
+                    $alumno->setDni($phpExcelObject->getActiveSheet()->getCell("E" . $index)->getValue());
+                $alumno->setTelefonoMovil($phpExcelObject->getActiveSheet()->getCell("F" . $index)->getValue());
+                $alumno->setEmail($phpExcelObject->getActiveSheet()->getCell("G" . $index)->getValue());
+                $observaciones = 'Expediente anterior: ' . $phpExcelObject->getActiveSheet()->getCell("A" . $index)->getValue() . ' | Observaciones: ' . $phpExcelObject->getActiveSheet()->getCell("H" . $index)->getValue();
                 $alumno->setObservaciones($observaciones);
+                $alumno->setTelefonoFijo($phpExcelObject->getActiveSheet()->getCell("I" . $index)->getValue());
+                $alumno->setAnoIngreso($phpExcelObject->getActiveSheet()->getCell("J" . $index)->getValue());
 
                 $alumno->setDireccion('---');
                 $alumno->setLocalidad('---');
                 $alumno->setCodigoPostal('---');
 
-                $this->alumnos[$phpExcelObject->getActiveSheet()->getCell("D" . $index)->getValue()] = $alumno;
+                $this->alumnos[str_replace(' ', '', $phpExcelObject->getActiveSheet()->getCell("A" . $index)->getValue())] = $alumno;
                 $index++;
                 $contador++;
             } else {
@@ -121,96 +130,119 @@ class CargarExcelCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $cursoAcademico = $em->getRepository('AppBundle:CursoAcademico')->findOneBy(array('nombre' => '2015-2016'));
 
-        // D_MUSICA_MOVIMIENTO_1_1
         $index = 1;
-        $nombreDisciplina = LoadDisciplinaData::D_MUSICA_MOVIMIENTO_1_1;
+        $nombreDisciplina = LoadDisciplinaData::D_ARMONIA;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
-        // D_MUSICA_MOVIMIENTO_1_2
         $index = 2;
-        $nombreDisciplina = LoadDisciplinaData::D_MUSICA_MOVIMIENTO_1_2;
+        $nombreDisciplina = LoadDisciplinaData::D_TALLER_FOLKLORE;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
-        // D_MUSICA_MOVIMIENTO_2_1
         $index = 3;
-        $nombreDisciplina = LoadDisciplinaData::D_MUSICA_MOVIMIENTO_2_1;
+        $nombreDisciplina = LoadDisciplinaData::D_BANDA_JUVENIL;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
-        // D_MUSICA_MOVIMIENTO_2_2
         $index = 4;
-        $nombreDisciplina = LoadDisciplinaData::D_MUSICA_MOVIMIENTO_2_2;
+        $nombreDisciplina = LoadDisciplinaData::D_ORQUESTA_JUVENIL;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
         $index = 5;
-        $nombreDisciplina = LoadDisciplinaData::D_VIOLIN;
+        $nombreDisciplina = LoadDisciplinaData::D_CORO_ADULTO;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
         $index = 6;
-        $nombreDisciplina = LoadDisciplinaData::D_FLAUTA;
+        $nombreDisciplina = LoadDisciplinaData::D_CORO_JUVENIL;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
         $index = 7;
-        $nombreDisciplina = LoadDisciplinaData::D_BATERIA;
+        $nombreDisciplina = LoadDisciplinaData::D_MUSICA_MOVIMIENTO_1_1;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
         $index = 8;
-        $nombreDisciplina = LoadDisciplinaData::D_BAJO_MODERNO;
+        $nombreDisciplina = LoadDisciplinaData::D_MUSICA_MOVIMIENTO_1_2;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
         $index = 9;
-        $nombreDisciplina = LoadDisciplinaData::D_GUITARRA_MODERNA;
+        $nombreDisciplina = LoadDisciplinaData::D_MUSICA_MOVIMIENTO_2_1;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
-        // Pagina con actividades de conjunto pagina 10 (excel)
+        $index = 10;
+        $nombreDisciplina = LoadDisciplinaData::D_MUSICA_MOVIMIENTO_2_2;
+        $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
+        $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
         $index = 11;
-        $nombreDisciplina = LoadDisciplinaData::D_CLARINETE;
+        $nombreDisciplina = LoadDisciplinaData::D_BAJO_MODERNO;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
         $index = 12;
-        $nombreDisciplina = LoadDisciplinaData::D_GUITARRA_CLASICA;
+        $nombreDisciplina = LoadDisciplinaData::D_BATERIA;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
         $index = 13;
-        $nombreDisciplina = LoadDisciplinaData::D_PERCUSION;
+        $nombreDisciplina = LoadDisciplinaData::D_GUITARRA_MODERNA;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
         $index = 14;
-        $nombreDisciplina = LoadDisciplinaData::D_TROMPETA;
+        $nombreDisciplina = LoadDisciplinaData::D_SAXOFON;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
         $index = 15;
-        $nombreDisciplina = LoadDisciplinaData::D_CELLO;
-        $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
-        $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
-
-        $index = 16;
         $nombreDisciplina = LoadDisciplinaData::D_PIANO;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
 
+        $index = 16;
+        $nombreDisciplina = LoadDisciplinaData::D_FLAUTA;
+        $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
+        $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
+
         $index = 17;
-        $nombreDisciplina = LoadDisciplinaData::D_SAXOFON;
+        $nombreDisciplina = LoadDisciplinaData::D_CELLO;
+        $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
+        $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
+
+        $index = 18;
+        $nombreDisciplina = LoadDisciplinaData::D_GUITARRA_CLASICA;
+        $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
+        $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
+
+        $index = 19;
+        $nombreDisciplina = LoadDisciplinaData::D_VIOLIN;
+        $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
+        $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
+
+        $index = 20;
+        $nombreDisciplina = LoadDisciplinaData::D_TROMPETA;
+        $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
+        $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
+
+        $index = 21;
+        $nombreDisciplina = LoadDisciplinaData::D_CLARINETE;
+        $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
+        $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
+
+        $index = 22;
+        $nombreDisciplina = LoadDisciplinaData::D_PERCUSION;
         $num = $this->loadCurso($cursoAcademico, $index, $nombreDisciplina);
         $this->logger->info(sprintf("%s - NÚM MATRICULA=%d ", $nombreDisciplina, $num));
     }
 
     private function loadCurso(CursoAcademico $cursoAcademico, $index, $nombreDisciplina)
     {
-        $index = $index -1;
         $em = $this->getContainer()->get('doctrine')->getManager();
         $disciplina = $em->getRepository('AppBundle:Disciplina')->findOneBy(array(
             'nombre' => $nombreDisciplina
@@ -220,30 +252,19 @@ class CargarExcelCommand extends ContainerAwareCommand
             'cursoAcademico'    => $cursoAcademico
         ));
 
-        $phpExcelObject = $this->getContainer()->get('phpexcel')->createPHPExcelObject(__DIR__.'/'.self::FILENAME_MATRICULAS);
+        $phpExcelObject = $this->getContainer()->get('phpexcel')->createPHPExcelObject(__DIR__.'/'.self::FILENAME_NUEVA_BD);
         $phpExcelObject->setActiveSheetIndex($index);
-        dump($phpExcelObject->getActiveSheet()->getCell("a1")->getValue(). " INDEX:".$index);
         $salir = false;
         $index = 3;
         $blanco = 0;
         $contador = 0;
         while(!$salir) {
-            if($phpExcelObject->getActiveSheet()->getCell("B".$index)->getValue() != "") {
-                $idExp = str_replace(' ', '', $phpExcelObject->getActiveSheet()->getCell("F" . $index)->getValue());
+            if($phpExcelObject->getActiveSheet()->getCell("A".$index)->getValue() != "") {
+                $idExp = str_replace(' ', '', $phpExcelObject->getActiveSheet()->getCell("A" . $index)->getValue());
                 if(!isset($this->alumnos[$idExp])) {
-                    $this->logger->error("Alumno no encontrado exp: ".$phpExcelObject->getActiveSheet()->getCell("F" . $index)->getValue());
+                    $this->logger->error("Alumno no encontrado exp: ".$phpExcelObject->getActiveSheet()->getCell("A" . $index)->getValue());
                 } else {
                     $alumno = $this->alumnos[$idExp];
-
-                    $fechaNacimiento    = $phpExcelObject->getActiveSheet()->getCell("C" . $index)->getValue();
-                    $telefono           = $phpExcelObject->getActiveSheet()->getCell("D" . $index)->getValue();
-                    $email              = $phpExcelObject->getActiveSheet()->getCell("E" . $index)->getValue();
-                    date($format = "Y/m/d", PHPExcel_Shared_Date::ExcelToPHP($fechaNacimiento));
-                    $InvDate = date($format, PHPExcel_Shared_Date::ExcelToPHP($fechaNacimiento));
-                    $alumno->setFechaNacimiento(new \DateTime($InvDate));
-                    $alumno->setTelefonoMovil($telefono);
-                    $alumno->setEmail($email);
-
                     $matricula = new Matricula();
                     $matricula->setPrefijo($cursoAcademico->getPrefijoExpediente());
                     $matricula->setCurso($curso);

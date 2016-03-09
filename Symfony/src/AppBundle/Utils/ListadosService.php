@@ -22,7 +22,7 @@ class ListadosService
         $this->phpExcel = $phpExcel;
     }
 
-    public function generarListadoPreinscripciones (CursoAcademico $cursoAcademico) {
+    public function generarListadoPreinscripciones (CursoAcademico $cursoAcademico, $tipo = null) {
 
         $phpExcelObject = $this->phpExcel->createPHPExcelObject();
 
@@ -96,7 +96,7 @@ class ListadosService
                 $sheet->getStyle("A2:E2")->applyFromArray($style);
 
                 // CONTENIDO DE LA TABLA
-                $preinscripciones = $this->em->getRepository('AppBundle:PreinscripcionEnCurso')->getPreinscripcionesOrdenAlfabetico($curso);
+                $preinscripciones = $this->em->getRepository('AppBundle:PreinscripcionEnCurso')->getPreinscripcionesOrdenAlfabetico($curso, $tipo);
                 $index2 = 3;
                 $style = array(
                     'alignment' => array(
