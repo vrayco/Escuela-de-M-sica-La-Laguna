@@ -14,6 +14,10 @@
             {{ form_widget(form.curso) }}
             {{ form_label(form.curso) }}
         </div>
+        <div class="col s12">
+            {{ form_widget(form.fraccionaPago) }}
+            {{ form_label(form.fraccionaPago) }}
+        </div>
     </div>
     {{ form_rest(form) }}
     <div class="col s12 center-align">
@@ -23,6 +27,9 @@
             </button>
         </div>
     </div>
+
+
+
     {{ form_end(form) }}
 {% endblock %}
 

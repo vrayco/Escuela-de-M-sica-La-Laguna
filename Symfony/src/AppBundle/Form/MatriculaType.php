@@ -50,6 +50,7 @@ class MatriculaType extends AbstractType
                         ->orderBy('d.nombre', 'ASC');
                 },
             ))
+            ->add('fraccionaPago')
         ;
     }
     

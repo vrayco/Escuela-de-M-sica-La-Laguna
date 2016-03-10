@@ -42,6 +42,11 @@ class Matricula
     private $estado;
 
     /**
+     * @ORM\Column(name="fracciona_pago", type="boolean")
+     */
+    private $fraccionaPago;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="createAt", type="datetime")
@@ -64,6 +69,7 @@ class Matricula
     {
         $this->createAt = new \DateTime('now');
         $this->estado = self::ESTADO_ALTA;
+        $this->fraccionaPago = false;
     }
 
     public function getIdentificador()
@@ -194,5 +200,28 @@ class Matricula
     public function getPrefijo()
     {
         return $this->prefijo;
+    }
+
+    /**
+     * Set fraccionaPago
+     *
+     * @param boolean $fraccionaPago
+     * @return Matricula
+     */
+    public function setFraccionaPago($fraccionaPago)
+    {
+        $this->fraccionaPago = $fraccionaPago;
+
+        return $this;
+    }
+
+    /**
+     * Get fraccionaPago
+     *
+     * @return boolean 
+     */
+    public function getFraccionaPago()
+    {
+        return $this->fraccionaPago;
     }
 }

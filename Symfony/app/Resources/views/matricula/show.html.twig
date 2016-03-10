@@ -35,6 +35,10 @@
                 <td class="right-align">{{ matricula.estado }}</td>
             </tr>
             <tr>
+                <th>Fracciona el pago</th>
+                <td class="right-align">{% if matricula.fraccionaPago %}<span class="chip green lighten-4">Sí</span>{% else %}<span class="chip">No</span>{% endif %}</td>
+            </tr>
+            <tr>
                 <th>Creado el</th>
                 <td class="right-align">{% if matricula.createAt %}{{ matricula.createAt|date('d/m/Y H:i:s') }}{% endif %}</td>
             </tr>
