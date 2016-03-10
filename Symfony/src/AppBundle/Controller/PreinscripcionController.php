@@ -222,28 +222,29 @@ class PreinscripcionController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
-
-            if($preinscripcionEnCurso->getEstado() == PreinscripcionEnCurso::ESTADO_ACEPTADA) {
-                $preinscripciones = $preinscripcionEnCurso->getPreinscripcion()->getPreinscripcionEnCursos();
-                foreach($preinscripciones as $p)
-                    if($preinscripcionEnCurso != $p)
-                        if($preinscripcionEnCurso->getEstado() != PreinscripcionEnCurso::ESTADO_PLAZA OR $preinscripcionEnCurso->getEstado() != PreinscripcionEnCurso::ESTADO_RESERVA)
-                            $p->setEstado(PreinscripcionEnCurso::ESTADO_RECHAZADA);
-
-                foreach($preinscripciones as $p)
-                    $this->get('utils.curso')->actualizarAsignacionPlazas($p->getCurso());
-
-            } else if($preinscripcionEnCurso->getEstado() == PreinscripcionEnCurso::ESTADO_RECHAZADA) {
-                $this->get('utils.curso')->actualizarAsignacionPlazas($preinscripcionEnCurso->getCurso());
-            } else if($preinscripcionEnCurso->getEstado() == PreinscripcionEnCurso::ESTADO_PLAZA) {
-                $preinscripciones = $preinscripcionEnCurso->getPreinscripcion()->getPreinscripcionEnCursos();
-                foreach($preinscripciones as $p)
-                    if($preinscripcionEnCurso != $p)
-                        $p->setEstado(PreinscripcionEnCurso::ESTADO_PLAZA);
-
-                foreach($preinscripciones as $p)
-                    $this->get('utils.curso')->actualizarAsignacionPlazas($p->getCurso());
-            }
+            $this->get('utils.curso')->actualizarAsignacionPlazas($preinscripcionEnCurso->getCurso());
+//
+//            if($preinscripcionEnCurso->getEstado() == PreinscripcionEnCurso::ESTADO_ACEPTADA) {
+//                $preinscripciones = $preinscripcionEnCurso->getPreinscripcion()->getPreinscripcionEnCursos();
+//                foreach($preinscripciones as $p)
+//                    if($preinscripcionEnCurso != $p)
+//                        if($preinscripcionEnCurso->getEstado() != PreinscripcionEnCurso::ESTADO_PLAZA OR $preinscripcionEnCurso->getEstado() != PreinscripcionEnCurso::ESTADO_RESERVA)
+//                            $p->setEstado(PreinscripcionEnCurso::ESTADO_RECHAZADA);
+//
+//                foreach($preinscripciones as $p)
+//                    $this->get('utils.curso')->actualizarAsignacionPlazas($p->getCurso());
+//
+//            } else if($preinscripcionEnCurso->getEstado() == PreinscripcionEnCurso::ESTADO_RECHAZADA) {
+//                $this->get('utils.curso')->actualizarAsignacionPlazas($preinscripcionEnCurso->getCurso());
+//            } else if($preinscripcionEnCurso->getEstado() == PreinscripcionEnCurso::ESTADO_PLAZA) {
+//                $preinscripciones = $preinscripcionEnCurso->getPreinscripcion()->getPreinscripcionEnCursos();
+//                foreach($preinscripciones as $p)
+//                    if($preinscripcionEnCurso != $p)
+//                        $p->setEstado(PreinscripcionEnCurso::ESTADO_PLAZA);
+//
+//                foreach($preinscripciones as $p)
+//                    $this->get('utils.curso')->actualizarAsignacionPlazas($p->getCurso());
+//            }
 
             return $this->redirect($this->generateUrl('curso_show', array('id' => $preinscripcionEnCurso->getCurso()->getId())).'?tab=preinscripciones');
         }
