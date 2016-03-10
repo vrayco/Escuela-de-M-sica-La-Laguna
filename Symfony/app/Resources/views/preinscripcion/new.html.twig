@@ -103,6 +103,11 @@
             $(this).removeClass('invalid');
         });
 
+        $("#preinscripcion_prioridad").change(function() {
+            if(this.checked) {
+                $('#preinscripcion_empadronado').prop('checked', true);
+            }
+        });
 
         {% if form_errors(form)|length > 0 %}
             Materialize.toast("{{ form_errors(form) }}",4000, "error");
