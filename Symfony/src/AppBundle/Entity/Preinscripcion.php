@@ -110,6 +110,22 @@ class Preinscripcion
      */
     private $preinscripcionEnCursos;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createAt", type="datetime")
+     */
+    private $createAt;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->createAt = new \DateTime('now');
+        $this->preinscripcionEnCursos = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     public function getIdentificador()
     {
         return "PRE-" . $this->prefijo.$this->id;
@@ -262,13 +278,6 @@ class Preinscripcion
     {
         return $this->empadronado;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->preinscripcionEnCursos = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add preinscripcionEnCursos
@@ -347,5 +356,28 @@ class Preinscripcion
     public function getPrefijo()
     {
         return $this->prefijo;
+    }
+
+    /**
+     * Set createAt
+     *
+     * @param \DateTime $createAt
+     * @return Preinscripcion
+     */
+    public function setCreateAt($createAt)
+    {
+        $this->createAt = $createAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreateAt()
+    {
+        return $this->createAt;
     }
 }

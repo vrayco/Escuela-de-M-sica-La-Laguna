@@ -36,6 +36,10 @@
                     <th>Empadronado</th>
                     <td class="right-align">{% if preinscripcion.empadronado %}<span class="chip purple lighten-4"><i class="large material-icons">done</i> EMPADRONADO</span>{% endif %}</td>
                 </tr>
+                <tr>
+                    <th>Creado el</th>
+                    <td class="right-align">{% if preinscripcion.createAt %}{{ preinscripcion.createAt|date('d/m/Y H:i:s') }}{% endif %}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
