@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Alumno;
+use AppBundle\Form\MatriculaRenovarType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -85,6 +86,43 @@ class MatriculaController extends Controller
         }
 
         return $this->render('matricula/new.html.twig', array(
+            'matricula' => $matricula,
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * Creates a new Matricula entity.
+     *
+     * @Route("/{id}/renovar", name="matricula_renovar")
+     * @Method({"GET", "POST"})
+     */
+    public function renovarAction(Request $request, Matricula $matriculaVieja)
+    {
+        $matricula = new Matricula();
+        $matricula->setAlumno($matriculaVieja->getAlumno());
+        $matriculaVieja->setRenovacion($matricula);
+
+        $form = $this->createForm(new MatriculaRenovarType($matriculaVieja), $matricula);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $matricula->setPrefijo($matricula->getCurso()->getCursoAcademico()->getPrefijoExpediente());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($matricula);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'Se ha renovado la matrícula'
+            );
+
+            return $this->redirectToRoute('matricula_show', array('id' => $matricula->getId()));
+        }
+
+        return $this->render('matricula/renovar.html.twig', array(
             'matricula' => $matricula,
             'form' => $form->createView(),
         ));

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\CursoAcademico;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -18,6 +19,18 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class CursoController extends Controller
 {
+
+    /**
+     * @Route("/selects", name="cursos_selects")
+     */
+    public function cursosAction(Request $request)
+    {
+        $cursoAcademicoId = $request->request->get('curso_academico_id');
+        $em = $this->getDoctrine()->getManager();
+        $cities = $em->getRepository('AppBundle:Curso')->findByCursoAcademicoId($cursoAcademicoId);
+        return new JsonResponse($cities);
+    }
+
     /**
      * Lists all Curso entities.
      *

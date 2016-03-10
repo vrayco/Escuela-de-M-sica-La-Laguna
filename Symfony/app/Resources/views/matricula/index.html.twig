@@ -25,6 +25,11 @@
                 <td class="hide-on-small-only right-align">
                     <a href="{{ path('matricula_show', { 'id': matricula.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
                     <a href="{{ path('matricula_edit', { 'id': matricula.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>
+                    {% if not matricula.renovacion %}
+                        <a href="{{ path('matricula_renovar', { 'id': matricula.id }) }}" class="btn-floating btn waves-effect waves-light lime"><i class="material-icons">replay</i></a>
+                    {% else %}
+                        <a class="btn-floating btn waves-effect waves-light lime disabled"><i class="material-icons">replay</i></a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

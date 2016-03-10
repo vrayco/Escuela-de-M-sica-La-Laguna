@@ -66,6 +66,7 @@
         <tr>
             <th>Identificador</th>
             <th>Disciplina</th>
+            <th>Curso Académico</th>
             <th></th>
         </tr>
         </thead>
@@ -75,6 +76,7 @@
                 <td><span class="chip">{{ matricula.identificador }}</span></td>
                 <td><small>{{ matricula.curso.disciplina.disciplinaGrupo }}</small><br>
                     {{ matricula.curso.disciplina }}</td>
+                <td>{{ matricula.curso.cursoAcademico }}</td>
                 <td class="hide-on-small-only right-align">
                     <a href="{{ path('matricula_show', { 'id': matricula.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
                     <a href="{{ path('matricula_edit', { 'id': matricula.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>

@@ -65,6 +65,12 @@ class Matricula
      */
     private $curso;
 
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Matricula")
+     * @ORM\JoinColumn(name="renovacion_id", referencedColumnName="id")
+     */
+    private $renovacion;
+
     public function __construct()
     {
         $this->createAt = new \DateTime('now');
@@ -223,5 +229,28 @@ class Matricula
     public function getFraccionaPago()
     {
         return $this->fraccionaPago;
+    }
+
+    /**
+     * Set renovacion
+     *
+     * @param \AppBundle\Entity\Matricula $renovacion
+     * @return Matricula
+     */
+    public function setRenovacion(\AppBundle\Entity\Matricula $renovacion = null)
+    {
+        $this->renovacion = $renovacion;
+
+        return $this;
+    }
+
+    /**
+     * Get renovacion
+     *
+     * @return \AppBundle\Entity\Matricula 
+     */
+    public function getRenovacion()
+    {
+        return $this->renovacion;
     }
 }

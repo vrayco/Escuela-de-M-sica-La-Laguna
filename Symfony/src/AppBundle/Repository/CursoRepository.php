@@ -61,4 +61,19 @@ class CursoRepository extends EntityRepository
 
         return $result[0]['total'];
     }
+
+    public function findByCursoAcademicoId($cursoAcademicoId)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            "SELECT curso.id as id, disciplina.nombre as disciplinaNombre, disciplinaGrupo.nombre as disciplinaGrupoNombre ".
+            "FROM AppBundle:Curso curso ".
+            "LEFT JOIN curso.cursoAcademico cursoAcademico ".
+            "LEFT JOIN curso.disciplina disciplina ".
+            "LEFT JOIN disciplina.disciplinaGrupo disciplinaGrupo ".
+            "WHERE cursoAcademico.id = :cursoAcademicoId ".
+            "ORDER BY disciplina.nombre ASC"
+        )->setParameter('cursoAcademicoId', $cursoAcademicoId);
+
+        return $query->getArrayResult();
+    }
 }

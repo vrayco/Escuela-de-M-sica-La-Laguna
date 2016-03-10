@@ -23,6 +23,10 @@
                 <td class="right-align"><a href="{{ path('curso_show',{ 'id' : matricula.curso.id}) }}?tab=matriculas"><small>{{ matricula.curso.disciplina.disciplinaGrupo }}</small><br>{{ matricula.curso.disciplina }}</a></td>
             </tr>
             <tr>
+                <th>Curso Académico</th>
+                <td class="right-align">{{ matricula.curso.cursoAcademico }}</td>
+            </tr>
+            <tr>
                 <th>Expediente alumno</th>
                 <td class="right-align"><a href="{{ path('alumno_show', { 'id' : matricula.alumno.id }) }}"><span class="chip purple lighten-4">{{ matricula.alumno.expediente }}</span></a></td>
             </tr>
