@@ -103,7 +103,7 @@ class PreinscripcionController extends Controller
                 'Se ha creado la inscripción'
             );
 
-            return $this->redirectToRoute('preinscripcion_show', array('id' => $preinscripcion->getId()));
+            //return $this->redirectToRoute('preinscripcion_show', array('id' => $preinscripcion->getId()));
         }
 
         return $this->render('preinscripcion/new.html.twig', array(

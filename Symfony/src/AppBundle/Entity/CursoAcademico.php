@@ -39,6 +39,11 @@ class CursoAcademico
     private $nombre;
 
     /**
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     */
+    private $slug;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="fechaInicio", type="date")
@@ -271,5 +276,28 @@ class CursoAcademico
     public function getGeneracionDeListas()
     {
         return $this->generacionDeListas;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return CursoAcademico
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

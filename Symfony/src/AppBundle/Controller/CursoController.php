@@ -88,26 +88,6 @@ class CursoController extends Controller
     }
 
     /**
-     * @Route("/listados", name="curso_listados")
-     * @Method("GET")
-     */
-    public function listadosAction()
-    {
-        $cursoAcademico = $this->get('utils.curso')->getCursoActual();
-        $em = $this->getDoctrine()->getManager();
-        $cursos = $em->getRepository('AppBundle:Curso')->getCursosEntraEnSorteo($cursoAcademico);
-
-        $listados = array();
-        foreach($cursos as $curso)
-            $listados[$curso->getId()] = $em->getRepository('AppBundle:PreinscripcionEnCurso')->findBy(array('curso' => $curso), array('numeroLista' => 'ASC'));
-
-        return $this->render(':curso:listados.html.twig', array(
-            'cursos'    => $cursos,
-            'listados'  => $listados
-        ));
-    }
-
-    /**
      * Finds and displays a Curso entity.
      *
      * @Route("/{id}", name="curso_show")

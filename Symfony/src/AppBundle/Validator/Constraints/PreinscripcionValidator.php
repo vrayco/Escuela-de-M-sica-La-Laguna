@@ -70,28 +70,28 @@ class PreinscripcionValidator extends ConstraintValidator
 
                             if($edadMinima) {
                                 $fechaLimite = new \DateTime('now');
-                                $fechaLimite->setDate($fechaLimite->format('Y')-$edadMinima,1,1);
+                                $fechaLimite->setDate($fechaLimite->format('Y')-$edadMinima,12,31);
                                 $fechaLimite->setTime(0,0,0);
-
-                                if($fechaLimite > $fechaNacimiento) {
-                                    $this->context->buildViolation(sprintf($constraint->message4, $p->getCurso()))
-                                        ->atPath('preinscripcionEnCursos')
-                                        ->addViolation();
-                                }
-                                break;
-                            }
-
-                            if($edadMaxima) {
-                                $fechaLimite = new \DateTime('now');
-                                $fechaLimite->setDate($fechaLimite->format('Y')-$edadMaxima,12,31);
-                                $fechaLimite->setTime(0,0,0);
-
                                 if($fechaLimite < $fechaNacimiento) {
                                     $this->context->buildViolation(sprintf($constraint->message4, $p->getCurso()))
                                         ->atPath('preinscripcionEnCursos')
                                         ->addViolation();
+                                    break;
                                 }
-                                break;
+
+                            }
+
+                            if($edadMaxima) {
+                                $fechaLimite = new \DateTime('now');
+                                $fechaLimite->setDate($fechaLimite->format('Y')-$edadMaxima,1,1);
+                                $fechaLimite->setTime(0,0,0);
+                                if($fechaLimite > $fechaNacimiento) {
+                                    $this->context->buildViolation(sprintf($constraint->message4, $p->getCurso()))
+                                        ->atPath('preinscripcionEnCursos')
+                                        ->addViolation();
+                                    break;
+                                }
+
                             }
 
                         }

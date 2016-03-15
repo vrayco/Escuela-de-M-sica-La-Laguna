@@ -47,9 +47,9 @@
                                                     <td class="center-align">{% if preinscripcion.preinscripcion.prioridad %}<span class="chip yellow lighten-4">PRIORIDAD</span>{% endif %}</td>
                                                     <td class="center-align">{% if preinscripcion.preinscripcion.empadronado %}<span class="chip purple lighten-4">EMPADRONADO</span>{% endif %}</td>
                                                     {#<td>#}
-                                                        {#{% if constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_PLAZA') == preinscripcion.estado or constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_ACEPTADA') == preinscripcion.estado or constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_RECHAZADA') == preinscripcion.estado %}#}
-                                                            {#<li><a href="{{ path('preinscripcion_plazaaceptarorechazar', {'id' : preinscripcion.id}) }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">thumbs_up_down</i></a></li>#}
-                                                        {#{% endif %}#}
+                                                    {#{% if constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_PLAZA') == preinscripcion.estado or constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_ACEPTADA') == preinscripcion.estado or constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_RECHAZADA') == preinscripcion.estado %}#}
+                                                    {#<li><a href="{{ path('preinscripcion_plazaaceptarorechazar', {'id' : preinscripcion.id}) }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">thumbs_up_down</i></a></li>#}
+                                                    {#{% endif %}#}
                                                     {#</td>#}
                                                 </tr>
                                             {% endfor %}

@@ -23,6 +23,15 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Número de pre-inscripciones</th>
+                    <td class="right-align">{{ curso.preinscripciones|length }}</td>
+                </tr>
+                <tr>
+                    <th>Número de matrículas</th>
+                    <td class="right-align">{{ curso.matriculas|length }}</td>
+                </tr>
+
+                <tr>
                     <th>¿Entra en el sorteo de plazas?</th>
                     <td class="right-align">{% if curso.entraEnSorteo %}<span class="chip green lighten-4">Sí</span>{% else %}<span class="chip grey lighten-4">No</span>{% endif %}</td>
                 </tr>
@@ -33,6 +42,14 @@
                 <tr>
                     <th>Número plazas prioritarias</th>
                     <td class="right-align">{% if curso.numeroPlazasPrioritarias %}{{ curso.numeroPlazasPrioritarias }}{% else %}---{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Edad Mínima</th>
+                    <td class="right-align">{% if curso.disciplina.edadMinima %}{{ curso.disciplina.edadMinima }} años{% else %}---{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Edad Máxima</th>
+                    <td class="right-align">{% if curso.disciplina.edadMaxima %}{{ curso.disciplina.edadMaxima }} años{% else %}---{% endif %}</td>
                 </tr>
                 </tbody>
             </table>

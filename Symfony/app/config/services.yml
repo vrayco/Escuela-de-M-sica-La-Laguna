@@ -57,6 +57,10 @@ services:
         class: AppBundle\Utils\ListadosService
         arguments: [@doctrine.orm.default_entity_manager, @phpexcel]
 
+    utils:
+        class: AppBundle\Utils\UtilsService
+        arguments: []
+
     preinscripcionencurso.form.type.view:
         class: AppBundle\Form\PreinscripcionEnCursoType
         arguments: [ "@utils.curso" ]

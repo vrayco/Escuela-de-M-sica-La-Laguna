@@ -51,6 +51,7 @@ class CursoAcademicoController extends Controller
             if($cursoAcademico->getEnCurso())
                 $em->getRepository('AppBundle:CursoAcademico')->clearEnCurso($cursoAcademico);
 
+            $cursoAcademico->setSlug($this->get('utils')->slugify($cursoAcademico->getNombre()));
             $em->persist($cursoAcademico);
             $em->flush();
 

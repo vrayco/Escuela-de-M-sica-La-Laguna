@@ -15,6 +15,7 @@
 
 <body>
 
+{% if app.user %}
 <ul id="dropdown-configuracion" class="dropdown-content">
     <li><a href="{{ path('cursoacademico_index') }}">Cursos Académicos</a></li>
     <li><a href="{{ path('disciplinagrupo_index') }}">Grupos disciplinas</a></li>
@@ -27,6 +28,8 @@
     <li><a href="{{ path('fos_user_security_logout') }}">Cerrar sesión</a></li>
 </ul>
 
+{% endif %}
+
 {% set route_matricula = ['matricula_index','matricula_new','matricula_show','matricula_edit'] %}
 {% set route_preinscripcion = ['preinscripcion_index','preinscripcion_new','preinscripcion_show','preinscripcion_edit','preinscripcion_sortearplazas'] %}
 {% set route_alumnos = ['alumno_index','alumno_new','alumno_show','alumno_edit'] %}
@@ -36,6 +39,7 @@
     <nav>
         <div class="nav-wrapper purple darken-2">
             <a href="{{ path('homepage') }}" class="brand-logo">Escuela de Música</a>
+            {% if app.user %}
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li class="{% if app.request.get('_route') in route_preinscripcion %}active{% endif %}"><a href="{{ path('preinscripcion_index') }}">Pre-inscripciones</a></li>
@@ -59,6 +63,7 @@
                 <li><a href="{{ path('fos_user_change_password') }}">Cambiar contraseña</a></li>
                 <li><a href="{{ path('fos_user_security_logout') }}">Cerrar sesión</a></li>
             </ul>
+            {% endif %}
         </div>
     </nav>
 </div>

@@ -20,7 +20,7 @@
                 <a href="{{ path('preinscripcion_sortearplazas') }}" class="waves-effect waves-light btn-large lime"><i class="material-icons left">shuffle</i> Sortear plazas</a>
             {% else %}
                 <a href="{{ path('preinscripcion_inicializarsorteo') }}" class="waves-effect waves-light btn-large blue"><i class="material-icons left">delete</i> Eliminar sorteo (botón temporal)</a>
-                <a href="{{ path('curso_listados') }}" class="waves-effect waves-light btn-large green"><i class="material-icons left">shuffle</i> Ver sorteo</a>
+                <a href="{{ path('listado', { 'slug' : cursoAcademico.slug }) }}" class="waves-effect waves-light btn-large green"><i class="material-icons left">shuffle</i> Ver sorteo</a>
             {% endif %}
         </div>
     </div>
