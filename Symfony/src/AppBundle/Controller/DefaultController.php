@@ -70,7 +70,7 @@ class DefaultController extends Controller
 
         // Set headers
         $response->headers->set('Cache-Control', 'private');
-        $response->headers->set('Content-type', mime_content_type($filepath));
+        $response->headers->set('Content-type', $this->_mime_content_type($filepath));
         $response->headers->set('Content-Disposition', 'attachment; filename="' . basename($filepath) . '";');
         $response->headers->set('Content-length', filesize($filepath));
 
@@ -82,4 +82,13 @@ class DefaultController extends Controller
         return $response;
     }
 
+    private function _mime_content_type($filename) {
+        $result = new \finfo();
+
+        if (is_resource($result) === true) {
+            return $result->file($filename, FILEINFO_MIME_TYPE);
+        }
+
+        return false;
+    }
 }
