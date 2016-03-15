@@ -67,7 +67,7 @@ class Matricula
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Matricula")
-     * @ORM\JoinColumn(name="renovacion_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="renovacion_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $renovacion;
 

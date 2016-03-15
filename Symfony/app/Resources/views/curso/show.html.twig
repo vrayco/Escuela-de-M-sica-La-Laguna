@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Cursos{% endblock %}
+{% block title %}{{ parent() }} - Especialidades{% endblock %}
 
 {% block content %}
 
@@ -111,8 +111,8 @@
                     <thead>
                     <tr>
                         <th>Posición</th>
-                        <th>Estado</th>
                         <th>Identificador</th>
+                        <th>Estado</th>
                         <th>DNI</th>
                         <th>Nombre</th>
                         <th></th>
@@ -121,7 +121,8 @@
                     <tbody>
                     {% for preinscripcion in preinscripciones %}
                         <tr>
-                            <td><span class="chip">{{ preinscripcion.numeroLista }}</span></td>
+                            <td>{% if preinscripcion.numeroLista != -1 %}<span class="chip">{{ preinscripcion.numeroLista }}{% else %}---{% endif %}</span></td>
+                            <td><a href="{{ path('preinscripcion_show', { 'id' : preinscripcion.preinscripcion.id }) }}"><span class="chip lime lighten-4">{{ preinscripcion.preinscripcion.identificador }}</span></a></td>
                             <td>
                                 {% if constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_PLAZA') == preinscripcion.estado %}
                                     <span class="chip green lighten-4">{{ preinscripcion.estado }}</span>
@@ -135,7 +136,6 @@
                                     <span class="chip purple lighten-4">{{ preinscripcion.estado }}</span>
                                 {% endif %}
                             </td>
-                            <td><a href="{{ path('preinscripcion_show', { 'id' : preinscripcion.preinscripcion.id }) }}"><span class="chip lime lighten-4">{{ preinscripcion.preinscripcion.identificador }}</span></a></td>
                             <td>{{ preinscripcion.preinscripcion.dni }}</td>
                             <td>{{ preinscripcion.preinscripcion.apellidos }}, {{ preinscripcion.preinscripcion.nombre }}</td>
                             {#<td class="center-align">{% if preinscripcion.preinscripcion.prioridad %}<span class="chip yellow lighten-4">PRIORIDAD</span>{% endif %}</td>#}
@@ -163,6 +163,10 @@
             {% if delete_form is not null %}
                 <li><a href="{{ path('curso_edit', { 'id': curso.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a></li>
                 <li><a href="#modal1" class="btn-floating btn waves-effect waves-light red modal-trigger"><i class="material-icons">delete</i></a></li>
+            {% else %}
+                <li><a class="btn-floating btn waves-effect waves-light blue disabled"><i class="material-icons">edit</i></a></li>
+                <li><a class="btn-floating btn waves-effect waves-light red disabled"><i class="material-icons">delete</i></a></li>
+                <li><a href="{{ path('listado', { 'slug' : curso.cursoAcademico.slug }) }}" class="btn-floating btn waves-effect waves-light lime modal-trigger tooltipped" data-position="top" data-delay="50" data-tooltip="Listado web"><i class="material-icons left">view_list</i> Listado web</a></li>
             {% endif %}
         </ul>
     </div>
@@ -171,8 +175,8 @@
         <!-- Modal Structure -->
         <div id="modal1" class="modal bottom-sheet">
             <div class="modal-content">
-                <h5>¿Estás seguro de eliminar el curso: <span class="chip">{{ curso.disciplina }}</span>?</h5>
-                <p>La acción es irreversible. Se eliminará todo la información relacionada con el curso (matriculas, preinscripciones, etc...)</p>
+                <h5>¿Estás seguro de eliminar la especilidad: <span class="chip">{{ curso.disciplina }} - {{ curso.cursoAcademico }}</span>?</h5>
+                <p>La acción es irreversible. Se eliminará todo la información relacionada con la especialidad (matriculas, preinscripciones, etc...)</p>
             </div>
             <div class="modal-footer">
                 <a href="#!" class="modal-action modal-close waves-effect waves-green btn grey">No, cancelar</a>

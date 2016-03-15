@@ -45,11 +45,11 @@
 
 
             {% if form_errors(form.cursoAcademico)|length > 0 %}
-            Materialize.toast("{{ form_errors(form.cursoAcademico) }}", 4000, "error");
+            Materialize.toast("{{ form_errors(form.cursoAcademico) }}", 4000, "error", function(){$('#toast-container').remove()});
             {% endif %}
 
             {% if form_errors(form)|length > 0 %}
-            Materialize.toast("{{ form_errors(form) }}", 4000, "error");
+            Materialize.toast("{{ form_errors(form) }}", 4000, "error", function(){$('#toast-container').remove()});
             {% endif %}
 
             $("#matricula_renovar_cursoAcademico").change(function(){

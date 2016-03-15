@@ -10,18 +10,27 @@ class PreinscripcionValidator extends ConstraintValidator
 
     public function validate($protocol, Constraint $constraint)
     {
+        dump($protocol->getPrioridad() and !$protocol->getEmpadronado());
+        // Compruebo que si es alumno que prioridad tambien está empadronado
+        if($protocol->getPrioridad() and !$protocol->getEmpadronado())
+            $this->context->buildViolation($constraint->message5)
+                ->atPath('empadronado')
+                ->addViolation();
+
         // Compruebo que al menos tenga una disciplina la inscripcion
         $preinscripcionEnCursos = $protocol->getPreinscripcionEnCursos();
         $nulos = true;
         foreach($preinscripcionEnCursos as $p)
             if($p->getCurso())
                 $nulos = false;
+
         if($nulos) {
             $this->context->buildViolation($constraint->message1)
                 ->atPath('preinscripcionEnCursos')
                 ->addViolation();
 
-        } else {
+        }
+        else {
 
             // Compruebo que no hayan dos cursos iguales
             $igual = false;

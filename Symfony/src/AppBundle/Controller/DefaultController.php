@@ -7,7 +7,10 @@ use AppBundle\Entity\CursoAcademico;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class DefaultController extends Controller
 {
@@ -46,9 +49,37 @@ class DefaultController extends Controller
             $listados[$curso->getId()] = $em->getRepository('AppBundle:PreinscripcionEnCurso')->findBy(array('curso' => $curso), array('numeroLista' => 'ASC'));
 
         return $this->render(':default:listado.html.twig', array(
-            'cursos'    => $cursos,
-            'listados'  => $listados
+            'cursos'            => $cursos,
+            'listados'          => $listados,
+            'cursoAcademico'    => $cursoAcademico
         ));
+    }
+
+    /**
+     * @Route("/sorteo/log/descargar", name="sorteo_descargar_log")
+     * @Method("GET")
+     */
+    public function descargarLogAction(Request $request)
+    {
+        $path = __DIR__.'/../../../app/logs/';
+        $filename = 'escuelademusica_sorteo.log';
+        $filepath = $path.$filename;
+
+        // Generate response
+        $response = new Response();
+
+        // Set headers
+        $response->headers->set('Cache-Control', 'private');
+        $response->headers->set('Content-type', mime_content_type($filepath));
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . basename($filepath) . '";');
+        $response->headers->set('Content-length', filesize($filepath));
+
+        // Send headers before outputting anything
+        $response->sendHeaders();
+
+        $response->setContent(file_get_contents($filepath));
+        
+        return $response;
     }
 
 }

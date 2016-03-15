@@ -4,6 +4,13 @@
 
 {% block content %}
     <div class="row">
+        {% if app.user %}
+        <div class="col s12 m12">
+            <div class="card-panel purple lighten-4 center-align">
+                <span class="white-text center-align">El listado es accesible por el público en la URL:<br><a class="white-text" href="{{ path('listado', { 'slug' : cursoAcademico.slug }) }}" target="_blank">{{ app.request.getSchemeAndHttpHost() }}{{ path('listado', { 'slug' : cursoAcademico.slug }) }}</a></span>
+            </div>
+        </div>
+        {% endif %}
         <div class="col s12">
             <ul class="collapsible" data-collapsible="accordion">
                 {% for curso in cursos %}
@@ -13,12 +20,12 @@
                             <div class="row">
                                 <div class="col s12">
                                     <div class="col s12">
-                                        <table class="highlight bordered">
+                                        <table class="highlight bordered responsive-table">
                                             <thead>
                                             <tr>
                                                 <th>Posición</th>
-                                                <th>Estado</th>
                                                 <th>Identificador</th>
+                                                <th>Estado</th>
                                                 <th>DNI</th>
                                                 <th>Nombre</th>
                                                 <th></th>
@@ -29,7 +36,8 @@
                                             <tbody>
                                             {% for preinscripcion in listados[curso.id] %}
                                                 <tr>
-                                                    <td><span class="chip">{{ preinscripcion.numeroLista }}</span></td>
+                                                    <td>{% if preinscripcion.numeroLista != -1 %}<span class="chip">{{ preinscripcion.numeroLista }}{% else %}---{% endif %}</span></td>
+                                                    <td><span class="chip lime lighten-4">{{ preinscripcion.preinscripcion.identificador }}</span></td>
                                                     <td>
                                                         {% if constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_PLAZA') == preinscripcion.estado %}
                                                             <span class="chip green lighten-4">{{ preinscripcion.estado }}</span>
@@ -39,9 +47,10 @@
                                                             <span class="chip grey lighten-4">{{ preinscripcion.estado }}</span>
                                                         {% elseif constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_RESERVA') == preinscripcion.estado %}
                                                             <span class="chip orange lighten-4">{{ preinscripcion.estado }}</span>
+                                                        {% elseif constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_PREINSCRITO') == preinscripcion.estado %}
+                                                            <span class="chip purple lighten-4">{{ preinscripcion.estado }}</span>
                                                         {% endif %}
                                                     </td>
-                                                    <td><span class="chip lime lighten-4">{{ preinscripcion.preinscripcion.identificador }}</span></td>
                                                     <td>{{ preinscripcion.preinscripcion.dni }}</td>
                                                     <td>{{ preinscripcion.preinscripcion.apellidos }}, {{ preinscripcion.preinscripcion.nombre }}</td>
                                                     <td class="center-align">{% if preinscripcion.preinscripcion.prioridad %}<span class="chip yellow lighten-4">PRIORIDAD</span>{% endif %}</td>
@@ -62,6 +71,9 @@
                     </li>
                 {% endfor %}
             </ul>
+        </div>
+        <div class="col s12 right-align">
+            <a href="{{ path('sorteo_descargar_log') }}" class="waves-effect waves-purple btn-flat">Descargar log del sorteo</a>
         </div>
     </div>
 

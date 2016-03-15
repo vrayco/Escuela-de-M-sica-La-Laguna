@@ -27,8 +27,8 @@ class CursoType extends AbstractType
                         ->orderBy('d.nombre', 'ASC');
                 },))
             ->add('entraEnSorteo')
-            ->add('numeroPlazas')
-            ->add('numeroPlazasPrioritarias')
+            ->add('numeroPlazas', null, array('label' => 'Número plazas a sortear'))
+            ->add('numeroPlazasPrioritarias', null, array('label' => 'Número plazas prioritarias a sortear'))
         ;
     }
     

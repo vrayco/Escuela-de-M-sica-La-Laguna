@@ -12,6 +12,7 @@ class Preinscripcion extends Constraint
     public $message2 = 'La pre-inscripción no puede tener dos veces las misma disciplina';
     public $message3 = 'La pre-inscripción contiene disciplinas incompatibles';
     public $message4 = 'La disciplina %s es incompatible con la edad del alumno';
+    public $message5 = 'Es incompatible que el alumno tenga prioridad y no esté empadronado';
 
     public function validatedBy()
     {

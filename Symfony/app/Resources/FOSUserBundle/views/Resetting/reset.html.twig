@@ -48,7 +48,7 @@
             {% set error = form_errors(form.plainPassword.first) %}
             $(".button-collapse").sideNav();
             {% if error %}
-                Materialize.toast('{{ error|raw }}', 4000);
+                Materialize.toast('{{ error|raw }}', 4000, function(){$('#toast-container').remove()});
             {% endif %}
 
         })

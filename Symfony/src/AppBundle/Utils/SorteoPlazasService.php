@@ -24,20 +24,13 @@ class SorteoPlazasService
         $this->posicionLista = 1;
     }
 
-    /**
-     *
-     * Pasa fecha en formato de texto yyyymmdd a un objeto DateTime
-     *
-     * @param $str
-     * @return \DateTime|null
-     */
     public function celebrarSorteo(CursoAcademico $cursoAcademico)
     {
         set_time_limit(self::TIEMPO_EJECUCION_MAX);
 
         $ahora = new \DateTime('now');
         $this->logger->addInfo(
-            sprintf('Inicio del sorteo a las %s', $ahora->format('d/m/Y H:i:s'))
+            sprintf('Inicio del sorteo del curso %s a las %s', $cursoAcademico->__toString(), $ahora->format('d/m/Y H:i:s'))
         );
 
         $semilla = $this->generarSemilla();
@@ -53,12 +46,11 @@ class SorteoPlazasService
             sprintf('Número total de cursos: %d', sizeof($cursos))
         );
 
-        foreach($cursos as $curso) {
+        foreach($cursos as $curso)
             if($curso->getEntraEnSorteo()) {
                 $this->generarListas($curso);
                 $this->asignarPlazas($curso);
             }
-        }
 
         $ahora = new \DateTime('now');
         $this->logger->addInfo(
@@ -79,36 +71,36 @@ class SorteoPlazasService
         $preinscripciones = $this->em->getRepository('AppBundle:PreinscripcionEnCurso')->getPreinscripciones($curso);
 
         $this->logger->addInfo(
-            sprintf('Sorteo %s', strtoupper($disciplina->getNombre(). ' (' . $disciplina->getDisciplinaGrupo()->getNombre().')'))
+            sprintf('Sorteo de la especialidad %s', strtoupper($disciplina->getNombre(). ' (' . $disciplina->getDisciplinaGrupo()->getNombre().')'))
         );
         $this->logger->addInfo(
-            sprintf('Número plazas %d', $numeroPlazas)
+            sprintf('Número plazas a sortear %d', $numeroPlazas)
         );
         $this->logger->addInfo(
-            sprintf('Número plazas prioritarias %d', $numeroPlazasPrioritarias)
+            sprintf('Número plazas prioritarias a sortear %d', $numeroPlazasPrioritarias)
         );
         $this->logger->addInfo(
-            sprintf('Número preinscripciones %d', sizeof($preinscripciones))
+            sprintf('Número candidatos %d', sizeof($preinscripciones))
         );
 
-        // 1º SORTEO: PRIORIDAD
+        // 1/3 SORTEO: PRIORIDAD
         $preinscripcionesPrioridad = $this->em->getRepository('AppBundle:PreinscripcionEnCurso')->getPreinscripcionesPrioritarias($curso);
         $this->logger->addInfo(
-            sprintf('Sorteo de prioridad %d preinscripciones para %d plazas prioritarias', sizeof($preinscripcionesPrioridad), $numeroPlazasPrioritarias)
+            sprintf('SORTEO DE PRIORIDAD: %d candidatos para %d plazas prioritarias', sizeof($preinscripcionesPrioridad), $numeroPlazasPrioritarias)
         );
         $this->ejecutarSorteo($numeroPlazasPrioritarias, $preinscripcionesPrioridad);
 
-        // 2 SORTEO: GENERAL
+        // 2/3 SORTEO: GENERAL
         $preinscripciones = $this->em->getRepository('AppBundle:PreinscripcionEnCurso')->getPreinscripcionesEmpadronados($curso);
         $this->logger->addInfo(
-            sprintf('Sorteo general %d preinscripciones', sizeof($preinscripciones))
+            sprintf('SORTEO GENERAL: %d candidatos', sizeof($preinscripciones))
         );
         $this->ejecutarSorteo(sizeof($preinscripciones), $preinscripciones);
 
-        // 3 SORTEO: NO EMPADRONADOS
+        // 3/3 SORTEO: NO EMPADRONADOS
         $preinscripciones = $this->em->getRepository('AppBundle:PreinscripcionEnCurso')->getPreinscripcionesNoEmpadronados($curso);
         $this->logger->addInfo(
-            sprintf('Sorteo de no empadronados %d preinscripciones', sizeof($preinscripciones))
+            sprintf('SORTEO NO EMPADRONADOS: %d candidatos', sizeof($preinscripciones))
         );
         $this->ejecutarSorteo(sizeof($preinscripciones), $preinscripciones);
 
@@ -151,9 +143,9 @@ class SorteoPlazasService
             }
 
         }
+
         $this->em->flush();
     }
-
 
     public function inicializarSorteo(CursoAcademico $cursoAcademico)
     {
@@ -164,11 +156,9 @@ class SorteoPlazasService
 
         $cursos = $this->em->getRepository('AppBundle:Curso')->findBy(array('cursoAcademico' => $cursoAcademico));
 
-        foreach($cursos as $curso) {
-            if($curso->getEntraEnSorteo()) {
+        foreach($cursos as $curso)
+            if($curso->getEntraEnSorteo())
                 $this->inicializarListado($curso);
-            }
-        }
 
         $ahora = new \DateTime('now');
         $this->logger->addInfo(
@@ -181,7 +171,6 @@ class SorteoPlazasService
 
     private function inicializarListado(Curso $curso)
     {
-
         $preinscripciones = $this->em->getRepository('AppBundle:PreinscripcionEnCurso')->getPreinscripciones($curso);
         foreach($preinscripciones as $preinscripcion) {
             $preinscripcion->setNumeroLista(PreinscripcionEnCurso::SIN_PLAZA);

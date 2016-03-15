@@ -46,7 +46,7 @@ class CursoController extends Controller
         $cursos = $em->getRepository('AppBundle:Curso')->findBy(array('cursoAcademico' => $cursoAcademico), array());
 
         return $this->render('curso/index.html.twig', array(
-            'cursos' => $cursos,
+            'cursos'            => $cursos
         ));
     }
 
@@ -75,7 +75,7 @@ class CursoController extends Controller
 
             $this->addFlash(
                 'success',
-                'Se ha creado el curso'
+                'Se ha creado la especialidad'
             );
 
             return $this->redirectToRoute('curso_show', array('id' => $curso->getId()));
@@ -136,7 +136,7 @@ class CursoController extends Controller
 
             $this->addFlash(
                 'success',
-                'Se ha actualizado el curso'
+                'Se ha actualizado la especialidad'
             );
 
             return $this->redirectToRoute('curso_show', array('id' => $curso->getId()));
@@ -177,7 +177,7 @@ class CursoController extends Controller
 
             $this->addFlash(
                 'success',
-                'Se ha eliminado el curso'
+                'Se ha eliminado la especialidad'
             );
         }
 

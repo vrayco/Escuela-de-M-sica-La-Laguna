@@ -38,13 +38,13 @@
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper purple darken-2">
-            <a href="{{ path('homepage') }}" class="brand-logo">Escuela de Música</a>
             {% if app.user %}
+            <a href="{{ path('homepage') }}" class="brand-logo">Escuela de Música</a>
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li class="{% if app.request.get('_route') in route_preinscripcion %}active{% endif %}"><a href="{{ path('preinscripcion_index') }}">Pre-inscripciones</a></li>
                 <li class="{% if app.request.get('_route') in route_matricula %}active{% endif %}"><a href="{{ path('matricula_index') }}">Matrículas</a></li>
-                <li class="{% if app.request.get('_route') in route_cursos %}active{% endif %}"><a href="{{ path('curso_index') }}">Cursos</a></li>
+                <li class="{% if app.request.get('_route') in route_cursos %}active{% endif %}"><a href="{{ path('curso_index') }}">Especialidades</a></li>
                 {{ render(controller('AppBundle:UI:getSelectorCursoAcademico')) }}
                 <li class="{% if app.request.get('_route') in route_alumnos %}active{% endif %}"><a href="{{ path('alumno_index') }}">Alumnos</a></li>
                 <li class="{% if app.request.get('_route') in route_configuracion %}active{% endif %}"><a class="dropdown-configuracion" href="#!" data-activates="dropdown-configuracion"><i class="material-icons">settings</i></a></li>
@@ -63,6 +63,9 @@
                 <li><a href="{{ path('fos_user_change_password') }}">Cambiar contraseña</a></li>
                 <li><a href="{{ path('fos_user_security_logout') }}">Cerrar sesión</a></li>
             </ul>
+            {% else %}
+                <a class="brand-logo hide-on-small-only">Escuela de Municipal de  Música "Guillermo González"</a>
+                <a class="brand-logo show-on-small" style="font-size: 14px">Escuela de Municipal de  Música "Guillermo González"</a>
             {% endif %}
         </div>
     </nav>
@@ -107,7 +110,7 @@
 
         {% for label, flashes in app.session.flashbag.all %}
             {% for flash in flashes %}
-                Materialize.toast("{{ flash }}",4000, "{{ label }}");
+                Materialize.toast("{{ flash }}",4000, "{{ label }}", function(){$('#toast-container').remove()});
             {% endfor %}
         {% endfor %}
 

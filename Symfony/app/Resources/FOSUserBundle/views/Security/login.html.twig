@@ -51,7 +51,7 @@
 
             $(".button-collapse").sideNav();
             {% if error %}
-            Materialize.toast("{{ error.messageKey|trans(error.messageData, 'security') }}",4000);
+            Materialize.toast("{{ error.messageKey|trans(error.messageData, 'security') }}",4000, function(){$('#toast-container').remove()});
             {% endif %}
 
         })

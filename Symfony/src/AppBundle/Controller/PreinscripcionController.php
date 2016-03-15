@@ -52,8 +52,9 @@ class PreinscripcionController extends Controller
         );
 
         return $this->render('preinscripcion/index.html.twig', array(
-            'preinscripciones' => $pagination,
-            'filter' => $filter
+            'preinscripciones'  => $pagination,
+            'filter'            => $filter,
+            'cursoAcademico'    => $cursoAcademico
         ));
     }
 
@@ -103,7 +104,7 @@ class PreinscripcionController extends Controller
                 'Se ha creado la inscripción'
             );
 
-            //return $this->redirectToRoute('preinscripcion_show', array('id' => $preinscripcion->getId()));
+            return $this->redirectToRoute('preinscripcion_show', array('id' => $preinscripcion->getId()));
         }
 
         return $this->render('preinscripcion/new.html.twig', array(

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Cursos Academicos{% endblock %}
+{% block title %}{{ parent() }} - Especialidades{% endblock %}
 
 {% form_theme edit_form 'form/fields.html.twig' %}
 {% block content %}
@@ -50,7 +50,7 @@
             });
 
             {% if form_errors(edit_form.disciplina)|length > 0 %}
-            Materialize.toast("{{ form_errors(edit_form.disciplina) }}",4000, "error");
+            Materialize.toast("{{ form_errors(edit_form.disciplina) }}",4000, "error", function(){$('#toast-container').remove()});
             {% endif %}
 
         });

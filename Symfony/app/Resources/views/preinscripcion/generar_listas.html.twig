@@ -49,7 +49,7 @@
                 if($('#form_sortear').is(":checked")){
                     $('#barra-de-progreso').show();
                 } else {
-                    Materialize.toast("Tienes que marcar la casilla", 4000, "error");
+                    Materialize.toast("Tienes que marcar la casilla", 4000, "error", function(){$('#toast-container').remove()});
                 }
             });
         });

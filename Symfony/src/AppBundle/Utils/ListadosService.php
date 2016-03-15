@@ -116,36 +116,14 @@ class ListadosService
                         'color' => array('rgb' => 'FFFFFF')
                     )
                 );
-                $stylePrioridad = array(
-                    'alignment' => array(
-                        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                    ),
-                    'font' => array(
-                        'size'  => 10,
-                        'bold'  => false
-                    ),
-                    'borders' => array(
-                        'allborders' => array(
-                            'style' => PHPExcel_Style_Border::BORDER_THIN
-                        )
-                    ),
-                    'fill' => array(
-                        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-                        'color' => array('rgb' => 'EFEFEF')
-                    )
-                );
+
                 foreach($preinscripciones as $pre) {
                     $sheet->setCellValue('A'.$index2, $pre->getPreinscripcion()->getIdentificador());
                     $sheet->setCellValue('B'.$index2, $pre->getPreinscripcion()->getApellidos().', '.$pre->getPreinscripcion()->getNombre());
                     $sheet->setCellValue('C'.$index2, $pre->getPreinscripcion()->getFechaNacimiento()->format('d/m/Y'));
                     $sheet->setCellValue('D'.$index2, $pre->getPreinscripcion()->getPrioridad() ? 'Si' : 'No');
                     $sheet->setCellValue('E'.$index2, $pre->getPreinscripcion()->getEmpadronado() ? 'Si' : 'No');
-
-                    if($pre->getPreinscripcion()->getPrioridad())
-                        $sheet->getStyle("A".$index2.":E".$index2)->applyFromArray($stylePrioridad);
-                    else
-                        $sheet->getStyle("A".$index2.":E".$index2)->applyFromArray($style);
-
+                    $sheet->getStyle("A".$index2.":E".$index2)->applyFromArray($style);
                     $index2++;
                 }
 
@@ -274,24 +252,7 @@ class ListadosService
                         'color' => array('rgb' => 'FFFFFF')
                     )
                 );
-                $stylePrioridad = array(
-                    'alignment' => array(
-                        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                    ),
-                    'font' => array(
-                        'size'  => 10,
-                        'bold'  => false
-                    ),
-                    'borders' => array(
-                        'allborders' => array(
-                            'style' => PHPExcel_Style_Border::BORDER_THIN
-                        )
-                    ),
-                    'fill' => array(
-                        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-                        'color' => array('rgb' => 'EFEFEF')
-                    )
-                );
+
                 foreach($preinscripciones as $pre) {
                     $sheet->setCellValue('A'.$index2, $pre->getNumeroLista());
                     $sheet->setCellValue('B'.$index2, $pre->getEstado());
@@ -300,12 +261,7 @@ class ListadosService
                     $sheet->setCellValue('E'.$index2, $pre->getPreinscripcion()->getFechaNacimiento()->format('d/m/Y'));
                     $sheet->setCellValue('F'.$index2, $pre->getPreinscripcion()->getPrioridad() ? 'Si' : 'No');
                     $sheet->setCellValue('G'.$index2, $pre->getPreinscripcion()->getEmpadronado() ? 'Si' : 'No');
-
-                    if($pre->getPreinscripcion()->getPrioridad())
-                        $sheet->getStyle("A".$index2.":G".$index2)->applyFromArray($stylePrioridad);
-                    else
-                        $sheet->getStyle("A".$index2.":G".$index2)->applyFromArray($style);
-
+                    $sheet->getStyle("A".$index2.":G".$index2)->applyFromArray($style);
                     $index2++;
                 }
 
