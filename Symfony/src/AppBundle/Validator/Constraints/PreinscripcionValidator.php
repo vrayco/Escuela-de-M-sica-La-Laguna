@@ -10,7 +10,6 @@ class PreinscripcionValidator extends ConstraintValidator
 
     public function validate($protocol, Constraint $constraint)
     {
-        dump($protocol->getPrioridad() and !$protocol->getEmpadronado());
         // Compruebo que si es alumno que prioridad tambien está empadronado
         if($protocol->getPrioridad() and !$protocol->getEmpadronado())
             $this->context->buildViolation($constraint->message5)
