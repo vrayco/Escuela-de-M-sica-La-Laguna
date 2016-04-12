@@ -134,7 +134,7 @@ class Preinscripcion
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -157,7 +157,7 @@ class Preinscripcion
     /**
      * Get dni
      *
-     * @return string 
+     * @return string
      */
     public function getDni()
     {
@@ -180,7 +180,7 @@ class Preinscripcion
     /**
      * Get nombre
      *
-     * @return string 
+     * @return string
      */
     public function getNombre()
     {
@@ -203,7 +203,7 @@ class Preinscripcion
     /**
      * Get apellidos
      *
-     * @return string 
+     * @return string
      */
     public function getApellidos()
     {
@@ -226,7 +226,7 @@ class Preinscripcion
     /**
      * Get telefonoMovil
      *
-     * @return string 
+     * @return string
      */
     public function getTelefonoMovil()
     {
@@ -249,7 +249,7 @@ class Preinscripcion
     /**
      * Get prioridad
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPrioridad()
     {
@@ -272,7 +272,7 @@ class Preinscripcion
     /**
      * Get empadronado
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEmpadronado()
     {
@@ -305,7 +305,7 @@ class Preinscripcion
     /**
      * Get preinscripcionEnCursos
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPreinscripcionEnCursos()
     {
@@ -328,7 +328,7 @@ class Preinscripcion
     /**
      * Get fechaNacimiento
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaNacimiento()
     {
@@ -351,7 +351,7 @@ class Preinscripcion
     /**
      * Get prefijo
      *
-     * @return string 
+     * @return string
      */
     public function getPrefijo()
     {
@@ -374,10 +374,18 @@ class Preinscripcion
     /**
      * Get createAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateAt()
     {
         return $this->createAt;
+    }
+
+    public function getCursoAcademico()
+    {
+        if(count($this->preinscripcionEnCursos) > 0)
+            return $this->preinscripcionEnCursos[0]->getCurso()->getCursoAcademico();
+        else
+            return null;
     }
 }

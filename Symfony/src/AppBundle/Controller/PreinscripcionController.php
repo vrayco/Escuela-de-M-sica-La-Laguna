@@ -136,6 +136,54 @@ class PreinscripcionController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing Preinscripcion entity.
+     *
+     * @Route("/{id}/edit", name="preinscripcion_edit")
+     * @Method({"GET", "POST"})
+     */
+    public function editAction(Request $request, Preinscripcion $preinscripcion)
+    {
+        if($preinscripcion->getCursoAcademico()->getGeneracionDeListas())
+            throw new NotFoundHttpException('No se puede editar la preinscripción despúes del sorteo.');
+
+        for($i = count($preinscripcion->getPreinscripcionEnCursos()); $i < 3; $i++) {
+            $preinscripcionEnCurso = new PreinscripcionEnCurso();
+            $preinscripcionEnCurso->setPreinscripcion($preinscripcion);
+            $preinscripcion->addPreinscripcionEnCurso($preinscripcionEnCurso);
+        }
+
+        $editForm = $this->createForm('AppBundle\Form\PreinscripcionType', $preinscripcion);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            // Elimino las preinscripcionEnCurso nulas
+            $preinscripcionesEncursos = $preinscripcion->getPreinscripcionEnCursos();
+            foreach ($preinscripcionesEncursos as $p)
+                if (!$p->getCurso()) {
+                    $preinscripcion->removePreinscripcionEnCurso($p);
+                    $em->remove($p);
+                }
+
+            $em->persist($preinscripcion);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'Se ha actualizado la preinscripcion'
+            );
+
+            return $this->redirectToRoute('preinscripcion_show', array('id' => $preinscripcion->getId()));
+        }
+
+        return $this->render(':preinscripcion:edit.html.twig', array(
+            'preinscripcion' => $preinscripcion,
+            'edit_form' => $editForm->createView()
+        ));
+    }
+
+    /**
      * @Route("/sortear/plazas", name="preinscripcion_sortearplazas")
      * @Method({"GET","POST"})
      */

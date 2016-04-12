@@ -79,6 +79,11 @@
         </a>
         <ul>
             <li><a href="{{ path('preinscripcion_index') }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">view_list</i></a></li>
+            {% if not preinscripcion.cursoAcademico.generacionDeListas %}
+                <li><a href="{{ path('preinscripcion_edit', {'id' : preinscripcion.id }) }}" class="btn-floating waves-effect waves-light blue"><i class="material-icons">edit</i></a></li>
+            {% else %}
+                <a class="btn-floating btn waves-effect waves-light blue disabled tooltipped" data-position="top" data-delay="50" data-tooltip="Las preinscripciones no son editables después del sorteo"><i class="material-icons">edit</i></a>
+            {% endif %}
             {% if delete_form is not null %}
                 <li><a href="#modal1" class="btn-floating btn waves-effect waves-light red modal-trigger"><i class="material-icons">delete</i></a></li>
             {% endif %}

@@ -27,6 +27,11 @@
                 <td class="center-align">{% if preinscripcion.empadronado %}<i class="material-icons tooltipped" data-position="top" data-delay="50" data-tooltip="Empadronado">room</i>{% endif %}</td>
                 <td class="hide-on-small-only right-align">
                     <a href="{{ path('preinscripcion_show', { 'id': preinscripcion.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
+                    {% if not preinscripcion.cursoAcademico.generacionDeListas %}
+                        <a href="{{ path('preinscripcion_edit', { 'id': preinscripcion.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>
+                    {% else %}
+                        <a class="btn-floating btn waves-effect waves-light blue disabled tooltipped" data-position="top" data-delay="50" data-tooltip="Las preinscripciones no son editables después del sorteo"><i class="material-icons">edit</i></a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
