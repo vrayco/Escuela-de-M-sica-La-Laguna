@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Matrículas{% endblock %}
+{% block title %}{{ parent() }} - Prematrículas{% endblock %}
 
 {% form_theme form 'form/fields.html.twig' %}
+
 {% block content %}
     {{ form_start(form) }}
     <div class="row">
@@ -10,13 +11,15 @@
             {{ form_widget(form.alumno) }}
             {{ form_label(form.alumno)  }}
         </div>
+        <h5>Disciplinas en las que se pre-matrícula <small style="color: #ddd">por orden de preferencia</small></h5>
         <div class="input-field col s12">
-            {{ form_widget(form.curso) }}
-            {{ form_label(form.curso) }}
+            {{ form_widget(form.prematriculaEnCursos[0]) }}
         </div>
-        <div class="col s12">
-            {{ form_widget(form.fraccionaPago) }}
-            {{ form_label(form.fraccionaPago) }}
+        <div class="input-field col s12">
+            {{ form_widget(form.prematriculaEnCursos[1]) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_widget(form.prematriculaEnCursos[2]) }}
         </div>
     </div>
     {{ form_rest(form) }}
@@ -28,6 +31,7 @@
         </div>
     </div>
     {{ form_end(form) }}
+
 {% endblock %}
 
 {% block javascripts %}
@@ -40,9 +44,12 @@
                 $(this).removeClass('invalid');
             });
 
+            {% if form_errors(form)|length > 0 %}
+            Materialize.toast("{{ form_errors(form) }}",4000, "error", function(){$('#toast-container').remove()});
+            {% endif %}
 
             {% if form_errors(form.alumno)|length > 0 %}
-                Materialize.toast("{{ form_errors(form.alumno) }}", 4000, "error", function(){$('#toast-container').remove()});
+            Materialize.toast("{{ form_errors(form.alumno) }}", 4000, "error", function(){$('#toast-container').remove()});
             {% endif %}
         });
 

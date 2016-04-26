@@ -43,7 +43,7 @@ class SorteoPlazasService
         $cursos = $this->em->getRepository('AppBundle:Curso')->findBy(array('cursoAcademico' => $cursoAcademico));
 
         $this->logger->addInfo(
-            sprintf('Número total de cursos: %d', sizeof($cursos))
+            sprintf('Número total de cursos: %d', count($cursos))
         );
 
         foreach($cursos as $curso)

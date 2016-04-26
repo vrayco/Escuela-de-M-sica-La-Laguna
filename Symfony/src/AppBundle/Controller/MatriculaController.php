@@ -64,16 +64,26 @@ class MatriculaController extends Controller
      */
     public function newAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $cursoAcademico = $this->get('utils.curso')->getCursoActual();
 
         $matricula = new Matricula();
         $matricula->setPrefijo($cursoAcademico->getPrefijoExpediente());
 
+        // Si se viene desde el acceso directo en show curso
+        if($request->query->get('prematricula')) {
+            $prematriculaEnCurso = $em->getRepository('AppBundle:PrematriculaEnCurso')->find($request->query->get('prematricula'));
+            if ($prematriculaEnCurso) {
+                $matricula->setCurso($prematriculaEnCurso->getCurso());
+                $matricula->setAlumno($prematriculaEnCurso->getPrematricula()->getAlumno());
+            }
+        }
+
         $form = $this->createForm('AppBundle\Form\MatriculaType', $matricula);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+
             $em->persist($matricula);
             $em->flush();
 
@@ -215,6 +225,6 @@ class MatriculaController extends Controller
             ->setAction($this->generateUrl('matricula_delete', array('id' => $matricula->getId())))
             ->setMethod('DELETE')
             ->getForm()
-        ;
+            ;
     }
 }

@@ -28,7 +28,7 @@ class LoadAlumnosData extends AbstractFixture implements OrderedFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        //$this->datosFalsos($manager);
+        $this->datosFalsos($manager);
     }
 
     public function datosFalsos(ObjectManager $manager)

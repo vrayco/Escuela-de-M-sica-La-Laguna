@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Prematrículas{% endblock %}
+
+{% form_theme edit_form 'form/fields.html.twig' %}
+
+{% block content %}
+    {{ form_start(edit_form) }}
+    <div class="row">
+        <div class="input-field col s12">
+            {{ form_widget(edit_form.alumno) }}
+            {{ form_label(edit_form.alumno)  }}
+        </div>
+        <h5>Disciplinas en las que se pre-matrícula <small style="color: #ddd">por orden de preferencia</small></h5>
+        <div class="input-field col s12">
+            {{ form_widget(edit_form.prematriculaEnCursos[0]) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_widget(edit_form.prematriculaEnCursos[1]) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_widget(edit_form.prematriculaEnCursos[2]) }}
+        </div>
+    </div>
+    {{ form_rest(edit_form) }}
+    <div class="col s12 center-align">
+        <div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
+            <button class="btn-floating btn-large waves-effect waves-light" type="submit" name="action">
+                <i class="large material-icons">done</i>
+            </button>
+        </div>
+    </div>
+    {{ form_end(edit_form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+
+            $('select').material_select();
+
+            $("input").change(function () {
+                $(this).removeClass('invalid');
+            });
+
+            {% if form_errors(edit_form)|length > 0 %}
+            Materialize.toast("{{ form_errors(edit_form) }}",4000, "error", function(){$('#toast-container').remove()});
+            {% endif %}
+
+            {% if form_errors(edit_form.alumno)|length > 0 %}
+            Materialize.toast("{{ form_errors(edit_form.alumno) }}", 4000, "error", function(){$('#toast-container').remove()});
+            {% endif %}
+        });
+
+    </script>
+{% endblock %}

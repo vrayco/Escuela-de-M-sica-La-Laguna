@@ -26,9 +26,11 @@ class CursoType extends AbstractType
                     return $er->createQueryBuilder('d')
                         ->orderBy('d.nombre', 'ASC');
                 },))
-            ->add('entraEnSorteo')
-            ->add('numeroPlazas', null, array('label' => 'Número plazas a sortear'))
-            ->add('numeroPlazasPrioritarias', null, array('label' => 'Número plazas prioritarias a sortear'))
+            ->add('entraEnSorteoPrematricula', null, array('label' => 'Entra en el sorteo de pre-matrícula'))
+            ->add('numeroPlazasPrematricula', null, array('label' => 'Número plazas a sortear en pre-matrícula'))
+            ->add('entraEnSorteo', null, array('label' => 'Entra en el sorteo de pre-inscripciones'))
+            ->add('numeroPlazas', null, array('label' => 'Número plazas a sortear en pre-inscripciones'))
+            ->add('numeroPlazasPrioritarias', null, array('label' => 'Número plazas prioritarias a sortear en pre-inscripciones'))
         ;
     }
     

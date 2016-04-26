@@ -55,7 +55,25 @@ class AlumnoController extends Controller
      */
     public function newAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $alumno = new Alumno();
+
+        // Si se viene desde el acceso directo en show curso
+        if($request->query->get('preinscripcion')) {
+            $preinscripcionEnCurso = $em->getRepository('AppBundle:PreinscripcionEnCurso')->find($request->query->get('preinscripcion'));
+            if ($preinscripcionEnCurso) {
+                $preinscripcion = $preinscripcionEnCurso->getPreinscripcion();
+                $alumno->setDni($preinscripcion->getDni());
+                $alumno->setNombre($preinscripcion->getNombre());
+                $alumno->setApellidos($preinscripcion->getApellidos());
+                $alumno->setFechaNacimiento($preinscripcion->getFechaNacimiento());
+                $alumno->setTelefonoMovil($preinscripcion->getTelefonoMovil());
+                $now = new \DateTime('now');
+                $alumno->setAnoIngreso($now->format('Y'));
+            }
+        }
+
         $form = $this->createForm('AppBundle\Form\AlumnoType', $alumno);
         $form->handleRequest($request);
 
@@ -63,7 +81,6 @@ class AlumnoController extends Controller
 
             $alumno = $this->get('utils.expediente')->setExpediente($alumno);
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($alumno);
             $em->flush();
 

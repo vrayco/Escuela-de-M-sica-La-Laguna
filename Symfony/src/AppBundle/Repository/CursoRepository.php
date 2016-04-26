@@ -45,6 +45,21 @@ class CursoRepository extends EntityRepository
             ->getResult();
     }
 
+    public function getCursosEntraEnSorteoPrematricula(CursoAcademico $cursoAcademico)
+    {
+        return $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('c')
+            ->from('AppBundle:Curso', 'c')
+            ->innerJoin('c.cursoAcademico', 'cu')
+            ->innerJoin('c.disciplina','d')
+            ->where('cu = :cursoAcademico')
+            ->setParameter('cursoAcademico', $cursoAcademico)
+            ->orderBy('d.nombre','ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function getTotalPlazas(CursoAcademico $cursoAcademico)
     {
         $result = $this->getEntityManager()

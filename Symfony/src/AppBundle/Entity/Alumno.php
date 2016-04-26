@@ -138,6 +138,11 @@ class Alumno
     private $matriculas;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Prematricula", mappedBy="alumno", cascade={"persist","remove"})
+     */
+    private $prematriculas;    
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="createAt", type="datetime")
@@ -147,6 +152,8 @@ class Alumno
     public function __construct()
     {
         $this->createAt = new \DateTime('now');
+        $this->matriculas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->prematriculas = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function __toString()
@@ -574,4 +581,38 @@ class Alumno
     {
         return $this->expedienteNumero;
     }
+
+    /**
+     * Add prematriculas
+     *
+     * @param \AppBundle\Entity\Prematricula $prematriculas
+     * @return Alumno
+     */
+    public function addPrematricula(\AppBundle\Entity\Prematricula $prematriculas)
+    {
+        $this->prematriculas[] = $prematriculas;
+
+        return $this;
+    }
+
+    /**
+     * Remove prematriculas
+     *
+     * @param \AppBundle\Entity\Prematricula $prematriculas
+     */
+    public function removePrematricula(\AppBundle\Entity\Prematricula $prematriculas)
+    {
+        $this->prematriculas->removeElement($prematriculas);
+    }
+
+    /**
+     * Get prematriculas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPrematriculas()
+    {
+        return $this->prematriculas;
+    }
+
 }

@@ -86,6 +86,11 @@ class CursoAcademico
      */
     private $generacionDeListas;
 
+    /**
+     * @ORM\Column(name="prematriculas_generacion_de_listas", type="datetime", nullable=true)
+     */
+    private $prematriculasGeneracionDeListas;
+
     public function __construct()
     {
         $this->cursos = new \Doctrine\Common\Collections\ArrayCollection();
@@ -299,5 +304,28 @@ class CursoAcademico
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set prematriculasGeneracionDeListas
+     *
+     * @param \DateTime $prematriculasGeneracionDeListas
+     * @return CursoAcademico
+     */
+    public function setPrematriculasGeneracionDeListas($prematriculasGeneracionDeListas)
+    {
+        $this->prematriculasGeneracionDeListas = $prematriculasGeneracionDeListas;
+
+        return $this;
+    }
+
+    /**
+     * Get prematriculasGeneracionDeListas
+     *
+     * @return \DateTime 
+     */
+    public function getPrematriculasGeneracionDeListas()
+    {
+        return $this->prematriculasGeneracionDeListas;
     }
 }

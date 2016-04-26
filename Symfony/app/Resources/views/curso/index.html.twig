@@ -8,7 +8,11 @@
             <tr>
                 <th>Especialidades</th>
                 <th class="right-align">
-                    <span class="hide-on-small-only">Preinscripciones</span>
+                    <span class="hide-on-small-only">Pre-matrículas</span>
+                    <span class="hide-on-med-and-up">Prema...</span>
+                </th>
+                <th class="right-align">
+                    <span class="hide-on-small-only">Pre-inscripciones</span>
                     <span class="hide-on-med-and-up">Preins...</span>
                 </th>
                 <th class="right-align">
@@ -22,6 +26,7 @@
         {% for curso in cursos %}
             <tr onclick="document.location = '{{ path('curso_show', { 'id': curso.id }) }}';">
                 <td><small>{{ curso.disciplina.disciplinaGrupo }}</small><br>{{ curso.disciplina }}</td>
+                <td class="right-align">{{ curso.prematriculas|length }}</td>
                 <td class="right-align">{{ curso.preinscripciones|length }}</td>
                 <td class="right-align">{{ curso.matriculas|length }}</td>
                 <td class="hide-on-small-only right-align">

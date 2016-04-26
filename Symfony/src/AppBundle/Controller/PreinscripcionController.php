@@ -71,17 +71,11 @@ class PreinscripcionController extends Controller
         $preinscripcion = new Preinscripcion();
         $preinscripcion->setPrefijo($cursoAcademico->getPrefijoExpediente());
 
-        $preinscripcionEnCurso1 = new PreinscripcionEnCurso();
-        $preinscripcionEnCurso2 = new PreinscripcionEnCurso();
-        $preinscripcionEnCurso3 = new PreinscripcionEnCurso();
-
-        $preinscripcionEnCurso1->setPreinscripcion($preinscripcion);
-        $preinscripcionEnCurso2->setPreinscripcion($preinscripcion);
-        $preinscripcionEnCurso3->setPreinscripcion($preinscripcion);
-
-        $preinscripcion->addPreinscripcionEnCurso($preinscripcionEnCurso1);
-        $preinscripcion->addPreinscripcionEnCurso($preinscripcionEnCurso2);
-        $preinscripcion->addPreinscripcionEnCurso($preinscripcionEnCurso3);
+        for($i = 0; $i < Preinscripcion::NUM_CURSOS; $i++) {
+            $preinscripcionEncurso = new PreinscripcionEnCurso();
+            $preinscripcionEncurso->setPreinscripcion($preinscripcion);
+            $preinscripcion->addPreinscripcionEnCurso($preinscripcionEncurso);
+        }
 
         $form = $this->createForm('AppBundle\Form\PreinscripcionType', $preinscripcion);
         $form->handleRequest($request);
@@ -146,7 +140,7 @@ class PreinscripcionController extends Controller
         if($preinscripcion->getCursoAcademico()->getGeneracionDeListas())
             throw new NotFoundHttpException('No se puede editar la preinscripción despúes del sorteo.');
 
-        for($i = count($preinscripcion->getPreinscripcionEnCursos()); $i < 3; $i++) {
+        for($i = count($preinscripcion->getPreinscripcionEnCursos()); $i < Preinscripcion::NUM_CURSOS; $i++) {
             $preinscripcionEnCurso = new PreinscripcionEnCurso();
             $preinscripcionEnCurso->setPreinscripcion($preinscripcion);
             $preinscripcion->addPreinscripcionEnCurso($preinscripcionEnCurso);
@@ -219,7 +213,7 @@ class PreinscripcionController extends Controller
                 sprintf('Sorteo realizado')
             );
 
-            return $this->redirect($this->generateUrl('homepage'));
+            return $this->redirect($this->generateUrl('listado', array('slug' => $cursoAcademico)));
         }
 
         return $this->render(':preinscripcion:generar_listas.html.twig', array(
@@ -229,23 +223,46 @@ class PreinscripcionController extends Controller
     }
 
     /**
-     * @Route("/sorteo/inicializar", name="preinscripcion_inicializarsorteo")
-     * @Method("GET")
+     * @Route("/sorteo/eliminar", name="preinscripcion_eliminarsorteo")
+     * @Method({"GET","POST"})
      */
-    public function inicializarSorteoListasAction(Request $request)
+    public function eliminarSorteoListasAction(Request $request)
     {
         $cursoAcademico = $this->get('utils.curso')->getCursoActual();
+        if (!$cursoAcademico->getGeneracionDeListas()) {
+            $this->addFlash(
+                'info',
+                sprintf('El sorteo de plazas no ha sido celebrado.')
+            );
 
-        $this->get('utils.sorteoplazas')->inicializarSorteo($cursoAcademico);
+            return $this->redirect($this->generateUrl('preinscripcion_index'));
+        }
 
-        $this->addFlash(
-            'info',
-            sprintf('Sorteo eliminado')
-        );
+        $defaultData = array('message' => 'Sortear plazas');
+        $form = $this->createFormBuilder($defaultData)
+            ->add('sortear', CheckboxType::class, array(
+                'label' => 'Sí, estoy seguro de eliminar el sorteo de plazas pre-inscripciones',
+                'constraints' => new IsTrue(array('message' => 'Tienes que confirmar que deseas generar las listas')),
+            ))
+            ->getForm();
 
+        $form->handleRequest($request);
 
-        return $this->redirect($this->generateUrl('homepage'));
+        if ($form->isValid()) {
 
+            $this->get('utils.sorteoplazas')->inicializarSorteo($cursoAcademico);
+
+            $this->addFlash(
+                'info',
+                sprintf('Sorteo eliminado')
+            );
+
+            return $this->redirect($this->generateUrl('preinscripcion_index'));
+        }
+
+        return $this->render(':preinscripcion:eliminar_listas.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 
     /**

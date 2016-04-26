@@ -100,8 +100,9 @@ class CursoController extends Controller
             $deleteForm = $this->createDeleteForm($curso);
 
         $em = $this->getDoctrine()->getManager();
-        $preinscripciones = $em->getRepository('AppBundle:PreinscripcionEnCurso')->findBy(array('curso' => $curso), array('numeroLista' => 'ASC'));
-        $matriculas = $em->getRepository('AppBundle:Matricula')->findBy(array('curso' => $curso), array('id' => 'ASC'));
+        $preinscripciones   = $em->getRepository('AppBundle:PreinscripcionEnCurso')->findBy(array('curso' => $curso), array('numeroLista' => 'ASC'));
+        $matriculas         = $em->getRepository('AppBundle:Matricula')->findBy(array('curso' => $curso), array('id' => 'ASC'));
+        $prematriculas      = $em->getRepository('AppBundle:PrematriculaEnCurso')->getPrematriculasOrdenAlfabetico($curso);
 
         $tab = $request->query->get('tab');
 
@@ -109,6 +110,7 @@ class CursoController extends Controller
             'curso'             => $curso,
             'preinscripciones'  => $preinscripciones,
             'matriculas'        => $matriculas,
+            'prematriculas'     => $prematriculas,
             'tab'               => $tab,
             'delete_form'       => $deleteForm != null ? $deleteForm->createView() : null,
         ));

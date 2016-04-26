@@ -37,6 +37,9 @@ use AppBundle\Validator\Constraints as AppBundleAssert;
 
 class Preinscripcion
 {
+    
+    const NUM_CURSOS = 3;
+    
     /**
      * @var int
      *

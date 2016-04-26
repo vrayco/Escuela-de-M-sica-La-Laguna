@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Prematrículas{% endblock %}
+
+{% block content %}
+
+
+    <table class="highlight bordered">
+        <thead>
+        <tr>
+            <th>Identificador</th>
+            <th>Expediente</th>
+            <th>Nombre</th>
+            <th>Disciplinas</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for prematricula in prematriculas %}
+            <tr onclick="document.location = '{{ path('prematricula_show', { 'id': prematricula.id }) }}';">
+                <td><span class="chip">{{ prematricula.identificador }}</span></td>
+                <td><a href="{{ path('alumno_show', { 'id' : prematricula.alumno.id }) }}"><span class="chip purple lighten-4">{{ prematricula.alumno.expediente }}</span></a></td>
+                <td>{{ prematricula.alumno }}</td>
+                <td>
+                    <ul>
+                        {% for prematriclaEnCurso in prematricula.prematriculaEnCursos %}
+                            <li>{{ loop.index }} <small>{{ prematriclaEnCurso.curso }}</small></li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td class="hide-on-small-only right-align">
+                    <a href="{{ path('prematricula_show', { 'id': prematricula.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
+                    {% if not cursoAcademico.prematriculasGeneracionDeListas %}
+                        <a href="{{ path('prematricula_edit', { 'id': prematricula.id }) }}" class="btn-floating btn waves-effect waves-light blue"><i class="material-icons">edit</i></a>
+                    {% else %}
+                        <a href="" class="btn-floating btn waves-effect waves-light blue disabled tooltipped" data-position="top" data-delay="50" data-tooltip="Las pre-matrículas no son editables después del sorteo"><i class="material-icons">edit</i></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ knp_pagination_render(prematriculas) }}
+
+    <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large waves-effect waves-light purple">
+            <i class="large material-icons">menu</i>
+        </a>
+        <ul>
+            <li><a href="{{ path('prematricula_new') }}" class="btn-floating waves-effect waves-light green"><i class="material-icons">add</i></a></li>
+            <li><a href="{{ path('prematricula_descargarlistado') }}" class="btn-floating waves-effect waves-light blue-grey tooltipped" data-position="top" data-delay="50" data-tooltip="Descargar listado"><i class="material-icons">description</i></a></li>
+            <li><a href="{{ path('listado_prematriculas', { 'slug' : cursoAcademico.slug }) }}" class="btn-floating waves-effect waves-light lime modal-trigger tooltipped" data-position="top" data-delay="50" data-tooltip="Listado pre-matrículas web"><i class="material-icons left">view_list</i> Listado pre-matrículas web</a></li>
+            {% if not cursoAcademico.prematriculasGeneracionDeListas %}
+                <li><a href="{{ path('prematricula_sortearplazas') }}" class="btn-floating waves-effect waves-light pink modal-trigger tooltipped" data-position="top" data-delay="50" data-tooltip="Realizar sorteo de plazas"><i class="material-icons left">shuffle</i> Realizar el sorteo de plazas</a></li>
+                <li><a class="btn-floating waves-effect waves-light red modal-trigger tooltipped disabled" data-position="top" data-delay="50" data-tooltip="Eliminar sorteo de plazas"><i class="material-icons left">delete</i> Eliminar sorteo de plazas</a></li>
+            {% else %}
+                <li><a class="btn-floating waves-effect waves-light pink modal-trigger tooltipped disabled" data-position="top" data-delay="50" data-tooltip="Realizar sorteo de plazas"><i class="material-icons left">shuffle</i> Realizar el sorteo de plazas</a></li>
+                <li><a href="{{ path('prematricula_eliminarsorteo') }}" class="btn-floating waves-effect waves-light red modal-trigger tooltipped" data-position="top" data-delay="50" data-tooltip="Eliminar sorteo de plazas"><i class="material-icons left">delete</i> Eliminar sorteo de plazas</a></li>
+            {% endif %}
+            {#<li><a href="#modal-buscardor-matricula" class="btn-floating waves-effect waves-light indigo modal-trigger"><i class="material-icons">search</i></a></li>#}
+        </ul>
+    </div>
+
+{% endblock %}

@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ListadosService
 {
+    const creador = "ESCUELA MUNICIPAL DE MUSICA GUILLERMO GONZALEZ";
+
     private $em = null;
     private $phpExcel;
 
@@ -26,8 +28,8 @@ class ListadosService
 
         $phpExcelObject = $this->phpExcel->createPHPExcelObject();
 
-        $phpExcelObject->getProperties()->setCreator("liuggio")
-            ->setLastModifiedBy("Escula de Música La Laguna - App")
+        $phpExcelObject->getProperties()->setCreator(self::creador)
+            ->setLastModifiedBy(self::creador)
             ->setTitle(sprintf("Listado de pre-inscriptos %s", $cursoAcademico->getNombre()))
             ->setSubject(sprintf("Listado de pre-inscriptos %s", $cursoAcademico->getNombre()))
             ->setDescription(sprintf("Listado de pre-inscriptos %s", $cursoAcademico->getNombre()))
@@ -97,6 +99,7 @@ class ListadosService
 
                 // CONTENIDO DE LA TABLA
                 $preinscripciones = $this->em->getRepository('AppBundle:PreinscripcionEnCurso')->getPreinscripcionesOrdenAlfabetico($curso, $tipo);
+                
                 $index2 = 3;
                 $style = array(
                     'alignment' => array(
@@ -144,6 +147,139 @@ class ListadosService
         $response = $this->phpExcel->createStreamedResponse($writer);
         // adding headers
         $filename = "listado_preinscripciones_".$this->slugify($cursoAcademico->getNombre()).'.xls';
+        $dispositionHeader = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->headers->set('Content-Disposition', $dispositionHeader);
+
+        return $response;
+    }
+
+    public function generarListadoPrematriculas (CursoAcademico $cursoAcademico, $tipo = null) {
+
+        $phpExcelObject = $this->phpExcel->createPHPExcelObject();
+
+        $phpExcelObject->getProperties()->setCreator(self::creador)
+            ->setLastModifiedBy(self::creador)
+            ->setTitle(sprintf("Listado de pre-matriculados %s", $cursoAcademico->getNombre()))
+            ->setSubject(sprintf("Listado de pre-matriculados %s", $cursoAcademico->getNombre()))
+            ->setDescription(sprintf("Listado de pre-matriculados %s", $cursoAcademico->getNombre()))
+            ->setKeywords(sprintf("escuela-musica-lalaguna prematriculados curso%s", $this->slugify($cursoAcademico->getNombre())))
+            ->setCategory("");
+
+        $cursos = $this->em->getRepository('AppBundle:Curso')->findBy(array('cursoAcademico' => $cursoAcademico));
+
+        $index = 0;
+        foreach($cursos as $curso) {
+            $prematriculas = $this->em->getRepository('AppBundle:PrematriculaEnCurso')->getPrematriculasOrdenAlfabetico($curso);
+            if (count($prematriculas) > 0) {
+                $phpExcelObject->createSheet();
+                $phpExcelObject->setActiveSheetIndex($index);
+                $sheet = $phpExcelObject->getActiveSheet();
+
+
+                // TITULO Encabezado
+                $titulo = $curso->getDisciplina() . ' - ' . $curso->getDisciplina()->getDisciplinaGrupo();
+                $encabezado = 'PREMATRICULAS ' . $curso->getDisciplina()->getDisciplinaGrupo() . ' - ' . $curso->getDisciplina();
+
+                $sheet->setCellValue('A1', $encabezado);
+                $sheet->mergeCells('A1:C1');
+                $sheet->setTitle(substr($titulo, 0, 30));
+                $style = array(
+                    'alignment' => array(
+                        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    ),
+                    'fill' => array(
+                        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                        'color' => array('rgb' => 'DDDDDD')
+                    ),
+                    'font' => array(
+                        'size' => 12,
+                        'bold' => true
+                    ),
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN
+                        )
+                    )
+                );
+                $sheet->getStyle("A1:C1")->applyFromArray($style);
+
+                // ENCABEZADO tabla
+                $sheet->setCellValue('A2', 'Identificador');
+                $sheet->setCellValue('B2', 'Expediente');
+                $sheet->setCellValue('C2', 'Nombre del solicitante');
+                $style = array(
+                    'alignment' => array(
+                        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    ),
+                    'fill' => array(
+                        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                        'color' => array('rgb' => 'B2B2B2')
+                    ),
+                    'font' => array(
+                        'size' => 12,
+                        'bold' => true
+                    ),
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN
+                        )
+                    )
+                );
+                $sheet->getStyle("A2:C2")->applyFromArray($style);
+
+                // CONTENIDO DE LA TABLA
+                $index2 = 3;
+                $style = array(
+                    'alignment' => array(
+                        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    ),
+                    'font' => array(
+                        'size' => 10,
+                        'bold' => false
+                    ),
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN
+                        )
+                    ),
+                    'fill' => array(
+                        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                        'color' => array('rgb' => 'FFFFFF')
+                    )
+                );
+
+                foreach ($prematriculas as $pre) {
+                    $sheet->setCellValue('A' . $index2, $pre->getPrematricula()->getIdentificador());
+                    $sheet->setCellValue('B' . $index2, $pre->getPrematricula()->getAlumno()->getExpediente());
+                    $sheet->setCellValue('C' . $index2, $pre->getPrematricula()->getAlumno());
+                    $sheet->getStyle("A" . $index2 . ":C" . $index2)->applyFromArray($style);
+                    $index2++;
+                }
+
+                // Ancho de la columas automatico
+                foreach (range('A', 'C') as $columnID)
+                    $sheet->getColumnDimension($columnID)->setAutoSize(true);
+
+                $index++;
+            }
+
+        }
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $phpExcelObject->setActiveSheetIndex(0);
+
+        // create the writer
+        $writer = $this->phpExcel->createWriter($phpExcelObject, 'Excel5');
+        // create the response
+        $response = $this->phpExcel->createStreamedResponse($writer);
+        // adding headers
+        $filename = "listado_prematriculas_".$this->slugify($cursoAcademico->getNombre()).'.xls';
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             $filename

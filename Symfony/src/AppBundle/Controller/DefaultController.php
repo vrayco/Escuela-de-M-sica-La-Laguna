@@ -22,14 +22,16 @@ class DefaultController extends Controller
         $cursoAcademico = $this->get('utils.curso')->getCursoActual();
 
         $em = $this->getDoctrine()->getManager();
-        $totalMatriculas = $em->getRepository('AppBundle:Matricula')->getTotal($cursoAcademico);
+        $totalPrematriculas = $em->getRepository('AppBundle:Prematricula')->getTotal($cursoAcademico);
         $totalPreinscripciones = $em->getRepository('AppBundle:Preinscripcion')->getTotal($cursoAcademico);
+        $totalMatriculas = $em->getRepository('AppBundle:Matricula')->getTotal($cursoAcademico);
         $totalPlazas = $em->getRepository('AppBundle:Curso')->getTotalPlazas($cursoAcademico);
 
         return $this->render('default/index.html.twig', array(
-            'cursoAcademico'    => $cursoAcademico,
-            'totalMatriculas'   => $totalMatriculas,
+            'cursoAcademico'        => $cursoAcademico,
+            'totalPrematriculas'    => $totalPrematriculas,
             'totalPreinscripciones' => $totalPreinscripciones,
+            'totalMatriculas'       => $totalMatriculas,
             'totalPlazas'           => $totalPlazas
         ));
     }
@@ -49,6 +51,28 @@ class DefaultController extends Controller
             $listados[$curso->getId()] = $em->getRepository('AppBundle:PreinscripcionEnCurso')->findBy(array('curso' => $curso), array('numeroLista' => 'ASC'));
 
         return $this->render(':default:listado.html.twig', array(
+            'cursos'            => $cursos,
+            'listados'          => $listados,
+            'cursoAcademico'    => $cursoAcademico
+        ));
+    }
+
+    /**
+     * @Route("/sorteo/pre-matriculas/{slug}/resultado", name="listado_prematriculas")
+     * @Method("GET")
+     */
+    public function listadoPrematriculasAction(CursoAcademico $cursoAcademico)
+    {
+        $cursoAcademico = $this->get('utils.curso')->getCursoActual();
+        $em = $this->getDoctrine()->getManager();
+        $cursos = $em->getRepository('AppBundle:Curso')->findBy(array('cursoAcademico' => $cursoAcademico));
+
+        $listados = array();
+        foreach($cursos as $curso) {
+            $prematriculas = $listados[$curso->getId()] = $em->getRepository('AppBundle:PrematriculaEnCurso')->getPrematriculasOrdenAlfabetico($curso);
+        }
+
+        return $this->render(':default:listado_prematriculas.html.twig', array(
             'cursos'            => $cursos,
             'listados'          => $listados,
             'cursoAcademico'    => $cursoAcademico

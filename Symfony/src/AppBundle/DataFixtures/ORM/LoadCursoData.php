@@ -51,6 +51,7 @@ class LoadCursoData extends AbstractFixture implements OrderedFixtureInterface, 
         {
             $entity = new Curso();
             $entity->setDisciplina($disciplina);
+            $entity->setNumeroPlazasPrematricula(rand(1,2));
             $entity->setNumeroPlazas(rand(5,20));
             $entity->setNumeroPlazasPrioritarias(intdiv($entity->getNumeroPlazas()*10,100));  // 10% del numero de plazas
             $entity->setCursoAcademico($this->getReference('CURSO-ACADEMICO-1'));

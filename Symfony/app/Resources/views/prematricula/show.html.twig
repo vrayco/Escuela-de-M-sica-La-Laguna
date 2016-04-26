@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Preinscripciones{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col s12">
+            <h5>Datos del alumno</h5>
+            <table class="highlight bordered">
+                <tbody>
+                <tr>
+                    <th>Identificador</th>
+                    <td class="right-align"><span class="chip">{{ prematricula.identificador }}</span></td>
+                </tr>
+                <tr>
+                    <th>Expediente</th>
+                    <td class="right-align"><a href="{{ path('alumno_show', { 'id' : prematricula.alumno.id }) }}"><span class="chip purple lighten-4">{{ prematricula.alumno.expediente }}</span></a></td>
+                </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <td class="right-align">{{ prematricula.alumno }}</td>
+                </tr>
+                <tr>
+                    <th>Creado el</th>
+                    <td class="right-align">{% if prematricula.createdAt %}{{ prematricula.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+                {% if prematricula.updatedAt %}
+                    <tr>
+                        <th>Actualizado el</th>
+                        <td class="right-align">{% if prematricula.updatedAt %}{{ prematricula.updatedAt|date('d/m/Y H:i:s') }}{% endif %}</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px">
+        <div class="col s12">
+            <h5>Disciplina en la que se pre-matrícula</h5>
+            <table class="highlight bordered">
+                <tbody>
+                {% for prematriculaEnCurso in prematricula.prematriculaEnCursos %}
+                    <tr onclick="document.location = '{{ path('curso_show', { 'id': prematriculaEnCurso.curso.id }) }}?tab=prematriculas';" style="cursor: pointer;">
+                        <th>OPCIÓN {{ loop.index }}</th>
+                        <td class="right-align">{{ prematriculaEnCurso.curso }}</td>
+                        <td class="right-align">
+                            {% if constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_PREMATRICULADO') == prematriculaEnCurso.estado %}
+                                <span class="chip grey lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                            {% elseif constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_DESCARTADA') == prematriculaEnCurso.estado %}
+                                <span class="chip purple lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                            {% elseif constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_PLAZA') == prematriculaEnCurso.estado %}
+                                <span class="chip green lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                            {% elseif constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_SIN_PLAZA') == prematriculaEnCurso.estado %}
+                                <span class="chip orange lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                            {% elseif constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_MATRICULADO') == prematriculaEnCurso.estado %}
+                                <span class="chip purple lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large waves-effect waves-light purple">
+            <i class="large material-icons">menu</i>
+        </a>
+        <ul>
+            <li><a href="{{ path('prematricula_index') }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">view_list</i></a></li>
+            {% if not prematricula.cursoAcademico.prematriculasGeneracionDeListas %}
+                <li><a href="{{ path('prematricula_edit', {'id' : prematricula.id }) }}" class="btn-floating waves-effect waves-light blue"><i class="material-icons">edit</i></a></li>
+            {% else %}
+                <a class="btn-floating btn waves-effect waves-light blue disabled tooltipped" data-position="top" data-delay="50" data-tooltip="Las pre-matrículas no son editables después del sorteo"><i class="material-icons">edit</i></a>
+            {% endif %}
+            {% if delete_form is not null %}
+                <li><a href="#modal1" class="btn-floating btn waves-effect waves-light red modal-trigger"><i class="material-icons">delete</i></a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    {% if delete_form is not null %}
+        <!-- Modal Structure -->
+        <div id="modal1" class="modal bottom-sheet">
+            <div class="modal-content">
+                <h5>¿Estás seguro de eliminar la pre-matrícula <span class="chip">{{ prematricula.identificador }}</span>?</h5>
+                <p>La acción es irreversible.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn grey">No, cancelar</a>
+                {{ form_start(delete_form) }}
+                <button class="modal-action modal-close waves-effect waves-green btn red" type="submit" name="action">Eliminar
+                    <i class="material-icons right">delete</i>
+                </button>
+                {{ form_end(delete_form) }}
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+            $('.modal-trigger').leanModal();
+        });
+    </script>
+{% endblock %}

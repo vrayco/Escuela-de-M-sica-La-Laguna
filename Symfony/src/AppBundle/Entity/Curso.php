@@ -34,6 +34,22 @@ class Curso
     private $entraEnSorteo;
 
     /**
+     * @ORM\Column(name="entra_en_sorteo_prematricula", type="boolean")
+     */
+    private $entraEnSorteoPrematricula;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="numeroPlazasPrematricula", type="integer", nullable=true)
+     * @Assert\NotBlank(message="")
+     * @Assert\GreaterThanOrEqual(
+     *     value = 0
+     * )
+     */
+    private $numeroPlazasPrematricula;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="numeroPlazas", type="integer", nullable=true)
@@ -77,18 +93,25 @@ class Curso
      */
     private $preinscripciones;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\PrematriculaEnCurso", mappedBy="curso", cascade={"persist","remove"})
+     */
+    private $prematriculas;
+
     public function __toString()
     {
         return $this->disciplina->getNombre() . ' (' .$this->disciplina->getDisciplinaGrupo()->getNombre(). ')';
     }
-
-    /**
-     * Constructor
-     */
+    
     public function __construct()
     {
         $this->matriculas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->preinscripciones = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->prematriculas = new \Doctrine\Common\Collections\ArrayCollection();
+        
+        $this->entraEnSorteoPrematricula = true;
         $this->entraEnSorteo = true;
+        $this->numeroPlazasPrematricula = 0;
         $this->numeroPlazas = 0;
         $this->numeroPlazasPrioritarias = 0;
     }
@@ -282,5 +305,84 @@ class Curso
     public function getEntraEnSorteo()
     {
         return $this->entraEnSorteo;
+    }
+
+    /**
+     * Add prematriculas
+     *
+     * @param \AppBundle\Entity\PrematriculaEnCurso $prematriculas
+     * @return Curso
+     */
+    public function addPrematricula(\AppBundle\Entity\PrematriculaEnCurso $prematriculas)
+    {
+        $this->prematriculas[] = $prematriculas;
+
+        return $this;
+    }
+
+    /**
+     * Remove prematriculas
+     *
+     * @param \AppBundle\Entity\PrematriculaEnCurso $prematriculas
+     */
+    public function removePrematricula(\AppBundle\Entity\PrematriculaEnCurso $prematriculas)
+    {
+        $this->prematriculas->removeElement($prematriculas);
+    }
+
+    /**
+     * Get prematriculas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPrematriculas()
+    {
+        return $this->prematriculas;
+    }
+
+    /**
+     * Set numeroPlazasPrematricula
+     *
+     * @param integer $numeroPlazasPrematricula
+     * @return Curso
+     */
+    public function setNumeroPlazasPrematricula($numeroPlazasPrematricula)
+    {
+        $this->numeroPlazasPrematricula = $numeroPlazasPrematricula;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroPlazasPrematricula
+     *
+     * @return integer 
+     */
+    public function getNumeroPlazasPrematricula()
+    {
+        return $this->numeroPlazasPrematricula;
+    }
+
+    /**
+     * Set entraEnSorteoPrematricula
+     *
+     * @param boolean $entraEnSorteoPrematricula
+     * @return Curso
+     */
+    public function setEntraEnSorteoPrematricula($entraEnSorteoPrematricula)
+    {
+        $this->entraEnSorteoPrematricula = $entraEnSorteoPrematricula;
+
+        return $this;
+    }
+
+    /**
+     * Get entraEnSorteoPrematricula
+     *
+     * @return boolean 
+     */
+    public function getEntraEnSorteoPrematricula()
+    {
+        return $this->entraEnSorteoPrematricula;
     }
 }

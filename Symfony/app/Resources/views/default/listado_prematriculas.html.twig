@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Cursos{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% if app.user %}
+            <div class="col s12 m12">
+                <div class="card-panel purple lighten-4 center-align">
+                    <span class="white-text center-align">El listado es accesible por el público en la URL:<br><a class="white-text" href="{{ path('listado_prematriculas', { 'slug' : cursoAcademico.slug }) }}" target="_blank">{{ app.request.getSchemeAndHttpHost() }}{{ path('listado_prematriculas', { 'slug' : cursoAcademico.slug }) }}</a></span>
+                </div>
+            </div>
+        {% endif %}
+        <div class="col s12">
+            <ul class="collapsible" data-collapsible="accordion">
+                {% for curso in cursos %}
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">view_list</i><small>{{ curso.disciplina.disciplinaGrupo }}</small> {{ curso.disciplina }}</div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="col s12">
+                                        {% if listados[curso.id]|length == 0 %}
+                                            <div class="row">
+                                                <div class="col s12 m8 offset-m2">
+                                                    <div class="card-panel purple lighten-4" style="margin-top: 50px">
+                                                        <span class="white-text center-align">No existen pre-matrículas para este curso en el sistema</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <table class="highlight bordered responsive-table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Identificador</th>
+                                                    <th>Estado</th>
+                                                    <th>Expediente</th>
+                                                    <th>DNI</th>
+                                                    <th>Nombre</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for prematriculaEnCurso in listados[curso.id] %}
+                                                    <tr>
+                                                        <td><span class="chip lime lighten-4">{{ prematriculaEnCurso.prematricula.identificador }}</span></td>
+                                                        <td>
+                                                            {% if constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_PREMATRICULADO') == prematriculaEnCurso.estado %}
+                                                                <span class="chip grey lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                                                            {% elseif constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_DESCARTADA') == prematriculaEnCurso.estado %}
+                                                                <span class="chip purple lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                                                            {% elseif constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_PLAZA') == prematriculaEnCurso.estado %}
+                                                                <span class="chip green lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                                                            {% elseif constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_SIN_PLAZA') == prematriculaEnCurso.estado %}
+                                                                <span class="chip orange lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                                                            {% elseif constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_MATRICULADO') == prematriculaEnCurso.estado %}
+                                                                <span class="chip purple lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td><span class="chip purple lighten-4">{{ prematriculaEnCurso.prematricula.alumno.expediente }}</span></td>
+                                                        <td>{{ prematriculaEnCurso.prematricula.alumno.dni }}</td>
+                                                        <td>{{ prematriculaEnCurso.prematricula.alumno }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col s12 right-align">
+            <a href="{{ path('sorteo_descargar_log') }}" class="waves-effect waves-purple btn-flat">Descargar log del sorteo</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts  %}
+    <script>
+        $(document).ready(function(){
+            $('ul.tabs').tabs();
+        });
+    </script>
+{% endblock %}

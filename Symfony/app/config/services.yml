@@ -37,6 +37,12 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: preinscripcion.validator }
 
+    validator.prematricula:
+        class: AppBundle\Validator\Constraints\PrematriculaValidator
+        arguments: ["@doctrine.orm.default_entity_manager"]
+        tags:
+            - { name: validator.constraint_validator, alias: prematricula.validator }
+
     utils.fechas:
         class: AppBundle\Utils\FechasService
         arguments: []
@@ -53,6 +59,10 @@ services:
         class: AppBundle\Utils\SorteoPlazasService
         arguments: [@doctrine.orm.default_entity_manager, @monolog.logger.escuelademusica_sorteo]
 
+    utils.sorteoplazasprematricula:
+        class: AppBundle\Utils\SorteoPlazasPrematriculaService
+        arguments: ["@doctrine.orm.default_entity_manager", "@monolog.logger.escuelademusica_sorteo"]
+
     utils.listados:
         class: AppBundle\Utils\ListadosService
         arguments: [@doctrine.orm.default_entity_manager, @phpexcel]
@@ -63,6 +73,12 @@ services:
 
     preinscripcionencurso.form.type.view:
         class: AppBundle\Form\PreinscripcionEnCursoType
+        arguments: [ "@utils.curso" ]
+        tags:
+            - { name: form.type, alias: view }
+
+    prematriculaencurso.form.type.view:
+        class: AppBundle\Form\PrematriculaEnCursoType
         arguments: [ "@utils.curso" ]
         tags:
             - { name: form.type, alias: view }

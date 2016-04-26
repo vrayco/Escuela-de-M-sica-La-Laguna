@@ -5,11 +5,11 @@
 {% block content %}
     <div class="row">
         {% if app.user %}
-        <div class="col s12 m12">
-            <div class="card-panel purple lighten-4 center-align">
-                <span class="white-text center-align">El listado es accesible por el público en la URL:<br><a class="white-text" href="{{ path('listado', { 'slug' : cursoAcademico.slug }) }}" target="_blank">{{ app.request.getSchemeAndHttpHost() }}{{ path('listado', { 'slug' : cursoAcademico.slug }) }}</a></span>
+            <div class="col s12 m12">
+                <div class="card-panel purple lighten-4 center-align">
+                    <span class="white-text center-align">El listado es accesible por el público en la URL:<br><a class="white-text" href="{{ path('listado', { 'slug' : cursoAcademico.slug }) }}" target="_blank">{{ app.request.getSchemeAndHttpHost() }}{{ path('listado', { 'slug' : cursoAcademico.slug }) }}</a></span>
+                </div>
             </div>
-        </div>
         {% endif %}
         <div class="col s12">
             <ul class="collapsible" data-collapsible="accordion">

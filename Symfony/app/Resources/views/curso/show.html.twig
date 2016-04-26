@@ -8,8 +8,9 @@
         <div class="col s12">
             <ul class="tabs">
                 <li class="tab col s4"><a class="{% if tab == 'info' %}active{% endif %}" href="#info">Información</a></li>
-                <li class="tab col s4"><a class="{% if tab == 'matriculas' %}active{% endif %}" href="#matriculas">Matrículas</a></li>
+                <li class="tab col s4"><a class="{% if tab == 'prematriculas' %}active{% endif %}" href="#prematriculas">Pre-matrículas</a></li>
                 <li class="tab col s4"><a class="{% if tab == 'preinscripciones' %}active{% endif %}" href="#preinscripciones">Pre-inscripciones</a></li>
+                <li class="tab col s4"><a class="{% if tab == 'matriculas' %}active{% endif %}" href="#matriculas">Matrículas</a></li>
             </ul>
         </div>
         <div id="info" class="col s12">
@@ -23,6 +24,10 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Número de pre-matriculas</th>
+                    <td class="right-align">{{ curso.prematriculas|length }}</td>
+                </tr>
+                <tr>
                     <th>Número de pre-inscripciones</th>
                     <td class="right-align">{{ curso.preinscripciones|length }}</td>
                 </tr>
@@ -30,17 +35,24 @@
                     <th>Número de matrículas</th>
                     <td class="right-align">{{ curso.matriculas|length }}</td>
                 </tr>
-
                 <tr>
-                    <th>¿Entra en el sorteo de plazas?</th>
+                    <th>¿Entra en el sorteo de pre-matrícula?</th>
+                    <td class="right-align">{% if curso.entraEnSorteoPrematricula %}<span class="chip green lighten-4">Sí</span>{% else %}<span class="chip grey lighten-4">No</span>{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Número plazas a sortear para pre-matrícula</th>
+                    <td class="right-align">{% if curso.numeroPlazasPrematricula %}{{ curso.numeroPlazasPrematricula }}{% else %}---{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>¿Entra en el sorteo de pre-inscripciones?</th>
                     <td class="right-align">{% if curso.entraEnSorteo %}<span class="chip green lighten-4">Sí</span>{% else %}<span class="chip grey lighten-4">No</span>{% endif %}</td>
                 </tr>
                 <tr>
-                    <th>Número plazas</th>
+                    <th>Número plazas a sortear para pre-inscripciones</th>
                     <td class="right-align">{% if curso.numeroPlazas %}{{ curso.numeroPlazas }}{% else %}---{% endif %}</td>
                 </tr>
                 <tr>
-                    <th>Número plazas prioritarias</th>
+                    <th>Número plazas prioritarias a sortear para pre-inscripciones</th>
                     <td class="right-align">{% if curso.numeroPlazasPrioritarias %}{{ curso.numeroPlazasPrioritarias }}{% else %}---{% endif %}</td>
                 </tr>
                 <tr>
@@ -144,7 +156,64 @@
                                 {% if constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_PLAZA') == preinscripcion.estado or constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_ACEPTADA') == preinscripcion.estado or constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_RECHAZADA') == preinscripcion.estado %}
                                     <a href="{{ path('preinscripcion_plazaaceptarorechazar', {'id' : preinscripcion.id}) }}" class="btn-floating waves-effect waves-light grey"><i class="material-icons">thumbs_up_down</i></a>
                                 {% endif %}
-                                <a href="{{ path('preinscripcion_show', { 'id': preinscripcion.preinscripcion.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>
+                                {% if constant('AppBundle\\Entity\\PreinscripcionEnCurso::ESTADO_ACEPTADA') == preinscripcion.estado %}
+                                    <a href="{{ path('alumno_new', {'preinscripcion' : preinscripcion.id}) }}" class="btn-floating waves-effect waves-light grey tooltipped" data-position="top" data-delay="50" data-tooltip="Acceso directo a crear el alumno"><i class="material-icons">perm_identity</i></a>
+                                {% endif %}
+                                {#<a href="{{ path('preinscripcion_show', { 'id': preinscripcion.preinscripcion.id }) }}" class="btn-floating btn waves-effect waves-light yellow"><i class="material-icons">zoom_in</i></a>#}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+        <div id="prematriculas" class="col s12">
+            {% if prematriculas|length == 0 %}
+                <div class="row">
+                    <div class="col s12 m8 offset-m2">
+                        <div class="card-panel purple lighten-4" style="margin-top: 50px">
+                            <span class="white-text center-align">No existen pre-matrículas para este curso en el sistema</span>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <table class="highlight bordered">
+                    <thead>
+                    <tr>
+                        <th>Identificador</th>
+                        <th>Estado</th>
+                        <th>Preferencia</th>
+                        <th>Expediente</th>
+                        <th>DNI</th>
+                        <th>Nombre</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for prematriculaEnCurso in prematriculas %}
+                        <tr>
+                            <td><a href="{{ path('prematricula_show', { 'id' : prematriculaEnCurso.prematricula.id }) }}"><span class="chip lime lighten-4">{{ prematriculaEnCurso.prematricula.identificador }}</span></a></td>
+                            <td>
+                                {% if constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_PREMATRICULADO') == prematriculaEnCurso.estado %}
+                                    <span class="chip grey lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                                {% elseif constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_DESCARTADA') == prematriculaEnCurso.estado %}
+                                    <span class="chip purple lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                                {% elseif constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_PLAZA') == prematriculaEnCurso.estado %}
+                                    <span class="chip green lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                                {% elseif constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_SIN_PLAZA') == prematriculaEnCurso.estado %}
+                                    <span class="chip orange lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                                {% elseif constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_MATRICULADO') == prematriculaEnCurso.estado %}
+                                    <span class="chip purple lighten-4">{{ prematriculaEnCurso.estado }}</span>
+                                {% endif %}
+                            </td>
+                            <td><span class="chip yellow lighten-4">{{ prematriculaEnCurso.preferencia }}</span></td>
+                            <td><a href="{{ path('alumno_show', { 'id' : prematriculaEnCurso.prematricula.alumno.id }) }}"><span class="chip purple lighten-4">{{ prematriculaEnCurso.prematricula.alumno.expediente }}</span></a></td>
+                            <td>{{ prematriculaEnCurso.prematricula.alumno.dni }}</td>
+                            <td>{{ prematriculaEnCurso.prematricula.alumno }}</td>
+                            <td class="right-align">
+                                {% if constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_PLAZA') == prematriculaEnCurso.estado %}
+                                    <a href="{{ path('matricula_new', {'prematricula' : prematriculaEnCurso.id}) }}" class="btn-floating waves-effect waves-light grey tooltipped" data-position="top" data-delay="50" data-tooltip="Acceso directo a matricular al alumno"><i class="material-icons">assignment_ind</i></a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
