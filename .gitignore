@@ -8,6 +8,7 @@ Symfony/app/logs/*
 Symfony/vendor/*
 public_html/js/*
 public_html/uploads/*
+public_html/bundles/
 Symfony/error_log
 access-logs
 etc/
