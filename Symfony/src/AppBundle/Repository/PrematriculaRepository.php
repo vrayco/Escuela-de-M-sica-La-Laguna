@@ -61,7 +61,7 @@ class PrematriculaRepository extends EntityRepository
     {
         $result = $this->getEntityManager()
             ->createQueryBuilder()
-            ->select('COUNT(p) as total')
+            ->select('COUNT(DISTINCT p.id) as total')
             ->from('AppBundle:Prematricula', 'p')
             ->innerJoin('p.prematriculaEnCursos', 'pre')
             ->innerJoin('pre.curso','c')

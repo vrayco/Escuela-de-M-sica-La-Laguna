@@ -86,7 +86,7 @@ class MatriculaRepository extends EntityRepository
 
         $result = $this->getEntityManager()
             ->createQueryBuilder()
-            ->select('COUNT(m) as total')
+            ->select('COUNT(DISTINCT m.id) as total')
             ->from('AppBundle:Matricula', 'm')
             ->innerJoin('m.curso', 'c')
             ->innerJoin('c.cursoAcademico','cu')

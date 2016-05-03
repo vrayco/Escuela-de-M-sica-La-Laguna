@@ -64,7 +64,7 @@ class PreinscripcionRepository extends EntityRepository
     {
         $result = $this->getEntityManager()
             ->createQueryBuilder()
-            ->select('COUNT(p) as total')
+            ->select('COUNT(DISTINCT p.id) as total')
             ->from('AppBundle:Preinscripcion', 'p')
             ->innerJoin('p.preinscripcionEnCursos', 'pre')
             ->innerJoin('pre.curso','c')
