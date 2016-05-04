@@ -18,9 +18,9 @@ class PrematriculaEnCurso
 {
     const ESTADO_PREMATRICULADO = "PREMATRICULADO";
     const ESTADO_PLAZA          = "PLAZA";
+    const ESTADO_DESCARTADA     = "DESCARTADA";
     const ESTADO_SIN_PLAZA      = "SIN PLAZA";
     const ESTADO_MATRICULADO    = "MATRICULADO";
-    const ESTADO_DESCARTADA     = "DESCARTADA";
 
     const SIN_PLAZA = -1;
 
@@ -48,6 +48,13 @@ class PrematriculaEnCurso
     private $estado;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="numeroLista", type="integer", nullable=true)
+     */
+    private $numeroLista;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Prematricula", inversedBy="prematriculaEnCursos")
      * @ORM\JoinColumn(name="prematricula_id", referencedColumnName="id", nullable=false)
      */
@@ -63,6 +70,7 @@ class PrematriculaEnCurso
     {
         $this->preferencia = 0;
         $this->estado = self::ESTADO_PREMATRICULADO;
+        $this->numeroLista = self::SIN_PLAZA;
     }
 
     /**
@@ -165,5 +173,28 @@ class PrematriculaEnCurso
     public function getCurso()
     {
         return $this->curso;
+    }
+
+    /**
+     * Set numeroLista
+     *
+     * @param integer $numeroLista
+     * @return PrematriculaEnCurso
+     */
+    public function setNumeroLista($numeroLista)
+    {
+        $this->numeroLista = $numeroLista;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroLista
+     *
+     * @return integer 
+     */
+    public function getNumeroLista()
+    {
+        return $this->numeroLista;
     }
 }

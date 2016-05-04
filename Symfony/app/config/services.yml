@@ -63,6 +63,10 @@ services:
         class: AppBundle\Utils\SorteoPlazasPrematriculaService
         arguments: ["@doctrine.orm.default_entity_manager", "@monolog.logger.escuelademusica_sorteo"]
 
+    utils.sorteoplazasprematriculav2:
+        class: AppBundle\Utils\SorteoPlazasPrematriculaV2Service
+        arguments: ["@doctrine.orm.default_entity_manager", "@monolog.logger.escuelademusica_sorteo"]
+
     utils.listados:
         class: AppBundle\Utils\ListadosService
         arguments: [@doctrine.orm.default_entity_manager, @phpexcel]

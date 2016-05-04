@@ -199,7 +199,7 @@ class PrematriculaController extends Controller
 
         if ($form->isValid()) {
 
-            $this->get('utils.sorteoplazasprematricula')->celebrarSorteo($cursoAcademico);
+            $this->get('utils.sorteoplazasprematriculav2')->celebrarSorteo($cursoAcademico);
             $this->get('utils.curso')->refreshCursoAcademico();
 
             $this->addFlash(

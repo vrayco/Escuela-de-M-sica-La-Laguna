@@ -69,7 +69,8 @@ class DefaultController extends Controller
 
         $listados = array();
         foreach($cursos as $curso) {
-            $prematriculas = $listados[$curso->getId()] = $em->getRepository('AppBundle:PrematriculaEnCurso')->getPrematriculasOrdenAlfabetico($curso);
+            if($curso->getEntraEnSorteoPrematricula())
+                $listados[$curso->getId()] = $em->getRepository('AppBundle:PrematriculaEnCurso')->findBy(array('curso' => $curso), array('numeroLista' => 'ASC'));
         }
 
         return $this->render(':default:listado_prematriculas.html.twig', array(
