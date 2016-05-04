@@ -102,7 +102,7 @@ class CursoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $preinscripciones   = $em->getRepository('AppBundle:PreinscripcionEnCurso')->findBy(array('curso' => $curso), array('numeroLista' => 'ASC'));
         $matriculas         = $em->getRepository('AppBundle:Matricula')->findBy(array('curso' => $curso), array('id' => 'ASC'));
-        $prematriculas      = $em->getRepository('AppBundle:PrematriculaEnCurso')->getPrematriculasOrdenAlfabetico($curso);
+        $prematriculas      = $em->getRepository('AppBundle:PrematriculaEnCurso')->findBy(array('curso' => $curso), array('numeroLista' => 'ASC'));
 
         $tab = $request->query->get('tab');
 

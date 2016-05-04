@@ -180,6 +180,7 @@
                 <table class="highlight bordered">
                     <thead>
                     <tr>
+                        <th>Posición</th>
                         <th>Identificador</th>
                         <th>Estado</th>
                         <th>Preferencia</th>
@@ -192,6 +193,7 @@
                     <tbody>
                     {% for prematriculaEnCurso in prematriculas %}
                         <tr>
+                            <td>{% if prematriculaEnCurso.numeroLista != -1 %}<span class="chip">{{ prematriculaEnCurso.numeroLista }}{% else %}---{% endif %}</span></td>
                             <td><a href="{{ path('prematricula_show', { 'id' : prematriculaEnCurso.prematricula.id }) }}"><span class="chip lime lighten-4">{{ prematriculaEnCurso.prematricula.identificador }}</span></a></td>
                             <td>
                                 {% if constant('AppBundle\\Entity\\PrematriculaEnCurso::ESTADO_PREMATRICULADO') == prematriculaEnCurso.estado %}
