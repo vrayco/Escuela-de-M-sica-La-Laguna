@@ -65,11 +65,10 @@ class DefaultController extends Controller
     {
         $cursoAcademico = $this->get('utils.curso')->getCursoActual();
         $em = $this->getDoctrine()->getManager();
-        $cursos = $em->getRepository('AppBundle:Curso')->findBy(array('cursoAcademico' => $cursoAcademico));
+        $cursos = $em->getRepository('AppBundle:Curso')->getCursosEntraEnSorteoPrematricula($cursoAcademico);
 
         $listados = array();
         foreach($cursos as $curso) {
-            if($curso->getEntraEnSorteoPrematricula())
                 $listados[$curso->getId()] = $em->getRepository('AppBundle:PrematriculaEnCurso')->findBy(array('curso' => $curso), array('numeroLista' => 'ASC'));
         }
 

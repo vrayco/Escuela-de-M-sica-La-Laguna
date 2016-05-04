@@ -32,7 +32,7 @@ class LoadPreMatriculasData extends AbstractFixture implements OrderedFixtureInt
 
         foreach($alumnos as $alumno)
         {
-            if(rand(0,3))
+            if(rand(0,1))
             {
                 $entity = new Prematricula();
                 $entity->setAlumno($alumno);

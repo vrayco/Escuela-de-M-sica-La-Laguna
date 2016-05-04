@@ -54,6 +54,7 @@ class CursoRepository extends EntityRepository
             ->innerJoin('c.cursoAcademico', 'cu')
             ->innerJoin('c.disciplina','d')
             ->where('cu = :cursoAcademico')
+            ->andWhere('c.entraEnSorteoPrematricula = TRUE')
             ->setParameter('cursoAcademico', $cursoAcademico)
             ->orderBy('d.nombre','ASC')
             ->getQuery()

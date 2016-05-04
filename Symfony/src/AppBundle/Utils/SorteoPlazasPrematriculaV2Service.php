@@ -43,18 +43,19 @@ class SorteoPlazasPrematriculaV2Service
             sprintf('Incorporamos la semilla %f al generador de números aleatorios.', $semilla)
         );
 
-        $cursos = $this->em->getRepository('AppBundle:Curso')->findBy(array('cursoAcademico' => $cursoAcademico));
+        $cursos = $this->em->getRepository('AppBundle:Curso')->getCursosEntraEnSorteoPrematricula($cursoAcademico);
 
         $this->logger->addInfo(
             sprintf('Número total de especialidades: %d', count($cursos))
         );
 
         foreach($cursos as $curso)
-            if ($curso->getEntraEnSorteoPrematricula()) {
-                $this->generarListas($curso);
-                $this->asignarPlazas($curso);
-            }
-        
+            $this->generarListas($curso);
+
+        for($preferencia=1; $preferencia<=3; $preferencia++)
+            foreach($cursos as $curso)
+                $this->asignarPlazas($curso,$preferencia);
+
         $ahora = new \DateTime('now');
         $this->logger->addInfo(
             sprintf('Fin del %s a las %s', self::NOMBRE_SORTEO, $ahora->format('d/m/Y H:i:s'))
@@ -106,28 +107,38 @@ class SorteoPlazasPrematriculaV2Service
 
     }
 
-    public function asignarPlazas(Curso $curso)
+    public function asignarPlazas(Curso $curso, $preferencia)
     {
+
         $plazasAAsignar = $curso->getNumeroPlazasPrematricula();
         $prematriculasOrdenadas = $this->em->getRepository('AppBundle:PrematriculaEnCurso')->findBy(array('curso' => $curso), array('numeroLista' => 'ASC'));
 
         $asignadas = 0;
-        foreach($prematriculasOrdenadas as $prematricula) {
-            if($asignadas < $plazasAAsignar and $prematricula->getEstado() != PrematriculaEnCurso::ESTADO_DESCARTADA) {
-                $prematricula->setEstado(PrematriculaEnCurso::ESTADO_PLAZA);
+        foreach ($prematriculasOrdenadas as $prematricula)
+            if($prematricula->getEstado() == PrematriculaEnCurso::ESTADO_PLAZA)
                 $asignadas++;
-                
-                // Al asignar una plaza, las otras prematriculas del alumnos pasa al estado ESTADO_DESCARTADA
-                $prematriculasAlumno = $prematricula->getPrematricula()->getPrematriculaEnCursos();
-                foreach ($prematriculasAlumno as $p)
-                    if($p != $prematricula) {
-                        $p->setEstado(PrematriculaEnCurso::ESTADO_DESCARTADA);
-                        $this->em->persist($p);
-                    }
-            } else
-                $prematricula->setEstado(PrematriculaEnCurso::ESTADO_SIN_PLAZA);
 
-            $this->em->persist($prematricula);
+        foreach($prematriculasOrdenadas as $prematricula) {
+            if($prematricula->getEstado() != PrematriculaEnCurso::ESTADO_DESCARTADA) {
+                if($prematricula->getPreferencia() == $preferencia) {
+                    if ($asignadas < $plazasAAsignar) {
+                        $prematricula->setEstado(PrematriculaEnCurso::ESTADO_PLAZA);
+                        $asignadas++;
+
+                        // Al asignar una plaza, las otras prematriculas del alumnos pasa al estado ESTADO_DESCARTADA
+                        $prematriculasAlumno = $prematricula->getPrematricula()->getPrematriculaEnCursos();
+                        foreach ($prematriculasAlumno as $p)
+                            if ($p != $prematricula) {
+                                $p->setEstado(PrematriculaEnCurso::ESTADO_DESCARTADA);
+                                $this->em->persist($p);
+                            }
+                    } else {
+                        $prematricula->setEstado(PrematriculaEnCurso::ESTADO_SIN_PLAZA);
+                    }
+
+                    $this->em->persist($prematricula);
+                }
+            }
         }
 
         $this->em->flush();
@@ -162,11 +173,10 @@ class SorteoPlazasPrematriculaV2Service
             sprintf('Inicializo el sorteo a las %s', $ahora->format('d/m/Y H:i:s'))
         );
 
-        $cursos = $this->em->getRepository('AppBundle:Curso')->findBy(array('cursoAcademico' => $cursoAcademico));
+        $cursos = $this->em->getRepository('AppBundle:Curso')->getCursosEntraEnSorteoPrematricula($cursoAcademico);
 
         foreach($cursos as $curso)
-            if($curso->getEntraEnSorteoPrematricula())
-                $this->inicializarListado($curso);
+            $this->inicializarListado($curso);
 
         $ahora = new \DateTime('now');
         $this->logger->addInfo(

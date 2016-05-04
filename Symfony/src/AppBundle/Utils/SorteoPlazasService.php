@@ -41,17 +41,16 @@ class SorteoPlazasService
             sprintf('Incorporamos la semilla %f al generador de números aleatorios.', $semilla)
         );
 
-        $cursos = $this->em->getRepository('AppBundle:Curso')->findBy(array('cursoAcademico' => $cursoAcademico));
+        $cursos = $this->em->getRepository('AppBundle:Curso')->getCursosEntraEnSorteo($cursoAcademico);
 
         $this->logger->addInfo(
             sprintf('Número total de especialidades: %d', count($cursos))
         );
 
-        foreach($cursos as $curso)
-            if($curso->getEntraEnSorteo()) {
-                $this->generarListas($curso);
-                $this->asignarPlazas($curso);
-            }
+        foreach($cursos as $curso) {
+            $this->generarListas($curso);
+            $this->asignarPlazas($curso);
+        }
 
         $ahora = new \DateTime('now');
         $this->logger->addInfo(
