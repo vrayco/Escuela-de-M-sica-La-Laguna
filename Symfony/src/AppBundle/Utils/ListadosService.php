@@ -597,7 +597,7 @@ class ListadosService
 
         $index = 0;
         foreach($cursos as $curso) {
-            $matriculas = $curso->getMatriculas();
+            $matriculas = $this->em->getRepository('AppBundle:Matricula')->getMatriculasCursoOrdenAlfabetico($curso);
             if (count($matriculas) > 0) {
                 $phpExcelObject->createSheet();
                 $phpExcelObject->setActiveSheetIndex($index);

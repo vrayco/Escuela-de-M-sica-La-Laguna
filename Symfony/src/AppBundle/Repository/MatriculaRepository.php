@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Curso;
 use AppBundle\Entity\CursoAcademico;
 use Doctrine\ORM\EntityRepository;
 
@@ -98,4 +99,18 @@ class MatriculaRepository extends EntityRepository
         return $result[0]['total'];
     }
     
+    public function getMatriculasCursoOrdenAlfabetico(Curso $curso) {
+        return $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('m')
+            ->from('AppBundle:Matricula', 'm')
+            ->innerJoin('m.curso', 'c')
+            ->innerJoin('m.alumno','a')
+            ->where('c = :curso')
+            ->setParameter('curso', $curso)
+            ->orderBy('a.apellidos','ASC')
+            ->getQuery()
+            ->getResult();
+        
+    }
 }
