@@ -680,7 +680,7 @@ class ListadosService
                 foreach ($matriculas as $m) {
                     $sheet->setCellValue('A' . $index2, $m->getAlumno()->getExpediente());
                     $sheet->setCellValue('B' . $index2, $m->getAlumno());
-                    $sheet->setCellValue('C' . $index2, $m->getAlumno()->getFechaNacimiento());
+                    $sheet->setCellValue('C' . $index2, $m->getAlumno()->getFechaNacimiento()->format('d/m/Y'));
                     $sheet->setCellValue('D' . $index2, $m->getAlumno()->getTelefonos());
                     $sheet->setCellValue('E' . $index2, $m->getAlumno()->getEmail());
                     $sheet->getStyle("A" . $index2 . ":E" . $index2)->applyFromArray($style);
