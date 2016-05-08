@@ -164,11 +164,22 @@ class PrematriculaController extends Controller
      * @Route("/descargar/listado", name="prematricula_descargarlistado")
      * @Method("GET")
      */
-    public function descargarListado()
+    public function descargarListadoAction()
     {
         $cursoAcademico = $this->get('utils.curso')->getCursoActual();
 
         return $this->get('utils.listados')->generarListadoPrematriculas($cursoAcademico);
+    }
+
+    /**
+     * @Route("/descargar/listado-resultado", name="prematricula_descargarlistadoresultado")
+     * @Method("GET")
+     */
+    public function descargarListadoResultadoAction()
+    {
+        $cursoAcademico = $this->get('utils.curso')->getCursoActual();
+
+        return $this->get('utils.listados')->generarListadoResultadoPrematriculas($cursoAcademico);
     }
 
     /**

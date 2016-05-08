@@ -615,4 +615,15 @@ class Alumno
         return $this->prematriculas;
     }
 
+    public function getTelefonos()
+    {
+        $str = "";
+        if($this->getTelefonoFijo() != null)
+            $str = $this->getTelefonoFijo().' ';
+        if($this->getTelefonoMovil() != null)
+            $str .= $this->getTelefonoMovil();
+
+        return $str;
+    }
+
 }

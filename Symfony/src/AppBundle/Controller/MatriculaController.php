@@ -188,6 +188,17 @@ class MatriculaController extends Controller
     }
 
     /**
+     * @Route("/descargar/listado", name="matricula_descargarlistado")
+     * @Method("GET")
+     */
+    public function descargarListadoAction()
+    {
+        $cursoAcademico = $this->get('utils.curso')->getCursoActual();
+
+        return $this->get('utils.listados')->generarListadoMatriculas($cursoAcademico);
+    }
+
+    /**
      * Deletes a Matricula entity.
      *
      * @Route("/{id}", name="matricula_delete")

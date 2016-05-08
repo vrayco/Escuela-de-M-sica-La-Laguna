@@ -65,4 +65,19 @@ class PrematriculaEnCursoRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function getPrematriculasOrdenLista(Curso $curso)
+    {
+        return $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('pre, p')
+            ->from('AppBundle:PrematriculaEnCurso', 'pre')
+            ->innerJoin('pre.prematricula', 'p')
+            ->innerJoin('pre.curso','c')
+            ->where('c = :curso')
+            ->setParameter('curso', $curso)
+            ->orderBy('pre.numeroLista','ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

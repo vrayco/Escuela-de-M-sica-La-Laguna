@@ -49,12 +49,13 @@
         </a>
         <ul>
             <li><a href="{{ path('prematricula_new') }}" class="btn-floating waves-effect waves-light green"><i class="material-icons">add</i></a></li>
-            <li><a href="{{ path('prematricula_descargarlistado') }}" class="btn-floating waves-effect waves-light blue-grey tooltipped" data-position="top" data-delay="50" data-tooltip="Descargar listado"><i class="material-icons">description</i></a></li>
-            <li><a href="{{ path('listado_prematriculas', { 'slug' : cursoAcademico.slug }) }}" class="btn-floating waves-effect waves-light lime modal-trigger tooltipped" data-position="top" data-delay="50" data-tooltip="Listado pre-matrículas web"><i class="material-icons left">view_list</i> Listado pre-matrículas web</a></li>
+            <li><a href="{{ path('listado_prematriculas', { 'slug' : cursoAcademico.slug }) }}" class="btn-floating waves-effect waves-light lime modal-trigger tooltipped" data-position="top" data-delay="50" data-tooltip="Listado web de pre-matrículas"><i class="material-icons left">view_list</i> Listado pre-matrículas web</a></li>
             {% if not cursoAcademico.prematriculasGeneracionDeListas %}
+                <li><a href="{{ path('prematricula_descargarlistado') }}" class="btn-floating waves-effect waves-light blue-grey tooltipped" data-position="top" data-delay="50" data-tooltip="Descargar listado de pre-matrículas"><i class="material-icons">description</i></a></li>
                 <li><a href="{{ path('prematricula_sortearplazas') }}" class="btn-floating waves-effect waves-light pink modal-trigger tooltipped" data-position="top" data-delay="50" data-tooltip="Realizar sorteo de plazas"><i class="material-icons left">shuffle</i> Realizar el sorteo de plazas</a></li>
                 <li><a class="btn-floating waves-effect waves-light red modal-trigger tooltipped disabled" data-position="top" data-delay="50" data-tooltip="Eliminar sorteo de plazas"><i class="material-icons left">delete</i> Eliminar sorteo de plazas</a></li>
             {% else %}
+                <li><a href="{{ path('prematricula_descargarlistadoresultado') }}" class="btn-floating waves-effect waves-light blue-grey tooltipped" data-position="top" data-delay="50" data-tooltip="Descargar RESULTADO del SORTEO de pre-matrículas"><i class="material-icons">description</i></a></li>
                 <li><a class="btn-floating waves-effect waves-light pink modal-trigger tooltipped disabled" data-position="top" data-delay="50" data-tooltip="Realizar sorteo de plazas"><i class="material-icons left">shuffle</i> Realizar el sorteo de plazas</a></li>
                 <li><a href="{{ path('prematricula_eliminarsorteo') }}" class="btn-floating waves-effect waves-light red modal-trigger tooltipped" data-position="top" data-delay="50" data-tooltip="Eliminar sorteo de plazas"><i class="material-icons left">delete</i> Eliminar sorteo de plazas</a></li>
             {% endif %}

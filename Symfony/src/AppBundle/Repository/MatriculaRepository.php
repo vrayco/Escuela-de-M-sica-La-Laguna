@@ -97,4 +97,5 @@ class MatriculaRepository extends EntityRepository
 
         return $result[0]['total'];
     }
+    
 }
