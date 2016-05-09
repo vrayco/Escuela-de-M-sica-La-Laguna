@@ -43,9 +43,9 @@ class PreinscripcionEnCursoRepository extends EntityRepository
         if($tipo == PreinscripcionController::LISTADO_PRIORIDAD)
             $query->andWhere('p.prioridad = TRUE');
         else if($tipo == PreinscripcionController::LISTADO_EMPADRONADOS)
-            $query->andWhere('p.prioridad = FALSE and p.empadronado = TRUE');
+            $query->andWhere('p.empadronado = TRUE');
         else if($tipo == PreinscripcionController::LISTADO_NO_EMPADRONADOS)
-            $query->andWhere('p.prioridad = FALSE and p.empadronado = FALSE');
+            $query->andWhere('p.empadronado = FALSE');
 
         $query
             ->orderBy('p.apellidos','ASC');
@@ -96,7 +96,7 @@ class PreinscripcionEnCursoRepository extends EntityRepository
             ->innerJoin('pec.preinscripcion', 'p')
             ->innerJoin('pec.curso','c')
             ->where('c = :curso')
-            ->andWhere('p.prioridad = TRUE OR p.empadronado = TRUE')
+            ->andWhere('p.empadronado = TRUE')
             ->andWhere('pec.numeroLista = :sinPlaza')
             ->setParameter('curso', $curso)
             ->setParameter('sinPlaza', PreinscripcionEnCurso::SIN_PLAZA)
@@ -113,7 +113,7 @@ class PreinscripcionEnCursoRepository extends EntityRepository
             ->innerJoin('pec.preinscripcion', 'p')
             ->innerJoin('pec.curso','c')
             ->where('c = :curso')
-            ->andWhere('p.prioridad = FALSE')
+            ->andWhere('p.empadronado = FALSE')
             ->andWhere('pec.numeroLista = :sinPlaza')
             ->andWhere('p.empadronado = FALSE')
             ->setParameter('curso', $curso)

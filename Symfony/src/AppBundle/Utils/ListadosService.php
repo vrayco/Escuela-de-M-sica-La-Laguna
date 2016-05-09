@@ -493,7 +493,7 @@ class ListadosService
                 $sheet->getStyle("A1:E1")->applyFromArray($style);
 
                 // ENCABEZADO tabla
-                $sheet->setCellValue('A2', 'Posición');
+                $sheet->setCellValue('A2', '');
                 $sheet->setCellValue('B2', 'Estado');
                 $sheet->setCellValue('C2', 'Identificador');
                 $sheet->setCellValue('D2', 'Expediente');
